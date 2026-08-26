@@ -21,13 +21,17 @@ export default function App() {
   const [sampleJDs, setSampleJDs] = useState<SampleJD[]>([]);
   const [sampleResumes, setSampleResumes] = useState<SampleResumeInfo[]>([]);
 
+  // Lock dark theme permanently
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+  }, []);
+
   // Load sample presets on mount
   useEffect(() => {
     fetchSamples()
       .then((data) => {
         setSampleJDs(data.job_descriptions || []);
         setSampleResumes(data.sample_resumes || []);
-        // Pre-fill with the first sample JD for instantaneous testing
         if (data.job_descriptions && data.job_descriptions.length > 0 && !jd) {
           setJd(data.job_descriptions[0].content);
         }
@@ -48,7 +52,7 @@ export default function App() {
   const handleScreenUploadedFiles = async () => {
     if (!jd.trim() || files.length === 0) return;
     setError(null);
-    setProgress({ type: 'progress', current: 0, total: files.length, filename: 'Preparing upload...' });
+    setProgress({ type: 'progress', current: 0, total: files.length, filename: 'Preparing upload batch...' });
 
     try {
       const gen = streamScreening(jd, files, (p) => setProgress(p));
@@ -73,7 +77,7 @@ export default function App() {
       type: 'progress',
       current: 0,
       total: sampleResumes.length || 14,
-      filename: 'Loading sample dataset...',
+      filename: 'Loading synthetic dataset...',
     });
 
     try {
@@ -97,7 +101,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
+    <div className="min-h-screen flex flex-col justify-between bg-grid-pattern">
       <div>
         <Header
           step={step}
@@ -116,15 +120,15 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Global Error Banner */}
+        {/* Global Error Alert */}
         {error && (
           <div className="mx-auto max-w-4xl px-4 pt-6">
-            <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs font-semibold text-rose-700 dark:text-rose-400 flex items-center justify-between">
+            <div className="rounded-2xl border border-rose-500/30 bg-rose-500/15 p-4 text-xs font-semibold text-rose-300 flex items-center justify-between shadow-lg">
               <span>{error}</span>
               <button
                 type="button"
                 onClick={() => setError(null)}
-                className="text-slate-400 hover:text-rose-600 font-bold"
+                className="text-slate-400 hover:text-rose-200 font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
@@ -132,7 +136,7 @@ export default function App() {
           </div>
         )}
 
-        <main className="py-8 px-4 sm:px-6 lg:px-8">
+        <main className="py-10 px-4 sm:px-6 lg:px-8">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <Step1JobDescription
@@ -172,11 +176,13 @@ export default function App() {
       </div>
 
       {/* Global Footer */}
-      <footer className="border-t border-slate-200/80 dark:border-slate-800/80 py-6 text-center text-xs text-slate-500">
-        <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>ResumeRank • Production-Grade AI Candidate Screening Engine</span>
-          <span className="font-mono text-[11px] opacity-75">
-            sentence-transformers (all-MiniLM-L6-v2) + Jaccard Skills Taxonomy
+      <footer className="border-t border-white/[0.06] bg-[#07090f]/80 backdrop-blur-xl py-6 text-center text-xs text-slate-500">
+        <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span className="text-slate-400 font-medium">
+            ResumeRank • Autonomous Candidate Screening & Semantic Ranking
+          </span>
+          <span className="font-mono text-[11px] text-slate-500">
+            Powered by sentence-transformers (<span className="text-indigo-400">all-MiniLM-L6-v2</span>)
           </span>
         </div>
       </footer>

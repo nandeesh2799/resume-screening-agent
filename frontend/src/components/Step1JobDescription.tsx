@@ -9,6 +9,8 @@ import {
   CheckCircle2,
   Cpu,
   Layers,
+  Terminal,
+  Zap,
 } from 'lucide-react';
 import type { SampleJD } from '../types';
 
@@ -56,31 +58,31 @@ export function Step1JobDescription({ jd, setJd, samples, onNext }: Props) {
       transition={{ duration: 0.3 }}
       className="mx-auto max-w-5xl space-y-8"
     >
-      {/* Header Banner */}
-      <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
-          <Sparkles className="h-3.5 w-3.5" />
-          Step 1: Define Target Role
+      {/* Hero Header */}
+      <div className="text-center space-y-3.5">
+        <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-bold text-indigo-300 shadow-[0_0_15px_-3px_rgba(99,102,241,0.3)]">
+          <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
+          <span>Step 1: Role Specification</span>
         </div>
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-          What role are you hiring for?
+        <h1 className="text-3xl font-black tracking-tight sm:text-5xl text-white">
+          Define Your <span className="gradient-text-accent">Target Role</span>
         </h1>
-        <p className="mx-auto max-w-2xl text-sm text-slate-600 dark:text-slate-400">
-          Paste your Job Description or pick a ready-to-test industry preset below. The agent will
-          extract required skills, experience thresholds, and domain criteria automatically.
+        <p className="mx-auto max-w-2xl text-sm text-slate-400 leading-relaxed">
+          Paste your Job Description or select a pre-configured industry benchmark. The neural
+          matching agent will extract requirements, technical skills, and seniority thresholds.
         </p>
       </div>
 
-      {/* Preset JD Chips */}
-      <div className="space-y-2.5">
+      {/* Quick Benchmark Presets */}
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-            <Briefcase className="h-3.5 w-3.5 text-indigo-500" />
-            Quick Presets (1-Click Test)
+          <span className="text-xs font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <Briefcase className="h-3.5 w-3.5 text-indigo-400" />
+            Industry Benchmarks (1-Click Fill)
           </span>
           {selectedSampleId && (
-            <span className="text-xs text-indigo-600 dark:text-indigo-400 font-medium">
-              Preset active
+            <span className="text-xs text-indigo-400 font-semibold flex items-center gap-1">
+              <Zap className="h-3 w-3" /> Preset loaded
             </span>
           )}
         </div>
@@ -93,27 +95,27 @@ export function Step1JobDescription({ jd, setJd, samples, onNext }: Props) {
                 type="button"
                 onClick={() => handleSelectSample(sample)}
                 className={[
-                  'group relative flex flex-col justify-between rounded-2xl p-4 text-left transition-all duration-200 border cursor-pointer',
+                  'group relative flex flex-col justify-between rounded-2xl p-4 text-left transition-all duration-200 cursor-pointer',
                   isSelected
-                    ? 'border-indigo-500 bg-indigo-50/80 shadow-md shadow-indigo-500/10 ring-2 ring-indigo-500/20 dark:bg-indigo-950/40 dark:border-indigo-500/60'
-                    : 'glass-card glass-card-hover border-slate-200/80 dark:border-slate-800/80',
+                    ? 'border border-indigo-500/80 bg-indigo-950/50 shadow-[0_0_25px_-5px_rgba(99,102,241,0.4)] ring-1 ring-indigo-400'
+                    : 'glass-card glass-card-hover border-white/[0.06]',
                 ].join(' ')}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400">
                       {sample.department}
                     </span>
-                    <span className="text-[10px] font-medium rounded-md bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 text-slate-500">
+                    <span className="text-[10px] font-mono rounded-md bg-white/[0.06] px-1.5 py-0.5 text-slate-400 border border-white/[0.08]">
                       {sample.experience}
                     </span>
                   </div>
-                  <h4 className="text-xs font-bold text-slate-900 dark:text-white line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  <h4 className="text-xs font-bold text-white line-clamp-1 group-hover:text-indigo-300 transition-colors">
                     {sample.title}
                   </h4>
                 </div>
-                <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 group-hover:text-indigo-500">
-                  <span>Apply template</span>
+                <div className="mt-3.5 flex items-center gap-1 text-[11px] font-semibold text-slate-400 group-hover:text-indigo-400 transition-colors">
+                  <span>Use benchmark</span>
                   <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
                 </div>
               </button>
@@ -122,29 +124,29 @@ export function Step1JobDescription({ jd, setJd, samples, onNext }: Props) {
         </div>
       </div>
 
-      {/* Main Editor & Live Analysis Grid */}
+      {/* Main Editor & Live Analysis Matrix */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Editor Area */}
+        {/* Editor Glass Panel */}
         <div className="lg:col-span-2 space-y-3">
-          <div className="glass-panel rounded-2xl p-4 shadow-xl shadow-slate-900/5 transition-all">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800/80">
+          <div className="glass-panel rounded-3xl p-5 shadow-2xl transition-all">
+            <div className="flex items-center justify-between pb-3.5 border-b border-white/[0.06]">
               <div className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
                   <FileText className="h-4 w-4" />
                 </div>
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
-                  Job Description Text
+                <span className="text-xs font-bold text-white">
+                  Job Specification Editor
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-[11px] text-slate-500 tabular-nums">
+                <span className="text-[11px] font-mono text-slate-400 tabular-nums">
                   {wordCount} words • {charCount} chars
                 </span>
                 {jd && (
                   <button
                     type="button"
                     onClick={handleClear}
-                    className="flex items-center gap-1 text-xs text-rose-500 hover:text-rose-600 font-medium transition-colors cursor-pointer"
+                    className="flex items-center gap-1 text-xs text-rose-400 hover:text-rose-300 font-semibold transition-colors cursor-pointer"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                     Clear
@@ -160,69 +162,72 @@ export function Step1JobDescription({ jd, setJd, samples, onNext }: Props) {
                 setSelectedSampleId(null);
               }}
               rows={14}
-              placeholder="Paste the full job description here (e.g. responsibilities, required skills, required experience, cloud tooling, education requirements)..."
-              className="w-full resize-y bg-transparent pt-3 pb-2 text-sm leading-relaxed text-slate-900 dark:text-slate-100 outline-none placeholder:text-slate-400 font-mono scrollbar-thin"
+              placeholder="Paste the full job description here (responsibilities, required skills, minimum years of experience, tooling, tech stack)..."
+              className="w-full resize-y bg-transparent pt-3.5 pb-2 text-sm leading-relaxed text-slate-100 outline-none placeholder:text-slate-600 font-mono scrollbar-thin"
             />
           </div>
         </div>
 
-        {/* Live Extraction Inspector Sidebar */}
+        {/* Live Feature Extraction Inspector */}
         <div className="space-y-4">
-          <div className="glass-panel rounded-2xl p-5 space-y-4 shadow-lg">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-              <Cpu className="h-3.5 w-3.5 text-indigo-500" />
-              Live JD Feature Extraction
+          <div className="glass-panel rounded-3xl p-5 space-y-4 shadow-xl border border-white/[0.08]">
+            <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+              <Cpu className="h-3.5 w-3.5 text-indigo-400" />
+              Live Feature Extraction
             </h3>
 
             {/* Status indicator */}
-            <div className="flex items-center justify-between rounded-xl bg-slate-50 dark:bg-slate-900/60 p-3 border border-slate-200/50 dark:border-slate-800">
-              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+            <div className="flex items-center justify-between rounded-2xl bg-slate-900/90 p-3.5 border border-white/[0.06]">
+              <span className="text-xs font-medium text-slate-400">
                 Specification Density
               </span>
               <span
                 className={`text-xs font-bold ${
-                  isReady ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-500'
+                  isReady ? 'text-emerald-400 flex items-center gap-1' : 'text-amber-400'
                 }`}
               >
                 {isReady ? '✓ Ready to Score' : 'Need ≥ 25 words'}
               </span>
             </div>
 
-            {/* Detected Skills */}
-            <div className="space-y-2">
-              <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between">
-                <span>Detected Target Skills</span>
-                <span className="text-[10px] font-bold rounded-full bg-indigo-500/10 px-2 py-0.5 text-indigo-600 dark:text-indigo-400">
-                  {detectedSkills.length} found
+            {/* Detected Skills Tag Cloud */}
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-semibold text-slate-300">Target Skill Taxonomy</span>
+                <span className="text-[10px] font-bold font-mono rounded-full bg-indigo-500/20 border border-indigo-500/30 px-2 py-0.5 text-indigo-300">
+                  {detectedSkills.length} identified
                 </span>
-              </span>
+              </div>
               {detectedSkills.length > 0 ? (
                 <div className="flex flex-wrap gap-1.5 max-h-44 overflow-y-auto pr-1">
                   {detectedSkills.map((s) => (
                     <span
                       key={s}
-                      className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/60 dark:border-indigo-800/60 px-2 py-1 text-[11px] font-medium text-indigo-700 dark:text-indigo-300"
+                      className="inline-flex items-center gap-1 rounded-lg bg-indigo-950/60 border border-indigo-500/40 px-2.5 py-1 text-[11px] font-bold text-indigo-300 shadow-sm"
                     >
-                      <CheckCircle2 className="h-3 w-3 text-indigo-500" />
+                      <CheckCircle2 className="h-3 w-3 text-indigo-400" />
                       {s}
                     </span>
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-slate-400 italic py-2">
-                  No skills identified yet. Paste a JD or pick a preset above.
-                </p>
+                <div className="rounded-xl border border-dashed border-white/[0.08] p-4 text-center">
+                  <Terminal className="mx-auto h-5 w-5 text-slate-600 mb-1" />
+                  <p className="text-xs text-slate-500">
+                    Paste text or choose a benchmark above to extract target criteria.
+                  </p>
+                </div>
               )}
             </div>
 
-            {/* NLP Engine Notice */}
-            <div className="rounded-xl border border-indigo-500/20 bg-gradient-to-br from-indigo-500/5 via-violet-500/5 to-transparent p-3.5 text-xs text-slate-600 dark:text-slate-400 space-y-1">
-              <div className="flex items-center gap-1.5 font-semibold text-indigo-600 dark:text-indigo-400">
-                <Layers className="h-3.5 w-3.5" />
-                Semantic Weight Matrix
+            {/* Mathematical Weights Card */}
+            <div className="rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-transparent p-4 space-y-1.5">
+              <div className="flex items-center gap-1.5 font-bold text-xs text-indigo-300">
+                <Layers className="h-3.5 w-3.5 text-indigo-400" />
+                <span>Multi-Factor Scoring Matrix</span>
               </div>
-              <p className="text-[11px] leading-normal opacity-90">
-                Embeddings (45%) + Skill Jaccard (35%) + Years Exp (20%)
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Embeddings (45%) + Skill Jaccard (35%) + Experience Match (20%)
               </p>
             </div>
           </div>
@@ -230,22 +235,22 @@ export function Step1JobDescription({ jd, setJd, samples, onNext }: Props) {
       </div>
 
       {/* Navigation Footer */}
-      <div className="flex items-center justify-between pt-4 border-t border-slate-200/60 dark:border-slate-800/60">
+      <div className="flex items-center justify-between pt-5 border-t border-white/[0.06]">
         <p className="text-xs text-slate-500">
-          Tip: You can change the job description at any point.
+          Tip: You can return and re-tune the specification at any time.
         </p>
         <button
           type="button"
           disabled={!isReady}
           onClick={onNext}
           className={[
-            'group relative flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-200',
+            'group relative flex items-center gap-2.5 rounded-2xl px-7 py-3.5 text-sm font-extrabold text-white transition-all duration-200 cursor-pointer',
             isReady
-              ? 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:-translate-y-0.5 cursor-pointer'
-              : 'bg-slate-300 dark:bg-slate-800 text-slate-500 cursor-not-allowed shadow-none',
+              ? 'glow-btn-primary'
+              : 'bg-slate-800 text-slate-600 cursor-not-allowed border border-white/[0.04]',
           ].join(' ')}
         >
-          <span>Next: Upload Resumes</span>
+          <span>Next: Upload Resumes Batch</span>
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </button>
       </div>
