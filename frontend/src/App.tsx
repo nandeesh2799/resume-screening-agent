@@ -101,7 +101,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-grid-pattern">
+    <div className="min-h-screen flex flex-col justify-between bg-[#09090b]">
       <div className="w-full">
         <Header
           step={step}
@@ -123,12 +123,12 @@ export default function App() {
         {/* Global Error Alert */}
         {error && (
           <div className="w-full max-w-[1800px] mx-auto px-4 pt-6">
-            <div className="rounded-2xl border border-rose-500/30 bg-rose-500/15 p-4 text-xs font-semibold text-rose-300 flex items-center justify-between shadow-lg">
+            <div className="rounded-xl border border-rose-500/30 bg-rose-500/15 p-3 text-xs font-semibold text-rose-300 flex items-center justify-between shadow-lg">
               <span>{error}</span>
               <button
                 type="button"
                 onClick={() => setError(null)}
-                className="text-slate-400 hover:text-rose-200 font-bold p-1 cursor-pointer"
+                className="text-zinc-400 hover:text-rose-200 font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
@@ -163,10 +163,10 @@ export default function App() {
             {step === 3 && result && (
               <motion.div
                 key="step3"
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
               >
                 <ResultsPage result={result} onReset={handleReset} />
               </motion.div>
@@ -175,14 +175,14 @@ export default function App() {
         </main>
       </div>
 
-      {/* Global Full-Width Footer */}
-      <footer className="w-full border-t border-white/[0.06] bg-[#07090f]/90 backdrop-blur-xl py-4 text-xs text-slate-500">
-        <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="text-slate-400 font-medium font-mono text-[11px]">
-            ResumeRank • Autonomous Candidate Screening & Semantic Ranking
+      {/* Footer */}
+      <footer className="w-full border-t border-zinc-800 bg-[#09090b] py-3 text-xs text-zinc-500">
+        <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <span className="text-zinc-400 font-medium font-mono text-[11px]">
+            ResumeRank • Candidate Screening & Ranking Engine
           </span>
-          <span className="font-mono text-[11px] text-slate-500">
-            Powered by sentence-transformers (<span className="text-indigo-400">all-MiniLM-L6-v2</span>)
+          <span className="font-mono text-[11px] text-zinc-500">
+            Powered by sentence-transformers (<span className="text-zinc-300">all-MiniLM-L6-v2</span>)
           </span>
         </div>
       </footer>
