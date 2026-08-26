@@ -1,6 +1,6 @@
 """
 Generates 15 realistic, ATS-friendly PDF candidate resumes for ResumeRank.
-Uses ReportLab with strict single-column ATS typography, standard headers,
+Uses ReportLab with strict single-column ATS typography, Times-Roman serif font family,
 and verified metadata for automated ATS parsers (pdfplumber, pypdf).
 """
 import os
@@ -483,11 +483,11 @@ CANDIDATES = [
 
 
 def build_ats_pdf(candidate_data: dict, output_path: Path):
-    """Build clean single-column ATS-friendly PDF using ReportLab."""
+    """Build clean single-column ATS-friendly PDF using ReportLab with Serif typography."""
     if candidate_data.get("is_corrupt"):
         # Create minimal PDF with no extractable text to test OCR/scan error recovery
         doc = SimpleDocTemplate(str(output_path), pagesize=letter)
-        doc.build([Paragraph("", ParagraphStyle('Empty', fontName='Helvetica', fontSize=8))])
+        doc.build([Paragraph("", ParagraphStyle('Empty', fontName='Times-Roman', fontSize=8))])
         return
 
     doc = SimpleDocTemplate(
@@ -501,12 +501,12 @@ def build_ats_pdf(candidate_data: dict, output_path: Path):
 
     styles = getSampleStyleSheet()
 
-    # Custom ATS Typography Styles
+    # Custom Serif ATS Typography Styles
     name_style = ParagraphStyle(
         'ATSName',
-        fontName='Helvetica-Bold',
-        fontSize=16,
-        leading=20,
+        fontName='Times-Bold',
+        fontSize=17,
+        leading=21,
         textColor=HexColor('#111827'),
         alignment=0,
         spaceAfter=2
@@ -514,27 +514,27 @@ def build_ats_pdf(candidate_data: dict, output_path: Path):
 
     title_style = ParagraphStyle(
         'ATSTitle',
-        fontName='Helvetica-Bold',
-        fontSize=11,
-        leading=14,
+        fontName='Times-Bold',
+        fontSize=12,
+        leading=15,
         textColor=HexColor('#374151'),
         spaceAfter=2
     )
 
     contact_style = ParagraphStyle(
         'ATSContact',
-        fontName='Helvetica',
-        fontSize=9,
-        leading=12,
+        fontName='Times-Roman',
+        fontSize=9.5,
+        leading=13,
         textColor=HexColor('#4B5563'),
         spaceAfter=8
     )
 
     heading_style = ParagraphStyle(
         'ATSHeading',
-        fontName='Helvetica-Bold',
-        fontSize=11,
-        leading=14,
+        fontName='Times-Bold',
+        fontSize=11.5,
+        leading=15,
         textColor=HexColor('#1F2937'),
         spaceBefore=8,
         spaceAfter=3,
@@ -543,18 +543,18 @@ def build_ats_pdf(candidate_data: dict, output_path: Path):
 
     body_style = ParagraphStyle(
         'ATSBody',
-        fontName='Helvetica',
-        fontSize=9.5,
-        leading=13,
+        fontName='Times-Roman',
+        fontSize=10,
+        leading=13.5,
         textColor=HexColor('#1F2937'),
         spaceAfter=4
     )
 
     bullet_style = ParagraphStyle(
         'ATSBullet',
-        fontName='Helvetica',
-        fontSize=9,
-        leading=12.5,
+        fontName='Times-Roman',
+        fontSize=9.5,
+        leading=13,
         textColor=HexColor('#374151'),
         leftIndent=12,
         firstLineIndent=-8,
@@ -563,17 +563,17 @@ def build_ats_pdf(candidate_data: dict, output_path: Path):
 
     job_title_style = ParagraphStyle(
         'ATSJobTitle',
-        fontName='Helvetica-Bold',
-        fontSize=10,
-        leading=13,
+        fontName='Times-Bold',
+        fontSize=10.5,
+        leading=14,
         textColor=HexColor('#111827')
     )
 
     job_meta_style = ParagraphStyle(
         'ATSJobMeta',
-        fontName='Helvetica-Oblique',
-        fontSize=9,
-        leading=12,
+        fontName='Times-Italic',
+        fontSize=9.5,
+        leading=12.5,
         textColor=HexColor('#4B5563'),
         spaceAfter=3
     )
@@ -613,7 +613,7 @@ def build_ats_pdf(candidate_data: dict, output_path: Path):
 
 
 def main():
-    print(f"Generating ATS-friendly PDF resume dataset in: {RESUME_OUTPUT_DIR}")
+    print(f"Generating ATS-friendly PDF resume dataset (Times-Roman serif) in: {RESUME_OUTPUT_DIR}")
 
     # Remove all existing files in sample_resumes/
     if RESUME_OUTPUT_DIR.exists():
@@ -629,7 +629,7 @@ def main():
         size_kb = out_file.stat().st_size / 1024
         print(f"  ✓ Generated: {cand['filename']:<42} ({size_kb:.1f} KB)")
 
-    print(f"\n✨ Successfully generated {len(CANDIDATES)} 100% PDF ATS-friendly resumes!")
+    print(f"\n✨ Successfully generated {len(CANDIDATES)} Serif PDF ATS-friendly resumes!")
 
 
 if __name__ == "__main__":
