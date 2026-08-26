@@ -1,0 +1,34 @@
+Priya Sharma
+priya.sharma@outlook.com | +91-98765-43210 | Bangalore, India
+
+PROFESSIONAL SUMMARY
+Data Scientist with 4 years of experience in machine learning, statistical modeling, and data analysis.
+Proficient in Python, R, and SQL. Passionate about turning data into actionable insights.
+
+CORE SKILLS
+Machine Learning, Deep Learning, NLP, Python, R, SQL, TensorFlow, scikit-learn,
+pandas, numpy, Matplotlib, Seaborn, Tableau, Spark, BigQuery, AWS, Docker, Git,
+Statistical Analysis, Data Analysis, A/B Testing, Feature Engineering
+
+PROFESSIONAL EXPERIENCE
+
+Data Scientist — Flipkart (2022 – Present, 2 years)
+- Built recommendation engine using collaborative filtering, improving CTR by 18%
+- Developed customer churn prediction model (XGBoost); reduced churn by 12%
+- Conducted A/B tests for new product features; owned statistical significance framework
+
+Junior Data Scientist — TCS (2020 – 2022, 2 years)
+- Performed EDA and feature engineering for banking fraud detection project
+- Trained classification models with scikit-learn; achieved 94% precision
+- Created automated reporting dashboards in Tableau for business stakeholders
+
+Data Analyst Intern — Infosys (2019 – 2020)
+- Analysed customer transaction data with SQL and Python
+- Built Excel/Power BI dashboards for executive review
+
+EDUCATION
+Master of Science in Data Science, IIT Bombay, 2020
+Bachelor of Engineering in Computer Science, VTU, 2018
+
+PUBLICATIONS
+"Hierarchical Attention Networks for Sentiment Classification", EMNLP Workshop 2021

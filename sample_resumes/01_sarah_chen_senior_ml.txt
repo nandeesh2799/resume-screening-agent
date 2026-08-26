@@ -1,0 +1,35 @@
+Sarah Chen
+sarah.chen@email.com | +1-415-887-3421 | linkedin.com/in/sarahchen | github.com/sarahchen
+
+SUMMARY
+Senior Machine Learning Engineer with 8 years of experience building production ML systems.
+Deep expertise in NLP, computer vision, and large-scale distributed training.
+
+SKILLS
+Python, PyTorch, TensorFlow, scikit-learn, pandas, numpy, Spark, Kafka, Airflow,
+Docker, Kubernetes, AWS, GCP, SQL, PostgreSQL, MongoDB, Redis, Git, Bash,
+Machine Learning, Deep Learning, NLP, Natural Language Processing, Transformers, LLM, BERT
+
+EXPERIENCE
+
+Senior ML Engineer — Meta AI Research (2021 – Present, 3 years)
+- Led development of a multilingual NLP pipeline serving 500M+ users
+- Fine-tuned LLaMA-based models with RLHF; reduced hallucination by 32%
+- Built real-time feature store on Apache Kafka + Redis reducing inference latency by 60%
+
+ML Engineer — Stripe (2018 – 2021, 3 years)
+- Built fraud detection model (XGBoost + neural net ensemble) saving $120M/year
+- Deployed models on Kubernetes with A/B testing framework
+- Managed data pipelines with Airflow on GCP BigQuery
+
+Data Scientist — IBM Watson (2016 – 2018, 2 years)
+- Built NLP classifiers for enterprise document routing
+- Created dashboards with Tableau; presented insights to C-suite
+
+EDUCATION
+PhD in Computer Science (Machine Learning), Stanford University, 2016
+Bachelor of Science in Mathematics and CS, UC Berkeley, 2011
+
+CERTIFICATIONS
+AWS Certified Machine Learning Specialty
+Google Professional Data Engineer

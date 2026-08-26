@@ -1,0 +1,28 @@
+Alex Morrison
+alex.morrison@protonmail.com | 07700-900-123 | Manchester, UK
+
+Frontend Developer — 3 years experience
+
+SKILLS
+JavaScript, TypeScript, React, Vue, Angular, NextJS, HTML, CSS, Tailwind, Bootstrap,
+GraphQL, REST, Node.js, Webpack, Vite, Jest, Cypress, Git, GitHub Actions, Figma, AWS
+
+EXPERIENCE
+
+Frontend Developer — BBC (2022 – Present, 2 years)
+- Built accessible React components for BBC News platform (10M+ daily users)
+- Implemented dark mode and responsive layouts with Tailwind CSS
+- Led migration from class components to hooks; reduced bundle size 35%
+- Integrated GraphQL API; improved data-fetching performance significantly
+
+Junior Frontend Developer — Thoughtworks (2021 – 2022, 1 year)
+- Developed Vue.js SPA for a retail client's inventory management system
+- Wrote Cypress E2E tests covering critical user flows
+- Participated in pair programming and TDD practices
+
+EDUCATION
+Bachelor of Science in Computer Science, University of Manchester, 2021
+
+PERSONAL PROJECTS
+Open-source Tailwind component library (400+ GitHub stars)
+Built a real-time collaborative whiteboard with WebSockets and Canvas API

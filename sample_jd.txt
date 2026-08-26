@@ -1,0 +1,35 @@
+Senior Full Stack Engineer — FinTech Startup (Remote)
+
+About the Role:
+We are looking for a Senior Full Stack Engineer to join our core product team.
+You will architect and build scalable APIs and dynamic web interfaces for our
+payment intelligence platform serving 1M+ small business merchants.
+
+Requirements:
+- 5+ years of professional software development experience
+- Strong proficiency in Python (FastAPI or Django) for backend development
+- Strong proficiency in React with TypeScript for frontend development
+- Experience with relational databases (PostgreSQL) and caching (Redis)
+- Experience with Docker and Kubernetes for container orchestration
+- Comfortable with cloud infrastructure — AWS or GCP preferred
+- Experience with CI/CD pipelines (GitHub Actions or Jenkins)
+- Strong understanding of REST API design and microservices architecture
+- Excellent communication skills and ability to work in an Agile/Scrum environment
+
+Nice to Have:
+- Experience with Apache Kafka or similar message brokers
+- Familiarity with data engineering or ML pipelines
+- GraphQL experience
+- Security engineering awareness (OAuth2, JWT, OWASP)
+
+What You'll Do:
+- Design, build, and maintain FastAPI microservices handling millions of daily transactions
+- Build high-quality React + TypeScript frontend components and pages
+- Collaborate with product, design, and data teams in agile sprints
+- Review code, mentor junior engineers, and champion engineering best practices
+- Participate in on-call rotation and incident response
+
+We Offer:
+- Competitive salary ($150K – $200K USD or equivalent)
+- Equity package, full remote, generous PTO
+- $2,000 annual learning budget

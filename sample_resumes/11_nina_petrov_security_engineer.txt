@@ -1,0 +1,35 @@
+Nina Petrov
+nina.petrov@secmail.com | +49-30-12345678 | Berlin, Germany
+
+CYBERSECURITY ENGINEER — 7 years experience
+
+SKILLS
+Python, Bash, Go, Linux, AWS, GCP, Docker, Kubernetes, Terraform,
+Network Security, Penetration Testing, SIEM, Splunk, Wireshark, Nmap,
+OAuth2, JWT, SSL/TLS, SOC2, GDPR, Zero Trust, DevSecOps, Git,
+SQL, PostgreSQL, Agile, Communication
+
+PROFESSIONAL EXPERIENCE
+
+Senior Security Engineer — SAP (2022 – Present, 2 years)
+- Led AppSec program: threat modelling, SAST/DAST, penetration testing
+- Reduced critical vulnerabilities by 70% through automated security scanning in CI/CD
+- Built internal security tooling in Python and Go for anomaly detection
+- Advised engineering teams on secure coding practices (OWASP Top 10)
+
+Security Engineer — Deutsche Bank (2019 – 2022, 3 years)
+- Monitored and responded to incidents using Splunk SIEM
+- Conducted internal penetration tests on web applications and APIs
+- Implemented OAuth2 / JWT authentication hardening across 20+ microservices
+
+IT Security Analyst — Siemens (2017 – 2019, 2 years)
+- Analysed network traffic and investigated security incidents
+- Developed Bash automation scripts for log analysis
+
+EDUCATION
+M.Sc. Information Security, TU Berlin, 2017
+B.Sc. Computer Science, Humboldt University, 2015
+CISSP, CEH certifications
+
+LANGUAGES
+Russian (native), German (C2), English (C1)

@@ -1,0 +1,8 @@
+@@@@###%%%
+This resume has been corrupted during transmission.
+!!!ENCODING ERROR!!! UTF-8 mismatch detected.
+Name: ??????? ??????? 
+Skills: [binary data corrupted]
+Experience: NaN years
+@@@END CORRUPTED BLOCK@@@
+Contact: [REDACTED]
