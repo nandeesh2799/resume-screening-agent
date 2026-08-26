@@ -26,6 +26,7 @@ export interface ScoredCandidate {
   explanation: string;
   matched_skills: string[];
   missing_skills: string[];
+  llm_critique?: string | null;
   pipelineStage?: PipelineStage;
   recruiterNotes?: string;
 }

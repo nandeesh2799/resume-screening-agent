@@ -1,29 +1,30 @@
 # ResumeRank — AI Resume Screening Agent
 
-An end-to-end resume screening tool that takes a Job Description and a batch of
-resumes (PDF / DOCX / TXT), scores every candidate using semantic similarity +
-skill overlap, and presents a ranked recruiter dashboard with explanations.
+An end-to-end recruiter workspace that takes a Job Description and a batch of
+resumes (PDF / DOCX / TXT), evaluates every candidate using a hybrid neural scoring engine
+(dense vector embeddings + skill overlap + experience matching), and presents a ranked recruiter dashboard with qualitative AI critiques.
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
 | Backend | Python 3.11+, FastAPI, Uvicorn |
-| NLP | `sentence-transformers` (all-MiniLM-L6-v2), scikit-learn TF-IDF |
+| NLP & Scoring | `sentence-transformers` (`all-MiniLM-L6-v2`), scikit-learn TF-IDF |
+| LLM Critique | Google Gemini (`gemini-1.5-flash`) / OpenAI (`gpt-4o-mini`) via REST |
 | Parsing | `pdfplumber`, `pypdf`, `python-docx` |
-| Frontend | React 18 + TypeScript, Tailwind CSS v4, Vite |
+| Frontend | React 18 + TypeScript, Tailwind CSS v4, Vite, Framer Motion |
 | Export | CSV / JSON via FastAPI streaming |
 
 ---
 
-## Setup
+## Setup & Quickstart
 
 ### Prerequisites
 - Python 3.11+
 - Node.js 18+
 - ~1.5 GB disk space (PyTorch + model weights download on first run)
 
-### 1. Clone & set up backend
+### 1. Clone & Set Up Backend
 
 ```bash
 git clone <repo-url>
@@ -34,42 +35,35 @@ source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-> ⚠️ The first `pip install` downloads PyTorch (~800 MB) and the
-> `all-MiniLM-L6-v2` model (~80 MB from Hugging Face) automatically.
-> Subsequent starts use the local cache.
-
-### 2. Configure environment (optional)
+### 2. Configure Environment (Optional LLM Integration)
 
 ```bash
 cp .env.example .env
-# Edit .env if you want to change PORT or MAX_FILE_SIZE_MB
 ```
 
-### 3. Start the backend
+#### Optional: Enable LLM Qualitative Critiques
+To enable free-form executive recruiter evaluations on top of the deterministic match scores:
+1. **Google Gemini (Recommended / Free Tier):** Get an API key at [Google AI Studio](https://aistudio.google.com/) and set:
+   ```bash
+   GEMINI_API_KEY=your_actual_gemini_key_here
+   ```
+2. **OpenAI:** Get an API key at [OpenAI Platform](https://platform.openai.com/) and set:
+   ```bash
+   OPENAI_API_KEY=your_actual_openai_key_here
+   ```
+> 💡 **Graceful Fallback:** If no API key is configured, the agent runs in 100% offline mode using deterministic score rationales without error.
+
+### 3. One-Command Dev Launcher
 
 ```bash
-source .venv/bin/activate
-uvicorn backend.main:app --reload --port 8000
+make dev
+# Or: bash scripts/start_dev.sh
 ```
 
-### 4. Set up and start the frontend (dev mode)
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Open **http://localhost:5173** in your browser.
-
-### 5. (Optional) Production build
-
-```bash
-cd frontend
-npm run build          # outputs to frontend/dist/
-cd ..
-uvicorn backend.main:app --port 8000   # serves the built frontend too
-```
+This starts both:
+- **Frontend Dashboard:** http://localhost:5173
+- **Backend API:** http://localhost:8000
+- **Interactive Swagger Docs:** http://localhost:8000/docs
 
 ---
 
@@ -80,84 +74,38 @@ source .venv/bin/activate
 pytest backend/tests/ -v
 ```
 
----
-
-## Using the App
-
-1. **Step 1 — Job Description:** Paste the full JD text (or type it). Click Next.
-2. **Step 2 — Upload Resumes:** Drag-and-drop PDF / DOCX / TXT files. Click Analyse.
-3. **Step 3 — Results:** Ranked candidate cards appear. Click any card to expand:
-   - Score breakdown (semantic / skill / experience sub-scores)
-   - Matched skills (green) and gaps (red)
-   - Plain-English explanation of the ranking
-4. **Export:** Click CSV or JSON to download results.
+All 28 unit tests cover document parsing, hybrid mathematics, and LLM API mocking/fallbacks.
 
 ---
 
-## Sample Data
-
-| Path | Description |
-|------|-------------|
-| `sample_jd.txt` | Senior Full Stack Engineer JD (fintech) |
-| `sample_resumes/` | 12 resumes (TXT format): ML engineer, backend dev, designer, junior, etc. |
-| `outputs/` | Pre-generated CSV and JSON results |
-
----
-
-## Project Structure
+## Hybrid Architecture Design
 
 ```
-resume-screening-agent/
-├── backend/
-│   ├── api/routes.py          # FastAPI endpoints + SSE streaming
-│   ├── core/
-│   │   ├── parser.py          # PDF/DOCX/TXT text extraction + field extraction
-│   │   ├── scorer.py          # Semantic similarity + skill overlap + experience scoring
-│   │   └── exporter.py        # CSV/JSON serialisation
-│   ├── models/schemas.py      # Pydantic v2 data models
-│   ├── tests/
-│   │   ├── test_parser.py
-│   │   └── test_scorer.py
-│   └── main.py                # FastAPI app + CORS + static file serving
-├── frontend/
-│   └── src/
-│       ├── App.tsx             # Wizard flow (step 1-3)
-│       ├── pages/ResultsPage.tsx
-│       ├── components/        # Header, DropZone, CandidateCard, ScoreBadge, etc.
-│       ├── hooks/useTheme.ts
-│       ├── utils/api.ts       # SSE streaming + export helpers
-│       └── types/index.ts     # TypeScript interfaces
-├── sample_resumes/            # 12 synthetic resumes (mixed formats/quality)
-├── sample_jd.txt
-├── outputs/                   # Pre-generated screening_results.{csv,json}
-├── SCORING_METHOD.md          # How scores are computed
-├── TRADEOFFS.md               # What was scoped out, known failure cases
-├── requirements.txt
-└── .env.example
+Job Description + Resumes (.pdf, .docx, .txt)
+                    │
+      ┌─────────────┴─────────────┐
+      ▼                           ▼
+[1. Document Parser]       [2. Entity Extractor]
+ (pdfplumber, docx)         (Regex + Synonym Taxonomy)
+      │                           │
+      └─────────────┬─────────────┘
+                    ▼
+       [3. Hybrid Scoring Engine]
+   • 45% Dense Vector Semantic (MiniLM-L6-v2)
+   • 35% Exact Skill Jaccard Overlap
+   • 20% Experience Match Ratio
+                    │
+                    ▼
+         [4. Candidate Ranking]
+                    │
+         ┌──────────┴──────────┐
+         ▼                     ▼
+[Offline Fallback Rationale]  [Optional LLM Critique]
+(Deterministic Template)      (Gemini / OpenAI API)
+         │                     │
+         └──────────┬──────────┘
+                    ▼
+      [5. Recruiter Dashboard]
 ```
 
----
-
-## API Reference
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | Health check |
-| POST | `/api/screen` | Upload JD + resumes → SSE stream of progress + result |
-| POST | `/api/export/csv` | JSON body → CSV file download |
-| POST | `/api/export/json` | JSON body → JSON file download |
-
----
-
-## Known Limitations
-
-See [TRADEOFFS.md](./TRADEOFFS.md) for a full list. Key ones:
-- Scanned/image PDFs produce empty text (no OCR)
-- First run requires downloading ~900 MB of model weights
-- Performance on heavily templated/graphic resumes may vary
-
----
-
-## License
-
-MIT
+See [SCORING_METHOD.md](./SCORING_METHOD.md) and [TRADEOFFS.md](./TRADEOFFS.md) for full mathematical details.

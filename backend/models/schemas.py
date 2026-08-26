@@ -29,7 +29,7 @@ class ScoreBreakdown(BaseModel):
 
 
 class ScoredCandidate(BaseModel):
-    """A candidate with scoring and explanation."""
+    """A candidate with scoring, deterministic explanation, and optional LLM critique."""
 
     candidate: ExtractedCandidate
     scores: ScoreBreakdown
@@ -37,6 +37,7 @@ class ScoredCandidate(BaseModel):
     explanation: str
     matched_skills: list[str] = Field(default_factory=list)
     missing_skills: list[str] = Field(default_factory=list)
+    llm_critique: Optional[str] = None
 
 
 class ScreeningResult(BaseModel):

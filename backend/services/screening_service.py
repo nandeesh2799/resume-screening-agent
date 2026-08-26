@@ -1,27 +1,26 @@
 """
-Screening Service orchestrates parsing, scoring, ranking, and error recovery.
+Screening Service orchestrates parsing, scoring, ranking, LLM critique, and error recovery.
 """
 from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import AsyncGenerator
 
 from backend.core import config
+from backend.core.llm_critique import generate_llm_critique
 from backend.core.parser import parse_resume
-from backend.core.scorer import _extract_jd_skills, _extract_required_experience, score_candidate
+from backend.core.scorer import score_candidate
 from backend.models.schemas import (
     ExtractedCandidate,
     ScoreBreakdown,
     ScoredCandidate,
-    ScreeningResult,
 )
 
 logger = logging.getLogger(__name__)
 
 
 class ScreeningService:
-    """Service coordinating resume parsing, feature extraction, and candidate scoring."""
+    """Service coordinating resume parsing, feature extraction, candidate scoring, and LLM critique."""
 
     @staticmethod
     def process_single_resume(
@@ -32,7 +31,7 @@ class ScreeningService:
         required_years: float,
     ) -> tuple[ScoredCandidate | None, dict | None]:
         """
-        Parse and score a single resume.
+        Parse and score a single resume, optionally attaching an LLM critique.
         Returns (ScoredCandidate, None) on success or (None, error_dict) on failure.
         """
         suffix = Path(filename).suffix.lower()
@@ -59,6 +58,15 @@ class ScreeningService:
             logger.warning("Scoring failure for %s: %s", filename, exc)
             return None, {"filename": filename, "reason": f"Scoring failed: {exc}"}
 
+        # Optional LLM qualitative critique (non-blocking fallback)
+        llm_critique = generate_llm_critique(
+            jd_text=jd_text,
+            candidate_dict=parsed,
+            scores_dict=result["scores"],
+            matched_skills=result["matched_skills"],
+            missing_skills=result["missing_skills"],
+        )
+
         candidate = ExtractedCandidate(**parsed)
         scored = ScoredCandidate(
             candidate=candidate,
@@ -67,6 +75,7 @@ class ScreeningService:
             explanation=result["explanation"],
             matched_skills=result["matched_skills"],
             missing_skills=result["missing_skills"],
+            llm_critique=llm_critique,
         )
         return scored, None
 
