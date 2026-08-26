@@ -72,7 +72,7 @@ export function ResultsPage({ result, onReset }: Props) {
   const popularSkills = useMemo(() => {
     return Object.entries(stats.skillCounts)
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 8);
+      .slice(0, 10);
   }, [stats.skillCounts]);
 
   const filteredCandidates = useMemo(() => {
@@ -152,19 +152,19 @@ export function ResultsPage({ result, onReset }: Props) {
   const topCandidate = result.candidates.length > 0 ? result.candidates[0] : null;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+    <div className="w-full max-w-[1800px] mx-auto px-2 sm:px-4 space-y-6">
       {/* Top Banner & Action Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
         <div>
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/40 shadow-[0_0_15px_-3px_rgba(16,185,129,0.3)]">
               <Trophy className="h-5 w-5" />
             </div>
-            <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
-              Screening Results & Shortlist
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              Neural Candidate Shortlist & Ranking
             </h1>
           </div>
-          <p className="mt-1 text-xs sm:text-sm text-slate-400">
+          <p className="mt-1 text-xs text-slate-400">
             {result.total_processed} candidate resumes scored against your job specification
           </p>
         </div>
@@ -207,14 +207,13 @@ export function ResultsPage({ result, onReset }: Props) {
             className="flex items-center gap-1.5 rounded-2xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.15] px-4 py-2.5 text-xs font-bold text-white shadow transition-all cursor-pointer"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            <span>New Screen</span>
+            <span>New Screening</span>
           </button>
         </div>
       </div>
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Metric 1 */}
         <div className="glass-panel rounded-3xl p-5 border border-white/[0.08] space-y-1.5">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
             Total Ingested
@@ -229,24 +228,22 @@ export function ResultsPage({ result, onReset }: Props) {
           </div>
         </div>
 
-        {/* Metric 2 */}
         <div className="glass-panel rounded-3xl p-5 border border-white/[0.08] space-y-1.5">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
-            Average Match Fit
+            Batch Average Score
           </span>
           <div className="flex items-baseline justify-between">
             <span className="text-3xl font-black tracking-tight text-indigo-300 tabular-nums">
               {stats.avgScore.toFixed(1)}
               <span className="text-sm font-normal text-slate-500">/100</span>
             </span>
-            <span className="text-xs text-slate-400 font-medium">Batch Avg</span>
+            <span className="text-xs text-slate-400 font-medium">Batch Fit</span>
           </div>
         </div>
 
-        {/* Metric 3 */}
         <div className="glass-panel rounded-3xl p-5 border border-white/[0.08] space-y-1.5">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
-            Strong Fits (≥75%)
+            Strong Matches (≥75%)
           </span>
           <div className="flex items-baseline justify-between">
             <span className="text-3xl font-black tracking-tight text-emerald-400 tabular-nums">
@@ -260,7 +257,6 @@ export function ResultsPage({ result, onReset }: Props) {
           </div>
         </div>
 
-        {/* Metric 4 */}
         <div className="glass-panel rounded-3xl p-5 border border-white/[0.08] space-y-1.5">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
             Flagged Malformed
@@ -285,12 +281,12 @@ export function ResultsPage({ result, onReset }: Props) {
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="relative overflow-hidden rounded-3xl border-2 border-indigo-500/40 bg-gradient-to-r from-indigo-950/60 via-violet-950/40 to-[#0c101c] p-6 sm:p-8 shadow-[0_0_40px_-15px_rgba(99,102,241,0.4)] backdrop-blur-2xl"
+          className="relative overflow-hidden rounded-3xl border-2 border-indigo-500/40 bg-gradient-to-r from-indigo-950/60 via-violet-950/40 to-[#0c101c] p-6 sm:p-7 shadow-[0_0_40px_-15px_rgba(99,102,241,0.4)] backdrop-blur-2xl"
         >
           <div className="flex flex-wrap items-center justify-between gap-5">
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-400 text-slate-950 shadow-[0_0_25px_rgba(245,158,11,0.5)]">
-                <Crown className="h-9 w-9" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-400 text-slate-950 shadow-[0_0_25px_rgba(245,158,11,0.5)]">
+                <Crown className="h-8 w-8" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
@@ -301,10 +297,10 @@ export function ResultsPage({ result, onReset }: Props) {
                     Recommended for Interview
                   </span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
+                <h2 className="text-xl sm:text-2xl font-black text-white mt-0.5">
                   {topCandidate.candidate.name || topCandidate.candidate.filename}
                 </h2>
-                <p className="text-xs text-slate-300 mt-1 line-clamp-1 max-w-xl">
+                <p className="text-xs text-slate-300 mt-1 line-clamp-1 max-w-2xl">
                   {topCandidate.explanation}
                 </p>
               </div>
@@ -324,11 +320,11 @@ export function ResultsPage({ result, onReset }: Props) {
         </motion.div>
       )}
 
-      {/* Filter & Toolbar */}
+      {/* Filter Toolbar */}
       <div className="glass-panel rounded-3xl p-4 sm:p-5 border border-white/[0.08] space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Search */}
-          <div className="relative flex-1 min-w-[240px]">
+          <div className="relative flex-1 min-w-[280px]">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input
               type="text"
@@ -339,7 +335,7 @@ export function ResultsPage({ result, onReset }: Props) {
             />
           </div>
 
-          {/* Tier Segmented Tabs */}
+          {/* Tier Tabs */}
           <div className="flex items-center gap-1 rounded-2xl bg-black/60 p-1 border border-white/[0.06]">
             {[
               { id: 'all' as const, label: `All (${result.candidates.length})` },
@@ -464,7 +460,7 @@ export function ResultsPage({ result, onReset }: Props) {
         </div>
       </div>
 
-      {/* Flagged Failed Resumes Banner */}
+      {/* Flagged Malformed Files */}
       {result.failed_files.length > 0 && (
         <div className="rounded-3xl border border-amber-500/30 bg-amber-500/10 p-5 space-y-2 text-xs">
           <div className="flex items-center gap-2 font-bold text-amber-300">
@@ -526,19 +522,19 @@ export function ResultsPage({ result, onReset }: Props) {
           </AnimatePresence>
         </div>
       ) : (
-        /* Table View */
+        /* Full-Width Table View */
         <div className="glass-panel rounded-3xl overflow-hidden border border-white/[0.08] shadow-2xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-900/90 border-b border-white/[0.08] text-[11px] font-bold uppercase text-slate-400 font-mono">
                 <tr>
-                  <th className="p-4 pl-5">Rank</th>
+                  <th className="p-4 pl-6">Rank</th>
                   <th className="p-4">Candidate</th>
                   <th className="p-4">Final Score</th>
                   <th className="p-4">Semantic (45%)</th>
                   <th className="p-4">Skills (35%)</th>
                   <th className="p-4">Experience (20%)</th>
-                  <th className="p-4 pr-5 text-right">Actions</th>
+                  <th className="p-4 pr-6 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/[0.06]">
@@ -549,7 +545,7 @@ export function ResultsPage({ result, onReset }: Props) {
                       key={item.candidate.filename}
                       className="hover:bg-white/[0.04] transition-colors"
                     >
-                      <td className="p-4 pl-5 font-black text-indigo-300">
+                      <td className="p-4 pl-6 font-black text-indigo-300">
                         #{item.rank}
                       </td>
                       <td className="p-4 font-bold text-white">
@@ -570,7 +566,7 @@ export function ResultsPage({ result, onReset }: Props) {
                       <td className="p-4 font-bold text-sky-400">
                         {item.scores.experience_match.toFixed(0)}%
                       </td>
-                      <td className="p-4 pr-5 text-right">
+                      <td className="p-4 pr-6 text-right">
                         <button
                           type="button"
                           onClick={() => setSelectedCandidate(item)}

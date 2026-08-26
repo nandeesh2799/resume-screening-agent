@@ -21,7 +21,7 @@ export default function App() {
   const [sampleJDs, setSampleJDs] = useState<SampleJD[]>([]);
   const [sampleResumes, setSampleResumes] = useState<SampleResumeInfo[]>([]);
 
-  // Lock dark theme permanently
+  // Lock dark theme
   useEffect(() => {
     document.documentElement.classList.add('dark');
   }, []);
@@ -102,7 +102,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-grid-pattern">
-      <div>
+      <div className="w-full">
         <Header
           step={step}
           onStepClick={(s) => setStep(s)}
@@ -122,7 +122,7 @@ export default function App() {
 
         {/* Global Error Alert */}
         {error && (
-          <div className="mx-auto max-w-4xl px-4 pt-6">
+          <div className="w-full max-w-[1800px] mx-auto px-4 pt-6">
             <div className="rounded-2xl border border-rose-500/30 bg-rose-500/15 p-4 text-xs font-semibold text-rose-300 flex items-center justify-between shadow-lg">
               <span>{error}</span>
               <button
@@ -136,7 +136,7 @@ export default function App() {
           </div>
         )}
 
-        <main className="py-10 px-4 sm:px-6 lg:px-8">
+        <main className="w-full py-6 px-4 sm:px-6 lg:px-8">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <Step1JobDescription
@@ -175,10 +175,10 @@ export default function App() {
         </main>
       </div>
 
-      {/* Global Footer */}
-      <footer className="border-t border-white/[0.06] bg-[#07090f]/80 backdrop-blur-xl py-6 text-center text-xs text-slate-500">
-        <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="text-slate-400 font-medium">
+      {/* Global Full-Width Footer */}
+      <footer className="w-full border-t border-white/[0.06] bg-[#07090f]/90 backdrop-blur-xl py-4 text-xs text-slate-500">
+        <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span className="text-slate-400 font-medium font-mono text-[11px]">
             ResumeRank • Autonomous Candidate Screening & Semantic Ranking
           </span>
           <span className="font-mono text-[11px] text-slate-500">

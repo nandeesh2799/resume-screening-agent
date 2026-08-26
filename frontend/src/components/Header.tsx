@@ -14,12 +14,11 @@ export function Header({ step, onStepClick, canNavigateToStep }: Props) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const steps = [
-    { num: 1 as const, label: 'Role Spec', icon: FileText },
-    { num: 2 as const, label: 'Upload Batch', icon: Upload },
-    { num: 3 as const, label: 'Ranked Shortlist', icon: Trophy },
+    { num: 1 as const, label: '1. Role Spec & Requirements', icon: FileText },
+    { num: 2 as const, label: '2. Batch Document Upload', icon: Upload },
+    { num: 3 as const, label: '3. Neural Shortlist & Ranking', icon: Trophy },
   ];
 
-  // Close dropdown on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -33,13 +32,13 @@ export function Header({ step, onStepClick, canNavigateToStep }: Props) {
   const activeOption = AMBIENCE_OPTIONS.find((o) => o.id === ambience) || AMBIENCE_OPTIONS[0];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-white/[0.08] bg-[#050814]/80 backdrop-blur-2xl transition-all">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
-        {/* Brand Logo */}
+    <header className="sticky top-0 z-40 w-full border-b border-white/[0.08] bg-[#050814]/85 backdrop-blur-2xl transition-all">
+      <div className="w-full max-w-[1800px] mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3">
+        {/* Brand Logo & Tag */}
         <div className="flex items-center gap-3.5">
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500 via-violet-500 to-cyan-400 p-0.5 shadow-[0_0_20px_-3px_rgba(99,102,241,0.5)]">
+          <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500 via-violet-500 to-cyan-400 p-0.5 shadow-[0_0_20px_-3px_rgba(99,102,241,0.5)]">
             <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-[#0c101c]">
-              <Zap className="h-5 w-5 text-indigo-400 fill-indigo-400/30 animate-pulse" />
+              <Zap className="h-4.5 w-4.5 text-indigo-400 fill-indigo-400/30 animate-pulse" />
             </div>
           </div>
           <div>
@@ -47,19 +46,16 @@ export function Header({ step, onStepClick, canNavigateToStep }: Props) {
               <span className="text-base font-black tracking-tight text-white">
                 ResumeRank
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 px-2 py-0.5 text-[10px] font-bold text-indigo-400 ring-1 ring-inset ring-indigo-500/30">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 px-2 py-0.5 text-[10px] font-bold text-indigo-400 ring-1 ring-inset ring-indigo-500/30 font-mono">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                AI Agent
+                PRODUCTION ENGINE
               </span>
             </div>
-            <p className="hidden text-[11px] font-medium text-slate-400 sm:block">
-              Neural Semantic Screening & Talent Ranking
-            </p>
           </div>
         </div>
 
         {/* Steps Navigation Breadcrumbs */}
-        <nav className="hidden md:flex items-center gap-1.5 rounded-2xl bg-slate-900/80 p-1 border border-white/[0.06] shadow-inner">
+        <nav className="hidden lg:flex items-center gap-1.5 rounded-2xl bg-slate-900/80 p-1 border border-white/[0.06] shadow-inner">
           {steps.map((s, idx) => {
             const isActive = step === s.num;
             const isDone = step > s.num;
@@ -73,7 +69,7 @@ export function Header({ step, onStepClick, canNavigateToStep }: Props) {
                   disabled={!isClickable && !isActive}
                   onClick={() => isClickable && onStepClick?.(s.num)}
                   className={[
-                    'group flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-semibold transition-all duration-200',
+                    'group flex items-center gap-2 rounded-xl px-4 py-1.5 text-xs font-semibold transition-all duration-200',
                     isActive
                       ? 'bg-indigo-600/90 text-white shadow-[0_0_15px_-3px_rgba(99,102,241,0.5)] ring-1 ring-indigo-400/50'
                       : isDone
@@ -127,7 +123,7 @@ export function Header({ step, onStepClick, canNavigateToStep }: Props) {
             {isOpen && (
               <div className="absolute right-0 mt-2 w-48 rounded-2xl glass-panel p-2 shadow-2xl border border-white/[0.1] bg-[#0c101c]/95 z-50 space-y-1">
                 <span className="px-2.5 py-1 text-[10px] font-bold font-mono uppercase text-slate-400 block">
-                  Background Ambience
+                  Background Mood
                 </span>
                 {AMBIENCE_OPTIONS.map((opt) => (
                   <button
@@ -164,8 +160,8 @@ export function Header({ step, onStepClick, canNavigateToStep }: Props) {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span className="text-slate-400">Engine:</span>
-            <span className="text-indigo-300 font-mono text-[10px]">all-MiniLM</span>
+            <span className="text-slate-400">Model:</span>
+            <span className="text-indigo-300 font-mono text-[10px]">all-MiniLM-L6-v2</span>
           </div>
         </div>
       </div>
