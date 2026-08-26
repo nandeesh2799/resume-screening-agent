@@ -1,25 +1,25 @@
 {
   "job_description_preview": "Senior Full Stack Engineer — FinTech Startup (Remote)\n\nAbout the Role:\nWe are looking for a Senior Full Stack Engineer to join our core product team.\nYou will architect and build scalable APIs and dynamic web interfaces for our\npayment intelligence platform serving 1M+ small business merchants.\n\nRequirements:\n- 5+ years of professional software development experience\n- Strong proficiency in Python (FastAPI or Django) for backend development\n- Strong proficiency in React with TypeScript for front",
   "total_processed": 14,
-  "total_failed": 0,
+  "total_failed": 1,
   "candidates": [
     {
       "candidate": {
-        "filename": "08_carlos_mendez_fullstack.txt",
+        "filename": "Resume_Carlos_Mendez_FullStack.pdf",
         "name": "Carlos Mendez",
         "email": "carlos.mendez@dev.io",
-        "phone": null,
+        "phone": "+1 (555) 234-5678",
         "skills": [
           "aws",
+          "bash",
           "ci/cd",
           "django",
           "docker",
           "fastapi",
-          "gcp",
           "git",
-          "graphql",
           "javascript",
           "kafka",
+          "kubernetes",
           "microservices",
           "mongodb",
           "node.js",
@@ -28,33 +28,33 @@
           "react",
           "redis",
           "rest api",
+          "sql",
           "typescript"
         ],
         "years_of_experience": 5.0,
         "education": [
-          "B.Sc. Software Engineering, UNAM, 2019"
+          "Bachelor of Science in Software Engineering — National Autonomous University (UNAM), 2019"
         ],
-        "raw_text": "Carlos Mendez\ncarlos.mendez@dev.io | +52-55-1234-5678 | Mexico City (Remote)\n\nFull Stack Developer | 5 years experience\n\nTECHNOLOGIES\nPython, Django, FastAPI, JavaScript, TypeScript, React, NextJS, Node.js, Express,\nPostgreSQL, MySQL, MongoDB, Redis, Docker, AWS, GCP, GraphQL, REST, Tailwind,\nCelery, Kafka, Git, Agile, Scrum, CI/CD, GitHub Actions\n\nPROFESSIONAL EXPERIENCE\n\nSenior Full Stack Developer — Clip (Fintech) (2022 – Present, 2 years)\n- Built merchant dashboard with React + TypeScript serving 500K merchants\n- Designed FastAPI microservices for payment processing; 99.99% uptime\n- Implemented real-time notifications using WebSockets + Redis pub/sub\n- Led team of 4 junior developers; conducted code reviews and mentoring\n\nFull Stack Developer — Konfio (2020 – 2022, 2 years)\n- Developed loan origination system with Django REST Framework\n- Created reusable React component library adopted across 3 product teams\n- Integrated third-party APIs (credit bureaus, SPEI, Open Banking)\n\nJunior Developer — Freelance (2019 – 2020, 1 year)\n- Built 5+ client websites and e-commerce stores using Django + React\n\nEDUCATION\nB.Sc. Software Engineering, UNAM, 2019\n\nLANGUAGES\nSpanish (native), English (B2/professional), Portuguese (basic)",
+        "raw_text": "Carlos Mendez\nSenior Full Stack Engineer\ncarlos.mendez@dev.io | +1 (555) 234-5678 | San Francisco, CA | linkedin.com/in/carlos-mendez\nPROFESSIONAL SUMMARY\nResults-oriented Senior Full Stack Engineer with 5+ years of professional software development experience architecting\nscalable distributed systems and high-traffic payment intelligence platforms. Proven track record leading agile engineering\nsquads, building resilient Python (FastAPI/Django) microservices, and crafting reactive TypeScript web applications.\nTECHNICAL SKILLS\nLanguages: Python, TypeScript, JavaScript, SQL, Bash\nFrameworks: FastAPI, Django, React, Next.js, Node.js, Express\nDatabases & Cache: PostgreSQL, Redis, MongoDB, MySQL\nCloud & DevOps: AWS (EC2, S3, RDS), Docker, Kubernetes, CI/CD (GitHub Actions), Kafka\nPractices: REST API Design, Microservices, Agile/Scrum, Unit Testing (Pytest, Jest)\nPROFESSIONAL EXPERIENCE\nSenior Full Stack Engineer — Clip Financial Technologies\n2022 – Present (2 years)\n(cid:127) Architected high-throughput payment processing APIs in Python (FastAPI) handling 1.2M daily transactions with 99.99% uptime.\n(cid:127) Engineered real-time merchant analytics dashboard in React with TypeScript and Redis pub/sub streaming.\n(cid:127) Containerized 12 microservices using Docker and orchestrated automated zero-downtime CI/CD deployments on AWS with\nGitHub Actions.\n(cid:127) Mentored 4 software engineers, conducted code reviews, and championed Test-Driven Development (TDD).\nSoftware Engineer — Konfio Enterprise Solutions\n2019 – 2022 (3 years)\n(cid:127) Developed core loan underwriting service using Django REST Framework and PostgreSQL database clustering.\n(cid:127) Constructed reusable React component UI design system adopted across 3 core product teams.\n(cid:127) Integrated OAuth2, JWT authentication, and Open Banking APIs under strict SOC2 compliance standards.\nEDUCATION\nBachelor of Science in Software Engineering — National Autonomous University (UNAM), 2019",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 74.8,
-        "skill_overlap": 88.9,
+        "semantic_similarity": 81.9,
+        "skill_overlap": 83.3,
         "experience_match": 100.0,
-        "final_score": 84.8
+        "final_score": 86.0
       },
       "rank": 1,
-      "explanation": "Strong overall match (85/100) meeting key technical criteria. Demonstrates proficiency in: aws, ci/cd, django, docker. Missing core competencies: kubernetes, machine learning. Experience (5 yrs) meets required seniority (5+ yrs).",
+      "explanation": "Strong overall match (86/100) meeting key technical criteria. Demonstrates proficiency in: aws, ci/cd, django, docker. Missing core competencies: gcp, graphql, machine learning. Experience (5 yrs) meets required seniority (5+ yrs).",
       "matched_skills": [
         "aws",
         "ci/cd",
         "django",
         "docker",
         "fastapi",
-        "gcp",
         "git",
-        "graphql",
         "kafka",
+        "kubernetes",
         "microservices",
         "postgresql",
         "python",
@@ -64,15 +64,16 @@
         "typescript"
       ],
       "missing_skills": [
-        "kubernetes",
+        "gcp",
+        "graphql",
         "machine learning"
       ]
     },
     {
       "candidate": {
-        "filename": "02_james_okafor_backend_dev.txt",
+        "filename": "Resume_James_Okafor_Backend.pdf",
         "name": "James Okafor",
-        "email": "james.okafor@gmail.com",
+        "email": "james.okafor@cloudmail.io",
         "phone": null,
         "skills": [
           "aws",
@@ -80,38 +81,33 @@
           "django",
           "docker",
           "fastapi",
-          "flask",
           "git",
-          "go",
           "graphql",
-          "javascript",
           "kafka",
           "kubernetes",
+          "linux",
           "microservices",
-          "mongodb",
-          "node.js",
           "postgresql",
           "python",
           "redis",
           "rest api",
-          "terraform",
-          "typescript"
+          "terraform"
         ],
         "years_of_experience": 5.0,
         "education": [
-          "Bachelor of Engineering in Computer Science, University of Lagos, 2019"
+          "Bachelor of Engineering in Computer Science — University of Lagos, 2019"
         ],
-        "raw_text": "James Okafor\njames.okafor@gmail.com | +44-20-7946-0958 | Lagos / London (Remote OK)\n\nOBJECTIVE\nBackend-focused software engineer with 5 years of experience building scalable APIs and microservices.\n\nTECHNICAL SKILLS\nPython, FastAPI, Django, Flask, Node.js, TypeScript, Go\nPostgreSQL, MySQL, MongoDB, Redis, Elasticsearch\nDocker, Kubernetes, AWS (EC2, S3, RDS, Lambda), Terraform, CI/CD, GitHub Actions\nREST API, GraphQL, gRPC, Kafka, Celery, Agile, Scrum\n\nWORK HISTORY\n\nBackend Engineer — Paystack (2022 – Present, 2 years)\n- Designed and shipped payment reconciliation microservice handling 10K TPS\n- Built FastAPI services with async I/O; cut p99 latency from 800ms to 120ms\n- Owned PostgreSQL schema migrations and indexing strategy for 2TB dataset\n\nSoftware Engineer — Andela (2020 – 2022, 2 years)\n- Developed REST APIs for a US-based edtech client (Django + Celery + PostgreSQL)\n- Implemented OAuth2/JWT authentication and role-based access control\n- Set up GitHub Actions CI/CD pipeline reducing deployment time from 2h to 15min\n\nJunior Developer — Konga (2019 – 2020, 1 year)\n- Maintained e-commerce backend APIs in Node.js\n- Fixed production bugs, wrote unit tests with Jest\n\nEDUCATION\nBachelor of Engineering in Computer Science, University of Lagos, 2019\n\nLANGUAGES\nEnglish (native), Yoruba (native), French (conversational)",
+        "raw_text": "James Okafor\nSenior Backend Systems Engineer\njames.okafor@cloudmail.io | +44 20 7946 0958 | London, UK | github.com/james-okafor\nPROFESSIONAL SUMMARY\nSenior Backend Engineer with 5+ years of experience designing fault-tolerant distributed backends, RESTful APIs, and\nevent-driven data streaming pipelines. Deep technical expertise in Python (FastAPI, Django), PostgreSQL optimization,\nApache Kafka message queues, and AWS Kubernetes infrastructure.\nTECHNICAL SKILLS\nCore Technologies: Python, FastAPI, Django, PostgreSQL, Redis, Apache Kafka, Docker, Kubernetes, AWS\nArchitecture: Microservices, Distributed Systems, Event-Driven Architecture, REST API Design, GraphQL\nDevOps & Quality: CI/CD (GitHub Actions, Jenkins), Terraform, Pytest, Linux Administration\nPROFESSIONAL EXPERIENCE\nSenior Backend Developer — Nexus Pay Systems\n2021 – Present (3 years)\n(cid:127) Engineered asynchronous payment ingestion pipeline using FastAPI, Kafka, and Redis caching serving 800 req/sec.\n(cid:127) Optimized PostgreSQL query performance and indexed complex schema migrations, reducing P95 latency by 42%.\n(cid:127) Managed AWS EKS Kubernetes clusters and authored Infrastructure as Code via Terraform.\nBackend Software Developer — Helios Cloud Networks\n2019 – 2021 (2 years)\n(cid:127) Built secure REST APIs in Python/Django integrated with Stripe and PayPal billing gateways.\n(cid:127) Configured CI/CD automated test pipelines in Jenkins reducing deployment cycle times by 35%.\nEDUCATION\nBachelor of Engineering in Computer Science — University of Lagos, 2019",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 76.4,
-        "skill_overlap": 83.3,
+        "semantic_similarity": 73.7,
+        "skill_overlap": 77.8,
         "experience_match": 100.0,
-        "final_score": 83.5
+        "final_score": 80.4
       },
       "rank": 2,
-      "explanation": "Strong overall match (84/100) meeting key technical criteria. Demonstrates proficiency in: aws, ci/cd, django, docker. Missing core competencies: gcp, machine learning, react. Experience (5 yrs) meets required seniority (5+ yrs).",
+      "explanation": "Strong overall match (80/100) meeting key technical criteria. Demonstrates proficiency in: aws, ci/cd, django, docker. Missing core competencies: gcp, machine learning, react, typescript. Experience (5 yrs) meets required seniority (5+ yrs).",
       "matched_skills": [
         "aws",
         "ci/cd",
@@ -126,20 +122,20 @@
         "postgresql",
         "python",
         "redis",
-        "rest api",
-        "typescript"
+        "rest api"
       ],
       "missing_skills": [
         "gcp",
         "machine learning",
-        "react"
+        "react",
+        "typescript"
       ]
     },
     {
       "candidate": {
-        "filename": "14_raj_patel_docx.docx",
+        "filename": "Resume_Raj_Patel_FullStack.pdf",
         "name": "Raj Patel",
-        "email": "raj.patel@dev.com",
+        "email": "raj.patel@devconnect.com",
         "phone": null,
         "skills": [
           "aws",
@@ -147,41 +143,40 @@
           "django",
           "docker",
           "fastapi",
-          "gcp",
           "git",
           "graphql",
+          "javascript",
           "kubernetes",
           "microservices",
-          "mongodb",
+          "node.js",
           "postgresql",
           "python",
           "react",
           "redis",
-          "rest api",
+          "sql",
           "typescript"
         ],
         "years_of_experience": 5.0,
         "education": [
-          "B.Sc. Computer Science, Imperial College London, 2019 | 5 years of experience"
+          "Bachelor of Science in Computer Science — Imperial College London, 2019"
         ],
-        "raw_text": "Raj Patel\nraj.patel@dev.com | +44-7700-900-456 | London, UK\nSkills\nPython, FastAPI, Django, TypeScript, React, NextJS, PostgreSQL, MongoDB, Redis, Docker, Kubernetes, AWS, GCP, GraphQL, REST, Tailwind, GitHub Actions, CI/CD, Agile, Scrum\nExperience\nSenior Full Stack Developer - Monzo Bank (2022-Present, 2 years)\nBuilt React TypeScript features for 8M user banking app. FastAPI microservices. Migrated to GraphQL.\nFull Stack Developer - Deliveroo (2020-2022, 2 years)\nDjango + React restaurant portal. WebSockets + Redis real-time tracking. CI/CD pipeline.\nEducation\nB.Sc. Computer Science, Imperial College London, 2019 | 5 years of experience",
+        "raw_text": "Raj Patel\nLead Full Stack Software Engineer\nraj.patel@devconnect.com | +44 7700 900456 | London, UK | linkedin.com/in/raj-patel-dev\nPROFESSIONAL SUMMARY\nFull Stack Engineer with 5+ years experience building cloud-native SaaS platforms. Specialized in React TypeScript\nfrontends, FastAPI and Node.js microservices, PostgreSQL relational storage, and AWS containerization.\nTECHNICAL SKILLS\nLanguages: Python, TypeScript, JavaScript, SQL, HTML5/CSS3\nFrameworks: React, FastAPI, Django, Express.js, GraphQL\nCloud & Data: AWS (S3, RDS, EC2), PostgreSQL, Redis, Docker, Kubernetes, Git, CI/CD\nPROFESSIONAL EXPERIENCE\nFull Stack Engineer — Stratum Intelligence\n2021 – Present (3 years)\n(cid:127) Developed customer-facing dashboard in React and TypeScript with real-time WebSocket telemetry.\n(cid:127) Created Python FastAPI backend microservices connected to PostgreSQL databases and Redis cache layer.\n(cid:127) Automated end-to-end container builds and deployments to AWS using Docker and GitHub Actions.\nSoftware Developer — Vanguard Web Labs\n2019 – 2021 (2 years)\n(cid:127) Implemented responsive UI components using React, Redux, and Tailwind CSS.\n(cid:127) Built RESTful API endpoints in Django and integrated third-party payment gateways.\nEDUCATION\nBachelor of Science in Computer Science — Imperial College London, 2019",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 68.7,
-        "skill_overlap": 88.9,
+        "semantic_similarity": 67.0,
+        "skill_overlap": 77.8,
         "experience_match": 100.0,
-        "final_score": 82.0
+        "final_score": 77.4
       },
       "rank": 3,
-      "explanation": "Strong overall match (82/100) meeting key technical criteria. Demonstrates proficiency in: aws, ci/cd, django, docker. Missing core competencies: kafka, machine learning. Experience (5 yrs) meets required seniority (5+ yrs).",
+      "explanation": "Strong overall match (77/100) meeting key technical criteria. Demonstrates proficiency in: aws, ci/cd, django, docker. Missing core competencies: gcp, kafka, machine learning, rest api. Experience (5 yrs) meets required seniority (5+ yrs).",
       "matched_skills": [
         "aws",
         "ci/cd",
         "django",
         "docker",
         "fastapi",
-        "gcp",
         "git",
         "graphql",
         "kubernetes",
@@ -190,24 +185,212 @@
         "python",
         "react",
         "redis",
-        "rest api",
         "typescript"
       ],
       "missing_skills": [
+        "gcp",
         "kafka",
-        "machine learning"
+        "machine learning",
+        "rest api"
       ]
     },
     {
       "candidate": {
-        "filename": "05_rachel_kim_devops.txt",
+        "filename": "Resume_Marcus_Vance_SoftwareEngineer.pdf",
+        "name": "Marcus Vance",
+        "email": "marcus.vance@techdev.io",
+        "phone": "+1 (512) 555-9876",
+        "skills": [
+          "aws",
+          "ci/cd",
+          "django",
+          "docker",
+          "fastapi",
+          "git",
+          "javascript",
+          "linux",
+          "postgresql",
+          "python",
+          "react",
+          "redis",
+          "sql",
+          "typescript"
+        ],
+        "years_of_experience": 6.0,
+        "education": [
+          "Bachelor of Science in Computer Science — University of Texas at Austin, 2018"
+        ],
+        "raw_text": "Marcus Vance\nSenior Software Engineer (Full Stack)\nmarcus.vance@techdev.io | +1 (512) 555-9876 | Austin, TX\nPROFESSIONAL SUMMARY\nVersatile Software Engineer with 6+ years experience architecting cloud applications in Python, React, TypeScript, and\nrelational databases. Strong focus on API performance, clean code architecture, and automated continuous delivery.\nTECHNICAL SKILLS\nLanguages & Frameworks: Python, Django, FastAPI, React, TypeScript, JavaScript, SQL, HTML5/CSS3\nInfrastructure & DB: PostgreSQL, Redis, Docker, AWS (EC2, S3), Git, GitHub Actions, Linux\nPROFESSIONAL EXPERIENCE\nSenior Software Engineer — CloudPeak Technologies\n2021 – Present (3 years)\n(cid:127) Architected scalable backend APIs in Python (Django & FastAPI) supporting 2M+ active accounts.\n(cid:127) Engineered performant frontend dashboards in React with TypeScript and Redux state management.\n(cid:127) Configured GitHub Actions CI/CD workflows for automated unit testing and container deployment on AWS.\nSoftware Developer — LoneStar Web Systems\n2018 – 2021 (3 years)\n(cid:127) Maintained core PostgreSQL database schemas and optimized complex analytical queries.\n(cid:127) Developed RESTful integration services connecting CRM platforms with third-party billing systems.\nEDUCATION\nBachelor of Science in Computer Science — University of Texas at Austin, 2018",
+        "parse_error": null
+      },
+      "scores": {
+        "semantic_similarity": 75.7,
+        "skill_overlap": 61.1,
+        "experience_match": 100.0,
+        "final_score": 75.5
+      },
+      "rank": 4,
+      "explanation": "Strong overall match (76/100) meeting key technical criteria. Demonstrates proficiency in: aws, ci/cd, django, docker. Missing core competencies: gcp, graphql, kafka, kubernetes. Experience (6 yrs) meets required seniority (5+ yrs).",
+      "matched_skills": [
+        "aws",
+        "ci/cd",
+        "django",
+        "docker",
+        "fastapi",
+        "git",
+        "postgresql",
+        "python",
+        "react",
+        "redis",
+        "typescript"
+      ],
+      "missing_skills": [
+        "gcp",
+        "graphql",
+        "kafka",
+        "kubernetes",
+        "machine learning",
+        "microservices",
+        "rest api"
+      ]
+    },
+    {
+      "candidate": {
+        "filename": "Resume_Emily_Zhang_ML_Engineer.pdf",
+        "name": "Emily Zhang",
+        "email": "emily.zhang@deeplearning-ai.com",
+        "phone": "+1 (617) 555-4567",
+        "skills": [
+          "artificial intelligence",
+          "aws",
+          "ci/cd",
+          "docker",
+          "fastapi",
+          "git",
+          "kubernetes",
+          "langchain",
+          "machine learning",
+          "microservices",
+          "nlp",
+          "postgresql",
+          "python",
+          "pytorch",
+          "redis",
+          "scikit-learn",
+          "tensorflow"
+        ],
+        "years_of_experience": 6.0,
+        "education": [
+          "Master of Science in Computer Science (Artificial Intelligence) — MIT, 2018"
+        ],
+        "raw_text": "Emily Zhang\nSenior Machine Learning Engineer\nemily.zhang@deeplearning-ai.com | +1 (617) 555-4567 | Cambridge, MA\nPROFESSIONAL SUMMARY\nSenior ML Engineer with 6+ years experience deploying deep learning models, natural language processing pipelines, and\nscalable APIs in production. Proficient in Python, PyTorch, FastAPI, Docker, and AWS cloud infrastructure.\nTECHNICAL SKILLS\nAI & ML: Python, PyTorch, TensorFlow, NLP, Transformers, LLMs, Scikit-learn, LangChain\nInfrastructure: FastAPI, Docker, Kubernetes, AWS, PostgreSQL, Redis, CI/CD, Git\nPROFESSIONAL EXPERIENCE\nSenior ML Engineer — Vector Cognitive Solutions\n2021 – Present (3 years)\n(cid:127) Fine-tuned transformer models for domain-specific text summarization and semantic search.\n(cid:127) Engineered low-latency FastAPI inference microservices packaged in Docker on AWS EKS.\n(cid:127) Implemented Redis vector caching reducing average model response latency by 55%.\nMachine Learning Engineer — DataSphere AI\n2018 – 2021 (3 years)\n(cid:127) Trained neural network models for predictive customer analytics using PyTorch and Scikit-learn.\n(cid:127) Constructed automated data validation and training pipelines.\nEDUCATION\nMaster of Science in Computer Science (Artificial Intelligence) — MIT, 2018",
+        "parse_error": null
+      },
+      "scores": {
+        "semantic_similarity": 54.3,
+        "skill_overlap": 61.1,
+        "experience_match": 100.0,
+        "final_score": 65.8
+      },
+      "rank": 5,
+      "explanation": "Moderate match (66/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, ci/cd, docker, fastapi. Missing core competencies: django, gcp, graphql, kafka. Experience (6 yrs) meets required seniority (5+ yrs).",
+      "matched_skills": [
+        "aws",
+        "ci/cd",
+        "docker",
+        "fastapi",
+        "git",
+        "kubernetes",
+        "machine learning",
+        "microservices",
+        "postgresql",
+        "python",
+        "redis"
+      ],
+      "missing_skills": [
+        "django",
+        "gcp",
+        "graphql",
+        "kafka",
+        "react",
+        "rest api",
+        "typescript"
+      ]
+    },
+    {
+      "candidate": {
+        "filename": "Resume_Sarah_Chen_Senior_AI.pdf",
+        "name": "Sarah Chen",
+        "email": "sarah.chen@aiml-research.org",
+        "phone": "+1 (415) 890-1234",
+        "skills": [
+          "artificial intelligence",
+          "aws",
+          "ci/cd",
+          "docker",
+          "fastapi",
+          "git",
+          "kafka",
+          "kubernetes",
+          "llm",
+          "machine learning",
+          "nlp",
+          "postgresql",
+          "python",
+          "pytorch",
+          "rag",
+          "redis",
+          "scikit-learn",
+          "spark",
+          "tensorflow"
+        ],
+        "years_of_experience": 8.0,
+        "education": [
+          "Ph.D. in Computer Science (Machine Learning) — Stanford University, 2016"
+        ],
+        "raw_text": "Sarah Chen\nStaff AI / Machine Learning Engineer\nsarah.chen@aiml-research.org | +1 (415) 890-1234 | San Francisco, CA\nPROFESSIONAL SUMMARY\nStaff Machine Learning Engineer with 8+ years experience developing enterprise LLM pipelines, deep learning architectures,\nand high-throughput model inference endpoints. Strong background in PyTorch, NLP, Transformers, FastAPI, Docker, and\nKubernetes on AWS.\nTECHNICAL SKILLS\nMachine Learning: PyTorch, TensorFlow, Transformers, Hugging Face, LLMs, NLP, Scikit-learn, Vector DBs\nEngineering: Python, FastAPI, Docker, Kubernetes, Kafka, PostgreSQL, Redis, AWS, CI/CD, Git\nPROFESSIONAL EXPERIENCE\nStaff AI Engineer — Anthropic Partner Lab\n2020 – Present (4 years)\n(cid:127) Architected RAG inference service using Python, PyTorch, and vector databases processing 5M embeddings daily.\n(cid:127) Deployed scalable GPU inference endpoints in Kubernetes (AWS EKS) with sub-50ms latency.\n(cid:127) Published 2 research papers on transformer fine-tuning at top AI venues.\nSenior ML Engineer — Cognitive Scale AI\n2016 – 2020 (4 years)\n(cid:127) Trained and deployed deep learning classification models serving 20M users.\n(cid:127) Engineered streaming data ingestion pipelines using Apache Kafka and Spark.\nEDUCATION\nPh.D. in Computer Science (Machine Learning) — Stanford University, 2016",
+        "parse_error": null
+      },
+      "scores": {
+        "semantic_similarity": 50.4,
+        "skill_overlap": 61.1,
+        "experience_match": 100.0,
+        "final_score": 64.1
+      },
+      "rank": 6,
+      "explanation": "Moderate match (64/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, ci/cd, docker, fastapi. Missing core competencies: django, gcp, graphql, microservices. Experience (8 yrs) meets required seniority (5+ yrs).",
+      "matched_skills": [
+        "aws",
+        "ci/cd",
+        "docker",
+        "fastapi",
+        "git",
+        "kafka",
+        "kubernetes",
+        "machine learning",
+        "postgresql",
+        "python",
+        "redis"
+      ],
+      "missing_skills": [
+        "django",
+        "gcp",
+        "graphql",
+        "microservices",
+        "react",
+        "rest api",
+        "typescript"
+      ]
+    },
+    {
+      "candidate": {
+        "filename": "Resume_Rachel_Kim_DevOps.pdf",
         "name": "Rachel Kim",
-        "email": "rachel.kim@fastmail.com",
-        "phone": "+1-206-555-8734",
+        "email": "rachel.kim@cloudinfra.net",
+        "phone": "+1 (206) 555-8734",
         "skills": [
           "ansible",
           "aws",
-          "azure",
           "bash",
           "ci/cd",
           "docker",
@@ -215,7 +398,6 @@
           "git",
           "go",
           "grafana",
-          "kafka",
           "kubernetes",
           "linux",
           "microservices",
@@ -224,25 +406,26 @@
           "terraform"
         ],
         "years_of_experience": 6.0,
-        "education": [],
-        "raw_text": "Rachel Kim\nrachel.kim@fastmail.com | +1-206-555-8734 | Seattle, WA\n\nTITLE: Senior DevOps / Platform Engineer\nEXPERIENCE: 6 years\n\nCOMPETENCIES\nDocker, Kubernetes, Terraform, Ansible, AWS, GCP, Azure, CI/CD, GitHub Actions,\nJenkins, Bash, Python, Go, Linux, Prometheus, Grafana, ELK Stack, Kafka,\nInfrastructure as Code, Site Reliability Engineering, Agile\n\nEMPLOYMENT\n\nSenior Platform Engineer — Amazon (2021 – Present, 3 years)\n- Managed Kubernetes clusters serving 50K pods across 3 regions\n- Reduced infrastructure costs 28% through right-sizing and spot instance strategy\n- Built self-service IaC platform using Terraform modules + Atlantis\n- Led incident response; reduced MTTR from 45 min to 8 min\n\nDevOps Engineer — Zillow (2019 – 2021, 2 years)\n- Migrated monolithic app to microservices on AWS EKS\n- Implemented GitOps with ArgoCD and Helm charts\n- Set up Prometheus/Grafana observability stack with 200+ custom alerts\n\nSystems Engineer — T-Mobile (2018 – 2019, 1 year)\n- Managed on-premise Linux servers and VMware clusters\n- Automated routine tasks with Bash and Python scripts\n\nEDUCATION\nB.Sc. Computer Engineering, University of Washington, 2018\nAWS Solutions Architect Professional Certification\nCKA (Certified Kubernetes Administrator)",
+        "education": [
+          "Bachelor of Science in Computer Engineering — University of Washington, 2018"
+        ],
+        "raw_text": "Rachel Kim\nLead Cloud DevOps & Platform Engineer\nrachel.kim@cloudinfra.net | +1 (206) 555-8734 | Seattle, WA\nPROFESSIONAL SUMMARY\nDevOps & SRE Engineer with 6+ years of experience scaling Kubernetes infrastructure, automating multi-region cloud\npipelines, and managing observability. Expert in AWS, GCP, Terraform, Docker, Python scripting, and CI/CD.\nTECHNICAL SKILLS\nInfrastructure: Kubernetes, Docker, Terraform, Ansible, AWS (EKS, S3, RDS), GCP, Linux\nCI/CD & Observability: GitHub Actions, Jenkins, Prometheus, Grafana, ELK Stack, Python, Bash, Go\nPROFESSIONAL EXPERIENCE\nLead Platform Engineer — Nordic Cloud Services\n2020 – Present (4 years)\n(cid:127) Engineered multi-region AWS EKS Kubernetes clusters running 60+ microservices.\n(cid:127) Automated full cloud provisioning using Terraform, reducing environment spin-up from days to 12 minutes.\n(cid:127) Maintained 99.99% service availability with Prometheus alerts and Grafana dashboards.\nDevOps Engineer — Cascade Tech\n2018 – 2020 (2 years)\n(cid:127) Built robust CI/CD pipelines in Jenkins and GitHub Actions for Python and Go services.\n(cid:127) Administered Linux server fleet and enforced zero-trust network policies.\nEDUCATION\nBachelor of Science in Computer Engineering — University of Washington, 2018",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 62.7,
-        "skill_overlap": 50.0,
+        "semantic_similarity": 62.5,
+        "skill_overlap": 44.4,
         "experience_match": 100.0,
-        "final_score": 65.7
+        "final_score": 63.7
       },
-      "rank": 4,
-      "explanation": "Moderate match (66/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, ci/cd, docker, gcp. Missing core competencies: django, fastapi, graphql, machine learning. Experience (6 yrs) meets required seniority (5+ yrs).",
+      "rank": 7,
+      "explanation": "Moderate match (64/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, ci/cd, docker, gcp. Missing core competencies: django, fastapi, graphql, kafka. Experience (6 yrs) meets required seniority (5+ yrs).",
       "matched_skills": [
         "aws",
         "ci/cd",
         "docker",
         "gcp",
         "git",
-        "kafka",
         "kubernetes",
         "microservices",
         "python"
@@ -251,6 +434,7 @@
         "django",
         "fastapi",
         "graphql",
+        "kafka",
         "machine learning",
         "postgresql",
         "react",
@@ -261,57 +445,49 @@
     },
     {
       "candidate": {
-        "filename": "13_emily_zhang_ml_pdf.pdf",
-        "name": "Emily Zhang",
-        "email": "emily.zhang@ml.dev",
-        "phone": "+1-628-555-9021",
+        "filename": "Resume_Priya_Sharma_DataScientist.pdf",
+        "name": "Priya Sharma",
+        "email": "priya.sharma@analytics-hub.com",
+        "phone": "+1 (650) 555-9012",
         "skills": [
-          "airflow",
-          "artificial intelligence",
           "aws",
+          "bigquery",
           "docker",
           "fastapi",
-          "gcp",
           "git",
-          "kafka",
-          "kubernetes",
-          "langchain",
-          "llm",
           "machine learning",
-          "nlp",
+          "microservices",
           "numpy",
           "pandas",
           "postgresql",
           "python",
-          "pytorch",
-          "rag",
           "redis",
           "scikit-learn",
-          "sql",
-          "tensorflow"
+          "sql"
         ],
-        "years_of_experience": 6.0,
-        "education": [],
-        "raw_text": "Emily Zhang\nemily.zhang@ml.dev | +1-628-555-9021 | San Francisco, CA\nSUMMARY\nMachine Learning Engineer with 6 years experience in NLP and LLMs. Python, PyTorch, TensorFlow, FastAPI,\nDocker, AWS, Kubernetes, Kafka.\nSKILLS\nPython, PyTorch, TensorFlow, scikit-learn, numpy, pandas, FastAPI, Docker, Kubernetes, AWS, GCP, SQL,\nPostgreSQL, Redis, Kafka, Airflow, Git, Machine Learning, Deep Learning, NLP, Transformers, LLM, BERT, RAG,\nLangChain\nEXPERIENCE\nSenior ML Engineer — Scale AI (2022-Present, 2 years)\nBuilt RLHF training pipelines. Reduced annotation cost 40%. FastAPI inference at 20K RPM.\nML Engineer — Cohere (2020-2022, 2 years)\nFine-tuned transformers. Data pipelines AWS EMR+S3. Docker/K8s deployment.\nData Scientist — Wish (2018-2020, 2 years)\nRecommendation models, A/B tests, 8% GMV improvement.\nEDUCATION\nM.Sc. CS (Machine Learning), Carnegie Mellon University, 2018\nB.Eng. Computer Engineering, University of Waterloo, 2016",
+        "years_of_experience": 5.0,
+        "education": [
+          "Data Science: Python, SQL, Pandas, NumPy, Scikit-learn, Statsmodels, BigQuery, Tableau, Jupyter",
+          "Master of Science in Statistics — Stanford University, 2019"
+        ],
+        "raw_text": "Priya Sharma\nSenior Data Scientist & Analytics Specialist\npriya.sharma@analytics-hub.com | +1 (650) 555-9012 | Mountain View, CA\nPROFESSIONAL SUMMARY\nData Scientist with 5+ years of experience utilizing machine learning, statistical modeling, and data analytics to solve\ncommercial optimization problems. Proficient in Python, SQL, Scikit-learn, Pandas, and BigQuery.\nTECHNICAL SKILLS\nData Science: Python, SQL, Pandas, NumPy, Scikit-learn, Statsmodels, BigQuery, Tableau, Jupyter\nEngineering: FastAPI, Docker, Git, AWS, PostgreSQL, Redis\nPROFESSIONAL EXPERIENCE\nSenior Data Scientist — Quantum Metrics\n2021 – Present (3 years)\n(cid:127) Developed churn prediction and customer lifetime value algorithms in Python and Scikit-learn.\n(cid:127) Constructed SQL data models in Google BigQuery to power executive analytics dashboards.\n(cid:127) Packaged predictive algorithms into lightweight FastAPI microservices.\nData Analyst — Bay Data Partners\n2019 – 2021 (2 years)\n(cid:127) Designed automated SQL reports and Tableau dashboards for finance and operations teams.\n(cid:127) Conducted A/B testing analysis and hypothesis testing.\nEDUCATION\nMaster of Science in Statistics — Stanford University, 2019",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 52.8,
-        "skill_overlap": 61.1,
+        "semantic_similarity": 54.9,
+        "skill_overlap": 50.0,
         "experience_match": 100.0,
-        "final_score": 65.2
+        "final_score": 62.2
       },
-      "rank": 5,
-      "explanation": "Moderate match (65/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, docker, fastapi, gcp. Missing core competencies: ci/cd, django, graphql, microservices. Experience (6 yrs) meets required seniority (5+ yrs).",
+      "rank": 8,
+      "explanation": "Moderate match (62/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, docker, fastapi, git. Missing core competencies: ci/cd, django, gcp, graphql. Experience (5 yrs) meets required seniority (5+ yrs).",
       "matched_skills": [
         "aws",
         "docker",
         "fastapi",
-        "gcp",
         "git",
-        "kafka",
-        "kubernetes",
         "machine learning",
+        "microservices",
         "postgresql",
         "python",
         "redis"
@@ -319,8 +495,10 @@
       "missing_skills": [
         "ci/cd",
         "django",
+        "gcp",
         "graphql",
-        "microservices",
+        "kafka",
+        "kubernetes",
         "react",
         "rest api",
         "typescript"
@@ -328,206 +506,73 @@
     },
     {
       "candidate": {
-        "filename": "09_aisha_ibrahim_data_engineer.txt",
+        "filename": "Resume_Aisha_Ibrahim_DataEngineer.pdf",
         "name": "Aisha Ibrahim",
-        "email": "aisha.ibrahim@techmail.com",
-        "phone": "+1-929-555-0274",
+        "email": "aisha.ibrahim@data-pipeline.io",
+        "phone": "+1 (312) 555-4321",
         "skills": [
           "airflow",
           "aws",
           "bigquery",
+          "ci/cd",
           "dbt",
           "docker",
           "gcp",
           "git",
           "kafka",
-          "machine learning",
-          "mongodb",
           "postgresql",
           "python",
+          "rest api",
           "snowflake",
           "spark",
-          "sql",
-          "terraform"
+          "sql"
         ],
-        "years_of_experience": 6.0,
+        "years_of_experience": 5.0,
         "education": [
-          "M.Sc. Computer Science (Database Systems), Columbia University, 2018",
-          "B.Sc. Statistics, University of Ibadan, 2016"
+          "Master of Science in Data Science — University of Illinois Urbana-Champaign, 2019"
         ],
-        "raw_text": "Aisha Ibrahim\naisha.ibrahim@techmail.com | +1-929-555-0274 | New York, NY\n\nDATA ENGINEER — 6 years of experience\n\nSKILLS\nPython, SQL, Spark, Hadoop, Kafka, Airflow, dbt, Snowflake, BigQuery, Redshift,\nAWS (S3, Glue, EMR, Lambda), GCP, Terraform, Docker, Git, PostgreSQL, MongoDB,\nData Pipelines, ETL/ELT, Data Modeling, Data Warehouse, Agile, Machine Learning\n\nEXPERIENCE\n\nSenior Data Engineer — Goldman Sachs (2022 – Present, 2 years)\n- Designed and maintained enterprise data lake on AWS (S3 + Glue + Redshift)\n- Built real-time streaming pipelines with Apache Kafka and Spark Structured Streaming\n- Reduced data freshness from T+1 to near real-time (15 min latency) for trading desk\n- Mentored 3 junior data engineers; established data quality testing framework\n\nData Engineer — WeWork (2020 – 2022, 2 years)\n- Migrated 200+ ETL jobs from legacy Oracle to dbt + Snowflake\n- Built Airflow DAGs for orchestrating daily + hourly data pipelines\n- Implemented PII masking and data governance policies\n\nData Engineer II — Accenture (2018 – 2020, 2 years)\n- Built ETL pipelines for Fortune 500 retail client using AWS Glue + S3\n- Developed data quality checks with Great Expectations\n\nEDUCATION\nM.Sc. Computer Science (Database Systems), Columbia University, 2018\nB.Sc. Statistics, University of Ibadan, 2016\n\nCERTIFICATIONS\nAWS Data Analytics Specialty\nDatabricks Certified Associate Developer for Apache Spark",
+        "raw_text": "Aisha Ibrahim\nSenior Data & Streaming Platform Engineer\naisha.ibrahim@data-pipeline.io | +1 (312) 555-4321 | Chicago, IL\nPROFESSIONAL SUMMARY\nSenior Data Engineer with 5+ years of experience building real-time streaming architectures, distributed ETL pipelines, and\nmodern data lakes. Specialized in Python, SQL, Apache Spark, Kafka, Airflow, Snowflake, and AWS.\nTECHNICAL SKILLS\nData & Streaming: Python, SQL, Apache Spark, Apache Kafka, Apache Airflow, dbt, Snowflake, BigQuery\nCloud & DevOps: AWS (S3, Glue, EMR), GCP, Docker, Git, CI/CD, PostgreSQL\nPROFESSIONAL EXPERIENCE\nSenior Data Engineer — Apex Data Intelligence\n2021 – Present (3 years)\n(cid:127) Constructed real-time event streaming pipeline processing 10TB+ daily data using Kafka and Spark Streaming.\n(cid:127) Orchestrated 80+ daily batch DAG workflows in Apache Airflow with automated data quality checks in dbt.\n(cid:127) Migrated legacy warehouse to Snowflake on AWS, reducing analytics query times by 60%.\nData Engineer — Omni Analytics\n2019 – 2021 (2 years)\n(cid:127) Created Python ETL scripts extracting data from relational PostgreSQL databases and REST APIs.\n(cid:127) Maintained data lake storage partitions on AWS S3.\nEDUCATION\nMaster of Science in Data Science — University of Illinois Urbana-Champaign, 2019",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 64.8,
-        "skill_overlap": 44.4,
-        "experience_match": 100.0,
-        "final_score": 64.7
-      },
-      "rank": 6,
-      "explanation": "Moderate match (65/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, docker, gcp, git. Missing core competencies: ci/cd, django, fastapi, graphql. Experience (6 yrs) meets required seniority (5+ yrs).",
-      "matched_skills": [
-        "aws",
-        "docker",
-        "gcp",
-        "git",
-        "kafka",
-        "machine learning",
-        "postgresql",
-        "python"
-      ],
-      "missing_skills": [
-        "ci/cd",
-        "django",
-        "fastapi",
-        "graphql",
-        "kubernetes",
-        "microservices",
-        "react",
-        "redis",
-        "rest api",
-        "typescript"
-      ]
-    },
-    {
-      "candidate": {
-        "filename": "11_nina_petrov_security_engineer.txt",
-        "name": "Nina Petrov",
-        "email": "nina.petrov@secmail.com",
-        "phone": null,
-        "skills": [
-          "aws",
-          "bash",
-          "ci/cd",
-          "docker",
-          "gcp",
-          "git",
-          "go",
-          "kubernetes",
-          "linux",
-          "microservices",
-          "postgresql",
-          "python",
-          "sql",
-          "terraform"
-        ],
-        "years_of_experience": 7.0,
-        "education": [
-          "B.Sc. Computer Science, Humboldt University, 2015"
-        ],
-        "raw_text": "Nina Petrov\nnina.petrov@secmail.com | +49-30-12345678 | Berlin, Germany\n\nCYBERSECURITY ENGINEER — 7 years experience\n\nSKILLS\nPython, Bash, Go, Linux, AWS, GCP, Docker, Kubernetes, Terraform,\nNetwork Security, Penetration Testing, SIEM, Splunk, Wireshark, Nmap,\nOAuth2, JWT, SSL/TLS, SOC2, GDPR, Zero Trust, DevSecOps, Git,\nSQL, PostgreSQL, Agile, Communication\n\nPROFESSIONAL EXPERIENCE\n\nSenior Security Engineer — SAP (2022 – Present, 2 years)\n- Led AppSec program: threat modelling, SAST/DAST, penetration testing\n- Reduced critical vulnerabilities by 70% through automated security scanning in CI/CD\n- Built internal security tooling in Python and Go for anomaly detection\n- Advised engineering teams on secure coding practices (OWASP Top 10)\n\nSecurity Engineer — Deutsche Bank (2019 – 2022, 3 years)\n- Monitored and responded to incidents using Splunk SIEM\n- Conducted internal penetration tests on web applications and APIs\n- Implemented OAuth2 / JWT authentication hardening across 20+ microservices\n\nIT Security Analyst — Siemens (2017 – 2019, 2 years)\n- Analysed network traffic and investigated security incidents\n- Developed Bash automation scripts for log analysis\n\nEDUCATION\nM.Sc. Information Security, TU Berlin, 2017\nB.Sc. Computer Science, Humboldt University, 2015\nCISSP, CEH certifications\n\nLANGUAGES\nRussian (native), German (C2), English (C1)",
-        "parse_error": null
-      },
-      "scores": {
-        "semantic_similarity": 52.8,
+        "semantic_similarity": 50.9,
         "skill_overlap": 50.0,
         "experience_match": 100.0,
-        "final_score": 61.2
+        "final_score": 60.4
       },
-      "rank": 7,
-      "explanation": "Moderate match (61/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, ci/cd, docker, gcp. Missing core competencies: django, fastapi, graphql, kafka. Experience (7 yrs) meets required seniority (5+ yrs).",
+      "rank": 9,
+      "explanation": "Moderate match (60/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, ci/cd, docker, gcp. Missing core competencies: django, fastapi, graphql, kubernetes. Experience (5 yrs) meets required seniority (5+ yrs).",
       "matched_skills": [
         "aws",
         "ci/cd",
         "docker",
         "gcp",
         "git",
-        "kubernetes",
-        "microservices",
-        "postgresql",
-        "python"
-      ],
-      "missing_skills": [
-        "django",
-        "fastapi",
-        "graphql",
         "kafka",
-        "machine learning",
-        "react",
-        "redis",
-        "rest api",
-        "typescript"
-      ]
-    },
-    {
-      "candidate": {
-        "filename": "01_sarah_chen_senior_ml.txt",
-        "name": "Sarah Chen",
-        "email": "sarah.chen@email.com",
-        "phone": "+1-415-887-3421",
-        "skills": [
-          "airflow",
-          "artificial intelligence",
-          "aws",
-          "bash",
-          "bigquery",
-          "docker",
-          "gcp",
-          "git",
-          "kafka",
-          "kubernetes",
-          "llm",
-          "machine learning",
-          "mongodb",
-          "nlp",
-          "numpy",
-          "pandas",
-          "postgresql",
-          "python",
-          "pytorch",
-          "redis",
-          "scikit-learn",
-          "spark",
-          "sql",
-          "tensorflow"
-        ],
-        "years_of_experience": 8.0,
-        "education": [
-          "PhD in Computer Science (Machine Learning), Stanford University, 2016",
-          "Bachelor of Science in Mathematics and CS, UC Berkeley, 2011"
-        ],
-        "raw_text": "Sarah Chen\nsarah.chen@email.com | +1-415-887-3421 | linkedin.com/in/sarahchen | github.com/sarahchen\n\nSUMMARY\nSenior Machine Learning Engineer with 8 years of experience building production ML systems.\nDeep expertise in NLP, computer vision, and large-scale distributed training.\n\nSKILLS\nPython, PyTorch, TensorFlow, scikit-learn, pandas, numpy, Spark, Kafka, Airflow,\nDocker, Kubernetes, AWS, GCP, SQL, PostgreSQL, MongoDB, Redis, Git, Bash,\nMachine Learning, Deep Learning, NLP, Natural Language Processing, Transformers, LLM, BERT\n\nEXPERIENCE\n\nSenior ML Engineer — Meta AI Research (2021 – Present, 3 years)\n- Led development of a multilingual NLP pipeline serving 500M+ users\n- Fine-tuned LLaMA-based models with RLHF; reduced hallucination by 32%\n- Built real-time feature store on Apache Kafka + Redis reducing inference latency by 60%\n\nML Engineer — Stripe (2018 – 2021, 3 years)\n- Built fraud detection model (XGBoost + neural net ensemble) saving $120M/year\n- Deployed models on Kubernetes with A/B testing framework\n- Managed data pipelines with Airflow on GCP BigQuery\n\nData Scientist — IBM Watson (2016 – 2018, 2 years)\n- Built NLP classifiers for enterprise document routing\n- Created dashboards with Tableau; presented insights to C-suite\n\nEDUCATION\nPhD in Computer Science (Machine Learning), Stanford University, 2016\nBachelor of Science in Mathematics and CS, UC Berkeley, 2011\n\nCERTIFICATIONS\nAWS Certified Machine Learning Specialty\nGoogle Professional Data Engineer",
-        "parse_error": null
-      },
-      "scores": {
-        "semantic_similarity": 47.9,
-        "skill_overlap": 55.6,
-        "experience_match": 100.0,
-        "final_score": 61.0
-      },
-      "rank": 8,
-      "explanation": "Moderate match (61/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, docker, gcp, git. Missing core competencies: ci/cd, django, fastapi, graphql. Experience (8 yrs) meets required seniority (5+ yrs).",
-      "matched_skills": [
-        "aws",
-        "docker",
-        "gcp",
-        "git",
-        "kafka",
-        "kubernetes",
-        "machine learning",
         "postgresql",
         "python",
-        "redis"
+        "rest api"
       ],
       "missing_skills": [
-        "ci/cd",
         "django",
         "fastapi",
         "graphql",
+        "kubernetes",
+        "machine learning",
         "microservices",
         "react",
-        "rest api",
+        "redis",
         "typescript"
       ]
     },
     {
       "candidate": {
-        "filename": "04_alex_morrison_frontend_dev.txt",
+        "filename": "Resume_Alex_Morrison_Frontend.pdf",
         "name": "Alex Morrison",
-        "email": "alex.morrison@protonmail.com",
-        "phone": null,
+        "email": "alex.morrison@uidev.com",
+        "phone": "+1 (347) 555-6789",
         "skills": [
-          "aws",
+          "docker",
           "git",
           "graphql",
           "javascript",
@@ -536,23 +581,23 @@
           "rest api",
           "typescript"
         ],
-        "years_of_experience": 3.0,
+        "years_of_experience": 5.0,
         "education": [
-          "Bachelor of Science in Computer Science, University of Manchester, 2021"
+          "Bachelor of Arts in Computer Science & Media Studies — New York University, 2019"
         ],
-        "raw_text": "Alex Morrison\nalex.morrison@protonmail.com | 07700-900-123 | Manchester, UK\n\nFrontend Developer — 3 years experience\n\nSKILLS\nJavaScript, TypeScript, React, Vue, Angular, NextJS, HTML, CSS, Tailwind, Bootstrap,\nGraphQL, REST, Node.js, Webpack, Vite, Jest, Cypress, Git, GitHub Actions, Figma, AWS\n\nEXPERIENCE\n\nFrontend Developer — BBC (2022 – Present, 2 years)\n- Built accessible React components for BBC News platform (10M+ daily users)\n- Implemented dark mode and responsive layouts with Tailwind CSS\n- Led migration from class components to hooks; reduced bundle size 35%\n- Integrated GraphQL API; improved data-fetching performance significantly\n\nJunior Frontend Developer — Thoughtworks (2021 – 2022, 1 year)\n- Developed Vue.js SPA for a retail client's inventory management system\n- Wrote Cypress E2E tests covering critical user flows\n- Participated in pair programming and TDD practices\n\nEDUCATION\nBachelor of Science in Computer Science, University of Manchester, 2021\n\nPERSONAL PROJECTS\nOpen-source Tailwind component library (400+ GitHub stars)\nBuilt a real-time collaborative whiteboard with WebSockets and Canvas API",
+        "raw_text": "Alex Morrison\nSenior Frontend Engineer (React/TypeScript)\nalex.morrison@uidev.com | +1 (347) 555-6789 | New York, NY\nPROFESSIONAL SUMMARY\nFrontend Specialist with 5+ years of experience engineering high-performance web applications in React, TypeScript, Next.js,\nand Tailwind CSS. Strong collaborator with backend teams, integrating REST and GraphQL APIs.\nTECHNICAL SKILLS\nFrontend Core: React, TypeScript, JavaScript, Next.js, HTML5, CSS3, Tailwind CSS, Redux Toolkit, WebSockets\nTooling & Backend: GraphQL, REST APIs, Node.js, Webpack, Vite, Jest, Git, Docker basics\nPROFESSIONAL EXPERIENCE\nSenior Frontend Developer — PixelCraft Interactive\n2021 – Present (3 years)\n(cid:127) Spearheaded React and TypeScript web app rewrite, achieving 98+ Google Lighthouse score.\n(cid:127) Created responsive design component library utilized across 4 enterprise applications.\n(cid:127) Connected complex state stores with backend REST and GraphQL endpoints.\nFrontend Developer — Bluefin Digital\n2019 – 2021 (2 years)\n(cid:127) Developed dynamic client dashboard in React, JavaScript, and CSS Grid.\n(cid:127) Collaborated with UX designers in Figma to implement pixel-perfect user experiences.\nEDUCATION\nBachelor of Arts in Computer Science & Media Studies — New York University, 2019",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 57.4,
+        "semantic_similarity": 57.9,
         "skill_overlap": 33.3,
-        "experience_match": 60.0,
-        "final_score": 49.5
+        "experience_match": 100.0,
+        "final_score": 57.7
       },
-      "rank": 9,
-      "explanation": "Significant gaps identified (50/100) relative to core requirements. Demonstrates proficiency in: aws, git, graphql, react. Missing core competencies: ci/cd, django, docker, fastapi. Experience (3 yrs) is below required target (5+ yrs).",
+      "rank": 10,
+      "explanation": "Moderate match (58/100) with relevant background but some technical gaps. Demonstrates proficiency in: docker, git, graphql, react. Missing core competencies: aws, ci/cd, django, fastapi. Experience (5 yrs) meets required seniority (5+ yrs).",
       "matched_skills": [
-        "aws",
+        "docker",
         "git",
         "graphql",
         "react",
@@ -560,9 +605,9 @@
         "typescript"
       ],
       "missing_skills": [
+        "aws",
         "ci/cd",
         "django",
-        "docker",
         "fastapi",
         "gcp",
         "kafka",
@@ -576,114 +621,51 @@
     },
     {
       "candidate": {
-        "filename": "06_michael_tran_junior_dev.txt",
-        "name": "Michael Tran",
-        "email": "michael.tran@gmail.com",
-        "phone": null,
-        "skills": [
-          "fastapi",
-          "git",
-          "javascript",
-          "linux",
-          "node.js",
-          "python",
-          "react",
-          "react native",
-          "rest api",
-          "sql"
-        ],
-        "years_of_experience": null,
-        "education": [
-          "Recent computer science graduate looking for my first full-time software engineering role.",
-          "Bachelor of Computer Science, University of Sydney, 2024 (GPA: 3.7/4.0)",
-          "Software Engineering Intern — Atlassian (Jan 2024 – Jun 2024, 6 months)"
-        ],
-        "raw_text": "Michael Tran\nmichael.tran@gmail.com | 0412-345-678 | Sydney, Australia\n\nABOUT ME\nRecent computer science graduate looking for my first full-time software engineering role.\nI am a quick learner with hands-on experience through internships and personal projects.\n\nSKILLS\nPython, Java, C++, JavaScript, React, HTML, CSS, SQL, Git, Linux, Node.js, REST\n\nEDUCATION\nBachelor of Computer Science, University of Sydney, 2024 (GPA: 3.7/4.0)\nRelevant coursework: Data Structures, Algorithms, Operating Systems, Databases, Web Dev\n\nINTERNSHIPS\n\nSoftware Engineering Intern — Atlassian (Jan 2024 – Jun 2024, 6 months)\n- Fixed 25+ bugs in Jira backend (Java/Spring)\n- Added unit tests; increased coverage from 62% to 78%\n- Participated in sprint planning and code reviews\n\nWeb Dev Intern — Local startup (Nov 2023 – Jan 2024, 2 months)\n- Built landing page with React and Tailwind CSS\n- Integrated Stripe payments API\n\nPROJECTS\nPersonal Finance Tracker — React + FastAPI + SQLite (in progress)\nUni Group Project — Campus food ordering app (React Native + Node.js) — best project award\n\nACTIVITIES\nHackathon winner (UofS Hackathon 2023)\nCS Society vice-president 2023",
-        "parse_error": null
-      },
-      "scores": {
-        "semantic_similarity": 65.9,
-        "skill_overlap": 27.8,
-        "experience_match": 40.0,
-        "final_score": 47.4
-      },
-      "rank": 10,
-      "explanation": "Significant gaps identified (47/100) relative to core requirements. Demonstrates proficiency in: fastapi, git, python, react. Missing core competencies: aws, ci/cd, django, docker.",
-      "matched_skills": [
-        "fastapi",
-        "git",
-        "python",
-        "react",
-        "rest api"
-      ],
-      "missing_skills": [
-        "aws",
-        "ci/cd",
-        "django",
-        "docker",
-        "gcp",
-        "graphql",
-        "kafka",
-        "kubernetes",
-        "machine learning",
-        "microservices",
-        "postgresql",
-        "redis",
-        "typescript"
-      ]
-    },
-    {
-      "candidate": {
-        "filename": "03_priya_sharma_data_scientist.txt",
-        "name": "Priya Sharma",
-        "email": "priya.sharma@outlook.com",
-        "phone": null,
+        "filename": "Resume_Nina_Petrov_Security.pdf",
+        "name": "Nina Petrov",
+        "email": "nina.petrov@sec-ops.io",
+        "phone": "+1 (415) 555-7890",
         "skills": [
           "aws",
-          "bigquery",
+          "bash",
+          "ci/cd",
           "docker",
           "git",
-          "machine learning",
-          "nlp",
-          "numpy",
-          "pandas",
+          "kubernetes",
+          "linux",
           "python",
-          "scikit-learn",
-          "spark",
-          "sql",
-          "tensorflow"
+          "terraform"
         ],
         "years_of_experience": 4.0,
         "education": [
-          "Master of Science in Data Science, IIT Bombay, 2020",
-          "Bachelor of Engineering in Computer Science, VTU, 2018"
+          "Bachelor of Science in Cybersecurity & Information Systems — University of Texas at Austin, 2020"
         ],
-        "raw_text": "Priya Sharma\npriya.sharma@outlook.com | +91-98765-43210 | Bangalore, India\n\nPROFESSIONAL SUMMARY\nData Scientist with 4 years of experience in machine learning, statistical modeling, and data analysis.\nProficient in Python, R, and SQL. Passionate about turning data into actionable insights.\n\nCORE SKILLS\nMachine Learning, Deep Learning, NLP, Python, R, SQL, TensorFlow, scikit-learn,\npandas, numpy, Matplotlib, Seaborn, Tableau, Spark, BigQuery, AWS, Docker, Git,\nStatistical Analysis, Data Analysis, A/B Testing, Feature Engineering\n\nPROFESSIONAL EXPERIENCE\n\nData Scientist — Flipkart (2022 – Present, 2 years)\n- Built recommendation engine using collaborative filtering, improving CTR by 18%\n- Developed customer churn prediction model (XGBoost); reduced churn by 12%\n- Conducted A/B tests for new product features; owned statistical significance framework\n\nJunior Data Scientist — TCS (2020 – 2022, 2 years)\n- Performed EDA and feature engineering for banking fraud detection project\n- Trained classification models with scikit-learn; achieved 94% precision\n- Created automated reporting dashboards in Tableau for business stakeholders\n\nData Analyst Intern — Infosys (2019 – 2020)\n- Analysed customer transaction data with SQL and Python\n- Built Excel/Power BI dashboards for executive review\n\nEDUCATION\nMaster of Science in Data Science, IIT Bombay, 2020\nBachelor of Engineering in Computer Science, VTU, 2018\n\nPUBLICATIONS\n\"Hierarchical Attention Networks for Sentiment Classification\", EMNLP Workshop 2021",
+        "raw_text": "Nina Petrov\nCloud Security & DevSecOps Engineer\nnina.petrov@sec-ops.io | +1 (415) 555-7890 | Austin, TX\nPROFESSIONAL SUMMARY\nSecurity Engineer with 4+ years experience securing AWS cloud environments, containerized Kubernetes workloads, and\nCI/CD pipelines. Proficient in Python scripting, Linux security, OAuth2, and automated vulnerability scanning.\nTECHNICAL SKILLS\nSecurity & Cloud: AWS Security, IAM, Kubernetes Security, Docker, Linux, Python, Bash, Terraform\nCompliance: SOC2, OWASP Top 10, OAuth2, JWT, Vulnerability Assessment, CI/CD Security\nPROFESSIONAL EXPERIENCE\nCloud Security Engineer — Sentinel Defense Labs\n2022 – Present (2 years)\n(cid:127) Implemented automated container vulnerability scanning in GitHub Actions CI/CD pipelines.\n(cid:127) Configured AWS IAM least-privilege security policies and multi-account guardrails.\n(cid:127) Automated threat detection and incident response workflows using Python and AWS Lambda.\nSecurity Analyst — CyberTrust Systems\n2020 – 2022 (2 years)\n(cid:127) Conducted penetration testing and code audits against OWASP vulnerability standards.\n(cid:127) Monitored security alerts in ELK SIEM and managed incident remediation.\nEDUCATION\nBachelor of Science in Cybersecurity & Information Systems — University of Texas at Austin, 2020",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 44.2,
-        "skill_overlap": 27.8,
+        "semantic_similarity": 56.6,
+        "skill_overlap": 33.3,
         "experience_match": 80.0,
-        "final_score": 45.6
+        "final_score": 53.1
       },
       "rank": 11,
-      "explanation": "Significant gaps identified (46/100) relative to core requirements. Demonstrates proficiency in: aws, docker, git, machine learning. Missing core competencies: ci/cd, django, fastapi, gcp. Experience (4 yrs) is below required target (5+ yrs).",
+      "explanation": "Moderate match (53/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, ci/cd, docker, git. Missing core competencies: django, fastapi, gcp, graphql. Experience (4 yrs) is below required target (5+ yrs).",
       "matched_skills": [
         "aws",
+        "ci/cd",
         "docker",
         "git",
-        "machine learning",
+        "kubernetes",
         "python"
       ],
       "missing_skills": [
-        "ci/cd",
         "django",
         "fastapi",
         "gcp",
         "graphql",
         "kafka",
-        "kubernetes",
+        "machine learning",
         "microservices",
         "postgresql",
         "react",
@@ -694,31 +676,32 @@
     },
     {
       "candidate": {
-        "filename": "07_diana_ross_product_manager.txt",
+        "filename": "Resume_Diana_Ross_ProductManager.pdf",
         "name": "Diana Ross",
-        "email": "diana.ross@corporatemail.com",
-        "phone": "+1-312-555-0189",
+        "email": "diana.ross@prodmgmt.io",
+        "phone": "+1 (212) 555-3344",
         "skills": [
-          "go",
+          "python",
           "sql"
         ],
-        "years_of_experience": 9.0,
+        "years_of_experience": 6.0,
         "education": [
-          "MBA, Booth School of Business, University of Chicago, 2015",
-          "B.A. Economics, Northwestern University, 2013"
+          "Bachelor of Arts in Economics & Business Administration — Boston College, 2018"
         ],
-        "raw_text": "Diana Ross\ndiana.ross@corporatemail.com | +1-312-555-0189 | Chicago, IL\n\nPRODUCT MANAGER | 9 YEARS EXPERIENCE\n\nEXPERTISE\nProduct Management, Agile, Scrum, Roadmapping, User Research, A/B Testing,\nData Analysis, SQL, Tableau, JIRA, Confluence, Communication, Leadership,\nTeam Management, Stakeholder Management, Go-to-Market Strategy\n\nEXPERIENCE\n\nDirector of Product — United Airlines Digital (2022 – Present, 2 years)\n- Owned mobile app product (12M downloads); shipped 8 major features in 2023\n- Led cross-functional team of 30 engineers, designers, and analysts\n- Ran user research and drove NPS from 32 to 58 in 18 months\n\nSenior Product Manager — Groupon (2018 – 2022, 4 years)\n- Defined strategy for merchant self-serve portal; grew merchant acquisition 40%\n- Managed backlog, sprint planning, and release schedules\n\nProduct Manager — Sprout Social (2015 – 2018, 3 years)\n- Launched 3 new product features that contributed $2M ARR\n- Collaborated with engineering and design on UX improvements\n\nEDUCATION\nMBA, Booth School of Business, University of Chicago, 2015\nB.A. Economics, Northwestern University, 2013\n\nNOTE: Limited technical/coding background — primarily a business/product role.",
+        "raw_text": "Diana Ross\nSenior Technical Product Manager\ndiana.ross@prodmgmt.io | +1 (212) 555-3344 | Boston, MA\nPROFESSIONAL SUMMARY\nTechnical Product Manager with 6+ years experience leading cross-functional engineering teams, defining product roadmaps,\nand delivering B2B SaaS solutions. Strong understanding of software development lifecycles, Agile/Scrum, and user\nresearch.\nTECHNICAL SKILLS\nProduct & Strategy: Product Roadmap, Agile/Scrum, User Stories, Jira, A/B Testing, User Research\nTechnical Literacy: SQL, Python basics, API Concepts, Data Analytics, Figma wireframing\nPROFESSIONAL EXPERIENCE\nSenior Product Manager — Horizon Cloud Platforms\n2020 – Present (4 years)\n(cid:127) Led sprint planning and backlog grooming for 2 engineering teams delivering core API services.\n(cid:127) Authored detailed PRDs, user stories, and acceptance criteria for 15+ major feature releases.\n(cid:127) Analyzed user engagement metrics using SQL queries to drive product enhancement priorities.\nAssociate Product Manager — Beacon Interactive\n2018 – 2020 (2 years)\n(cid:127) Coordinated user acceptance testing (UAT) and feature rollout communications.\n(cid:127) Conducted customer discovery interviews and competitor market benchmarking.\nEDUCATION\nBachelor of Arts in Economics & Business Administration — Boston College, 2018",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 46.1,
-        "skill_overlap": 0.0,
+        "semantic_similarity": 54.5,
+        "skill_overlap": 5.6,
         "experience_match": 100.0,
-        "final_score": 40.8
+        "final_score": 46.5
       },
       "rank": 12,
-      "explanation": "Significant gaps identified (41/100) relative to core requirements. Missing core competencies: aws, ci/cd, django, docker. Experience (9 yrs) meets required seniority (5+ yrs).",
-      "matched_skills": [],
+      "explanation": "Significant gaps identified (46/100) relative to core requirements. Demonstrates proficiency in: python. Missing core competencies: aws, ci/cd, django, docker. Experience (6 yrs) meets required seniority (5+ yrs).",
+      "matched_skills": [
+        "python"
+      ],
       "missing_skills": [
         "aws",
         "ci/cd",
@@ -733,7 +716,6 @@
         "machine learning",
         "microservices",
         "postgresql",
-        "python",
         "react",
         "redis",
         "rest api",
@@ -742,27 +724,43 @@
     },
     {
       "candidate": {
-        "filename": "10_tom_baker_graphic_designer.txt",
-        "name": "Tom Baker",
-        "email": "tom.baker.design@gmail.com",
-        "phone": null,
-        "skills": [],
-        "years_of_experience": 10.0,
-        "education": [
-          "NOTE: No software engineering or programming background. This resume would"
+        "filename": "Resume_Michael_Tran_JuniorDev.pdf",
+        "name": "Michael Tran",
+        "email": "michael.tran@devmail.org",
+        "phone": "+1 (408) 555-1122",
+        "skills": [
+          "git",
+          "javascript",
+          "node.js",
+          "postgresql",
+          "python",
+          "react",
+          "rest api",
+          "typescript"
         ],
-        "raw_text": "Tom Baker\ntom.baker.design@gmail.com | 07900-123456 | Bristol, UK\n\nGRAPHIC DESIGNER & CREATIVE DIRECTOR | 10 years\n\nI am a creative professional specialising in brand identity, print design, and digital marketing.\nMy work has been featured in several design publications and I have won 3 D&AD awards.\n\nSKILLS & TOOLS\nAdobe Photoshop, Adobe Illustrator, Adobe InDesign, Adobe XD, Figma,\nSketch, Typography, Brand Identity, Print Design, Packaging Design,\nSocial Media Graphics, Motion Graphics, After Effects, HTML, CSS (basic),\nClient Management, Communication, Presentation, Leadership\n\nWORK HISTORY\n\nCreative Director — Wunderman Thompson (2020 – Present, 4 years)\n- Led brand refresh projects for FMCG clients (Unilever, Nestlé)\n- Managed team of 8 designers and art directors\n- Won D&AD Silver Pencil 2022 for packaging design campaign\n\nSenior Graphic Designer — Leo Burnett (2017 – 2020, 3 years)\n- Designed integrated campaign materials (OOH, digital, print)\n- Art directed product photography shoots\n\nGraphic Designer — Freelance (2014 – 2017, 3 years)\n- Branding projects for SME clients\n\nEDUCATION\nBA Graphic Design, Falmouth University, 2014\n\nNOTE: No software engineering or programming background. This resume would\nbe a poor match for technical roles.",
+        "years_of_experience": 1.0,
+        "education": [
+          "Bachelor of Science in Computer Science — San Jose State University, 2023"
+        ],
+        "raw_text": "Michael Tran\nJunior Full Stack Developer\nmichael.tran@devmail.org | +1 (408) 555-1122 | San Jose, CA\nPROFESSIONAL SUMMARY\nEnthusiastic Junior Developer with 1+ years of experience building modern web applications. Proficient in JavaScript, React,\nPython basics, HTML/CSS, and Git. Fast learner looking to grow in a collaborative agile engineering team.\nTECHNICAL SKILLS\nLanguages & Frameworks: JavaScript, TypeScript basics, React, HTML5, CSS3, Python basics, Node.js basics\nTools: Git, GitHub, VS Code, REST APIs, PostgreSQL basics\nPROFESSIONAL EXPERIENCE\nJunior Web Developer — Silicon Valley App Studio\n2023 – Present (1 year)\n(cid:127) Built interactive landing pages and customer portals using React, HTML5, and CSS3.\n(cid:127) Assisted senior engineers in writing Python backend scripts and debugging REST APIs.\n(cid:127) Participated in daily scrum standups, code reviews, and unit test creation in Jest.\nEDUCATION\nBachelor of Science in Computer Science — San Jose State University, 2023",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 34.2,
-        "skill_overlap": 0.0,
-        "experience_match": 100.0,
-        "final_score": 35.4
+        "semantic_similarity": 66.9,
+        "skill_overlap": 33.3,
+        "experience_match": 20.0,
+        "final_score": 45.8
       },
       "rank": 13,
-      "explanation": "Significant gaps identified (35/100) relative to core requirements. Missing core competencies: aws, ci/cd, django, docker. Experience (10 yrs) meets required seniority (5+ yrs).",
-      "matched_skills": [],
+      "explanation": "Significant gaps identified (46/100) relative to core requirements. Demonstrates proficiency in: git, postgresql, python, react. Missing core competencies: aws, ci/cd, django, docker. Experience (1 yrs) is below required target (5+ yrs).",
+      "matched_skills": [
+        "git",
+        "postgresql",
+        "python",
+        "react",
+        "rest api",
+        "typescript"
+      ],
       "missing_skills": [
         "aws",
         "ci/cd",
@@ -770,40 +768,34 @@
         "docker",
         "fastapi",
         "gcp",
-        "git",
         "graphql",
         "kafka",
         "kubernetes",
         "machine learning",
         "microservices",
-        "postgresql",
-        "python",
-        "react",
-        "redis",
-        "rest api",
-        "typescript"
+        "redis"
       ]
     },
     {
       "candidate": {
-        "filename": "12_garbled_resume.txt",
-        "name": "@@@@###%%%",
-        "email": null,
-        "phone": null,
+        "filename": "Resume_Tom_Baker_UIDesigner.pdf",
+        "name": "Tom Baker",
+        "email": "tom.baker@designhub.net",
+        "phone": "+1 (303) 555-8899",
         "skills": [],
-        "years_of_experience": null,
+        "years_of_experience": 6.0,
         "education": [],
-        "raw_text": "@@@@###%%%\nThis resume has been corrupted during transmission.\n!!!ENCODING ERROR!!! UTF-8 mismatch detected.\nName: ??????? ??????? \nSkills: [binary data corrupted]\nExperience: NaN years\n@@@END CORRUPTED BLOCK@@@\nContact: [REDACTED]",
+        "raw_text": "Tom Baker\nSenior Product & UI/UX Designer\ntom.baker@designhub.net | +1 (303) 555-8899 | Denver, CO\nPROFESSIONAL SUMMARY\nCreative UI/UX Product Designer with 6+ years experience crafting intuitive digital experiences, design systems, and\nresponsive web/mobile interfaces. Expert in Figma, wireframing, and user research.\nTECHNICAL SKILLS\nDesign Tools: Figma, Adobe Creative Suite (Illustrator, Photoshop), Sketch, InVision\nMethodologies: User Research, Wireframing, Prototyping, Design Systems, HTML/CSS basics\nPROFESSIONAL EXPERIENCE\nLead UI/UX Designer — Creative Velocity Studios\n2020 – Present (4 years)\n(cid:127) Designed end-to-end user flows, interactive wireframes, and prototypes for 8 mobile and web SaaS applications.\n(cid:127) Established and maintained enterprise Figma design component library used across engineering and marketing.\n(cid:127) Conducted usability testing sessions with 50+ enterprise users to validate interface workflows.\nUI Designer — Altitude Digital Media\n2018 – 2020 (2 years)\n(cid:127) Created visual assets, marketing graphics, and responsive web mockups in Adobe Illustrator and Figma.\n(cid:127) Collaborated with frontend developers to ensure design fidelity in production.\nEDUCATION\nBachelor of Fine Arts in Graphic & Digital Design — Rhode Island School of Design, 2018",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 2.3,
+        "semantic_similarity": 38.1,
         "skill_overlap": 0.0,
-        "experience_match": 40.0,
-        "final_score": 9.0
+        "experience_match": 100.0,
+        "final_score": 37.1
       },
       "rank": 14,
-      "explanation": "Significant gaps identified (9/100) relative to core requirements. Missing core competencies: aws, ci/cd, django, docker.",
+      "explanation": "Significant gaps identified (37/100) relative to core requirements. Missing core competencies: aws, ci/cd, django, docker. Experience (6 yrs) meets required seniority (5+ yrs).",
       "matched_skills": [],
       "missing_skills": [
         "aws",
@@ -827,5 +819,10 @@
       ]
     }
   ],
-  "failed_files": []
+  "failed_files": [
+    {
+      "filename": "Corrupted_Scan_Test_Doc.pdf",
+      "reason": "Could not extract readable text from file."
+    }
+  ]
 }
