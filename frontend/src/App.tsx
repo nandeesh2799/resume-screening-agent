@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { ArrowRight, ArrowLeft, FileText, Upload, Sparkles, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Header } from './components/Header';
-import { DropZone } from './components/DropZone';
+import { Step1JobDescription } from './components/Step1JobDescription';
+import { Step2ResumeUpload } from './components/Step2ResumeUpload';
 import { ProgressOverlay } from './components/ProgressOverlay';
 import { ResultsPage } from './pages/ResultsPage';
-import { streamScreening } from './utils/api';
-import type { ScreeningResult, ProgressEvent } from './types';
+import { streamScreening, streamScreeningSamples, fetchSamples } from './utils/api';
+import type { ScreeningResult, ProgressEvent, SampleJD, SampleResumeInfo } from './types';
 
 type Step = 1 | 2 | 3;
 
@@ -16,21 +17,38 @@ export default function App() {
   const [progress, setProgress] = useState<ProgressEvent | null>(null);
   const [result, setResult] = useState<ScreeningResult | null>(null);
   const [error, setError] = useState<string | null>(null);
-  // abortRef reserved for future cancel support
+
+  const [sampleJDs, setSampleJDs] = useState<SampleJD[]>([]);
+  const [sampleResumes, setSampleResumes] = useState<SampleResumeInfo[]>([]);
+
+  // Load sample presets on mount
+  useEffect(() => {
+    fetchSamples()
+      .then((data) => {
+        setSampleJDs(data.job_descriptions || []);
+        setSampleResumes(data.sample_resumes || []);
+        // Pre-fill with the first sample JD for instantaneous testing
+        if (data.job_descriptions && data.job_descriptions.length > 0 && !jd) {
+          setJd(data.job_descriptions[0].content);
+        }
+      })
+      .catch((err) => {
+        console.warn('Could not fetch sample templates:', err);
+      });
+  }, []);
 
   const handleReset = () => {
     setStep(1);
-    setJd('');
     setFiles([]);
     setResult(null);
     setError(null);
     setProgress(null);
   };
 
-  const handleScreen = async () => {
+  const handleScreenUploadedFiles = async () => {
     if (!jd.trim() || files.length === 0) return;
     setError(null);
-    setProgress({ type: 'progress', current: 0, total: files.length, filename: '' });
+    setProgress({ type: 'progress', current: 0, total: files.length, filename: 'Preparing upload...' });
 
     try {
       const gen = streamScreening(jd, files, (p) => setProgress(p));
@@ -39,116 +57,129 @@ export default function App() {
         setStep(3);
       }
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'An unexpected error occurred.');
+      setError(e instanceof Error ? e.message : 'An error occurred during resume screening.');
     } finally {
       setProgress(null);
     }
   };
 
-  if (step === 3 && result) {
-    return (
-      <div className="min-h-screen">
-        <Header step={3} />
-        <ResultsPage result={result} onReset={handleReset} />
-      </div>
-    );
-  }
+  const handleScreenServerSamples = async () => {
+    if (!jd.trim()) {
+      setError('Please provide or select a Job Description first.');
+      return;
+    }
+    setError(null);
+    setProgress({
+      type: 'progress',
+      current: 0,
+      total: sampleResumes.length || 14,
+      filename: 'Loading sample dataset...',
+    });
+
+    try {
+      const gen = streamScreeningSamples(jd, (p) => setProgress(p));
+      for await (const r of gen) {
+        setResult(r);
+        setStep(3);
+      }
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'An error occurred while screening sample resumes.');
+    } finally {
+      setProgress(null);
+    }
+  };
+
+  const canNavigateToStep = (targetStep: number) => {
+    if (targetStep === 1) return true;
+    if (targetStep === 2) return jd.trim().length >= 25;
+    if (targetStep === 3) return result !== null;
+    return false;
+  };
 
   return (
-    <div className="min-h-screen">
-      <Header step={step} />
-      {progress && (
-        <ProgressOverlay
-          current={progress.current}
-          total={progress.total}
-          filename={progress.filename}
+    <div className="min-h-screen flex flex-col justify-between">
+      <div>
+        <Header
+          step={step}
+          onStepClick={(s) => setStep(s)}
+          canNavigateToStep={canNavigateToStep}
         />
-      )}
 
-      <main className="mx-auto max-w-2xl px-4 py-12">
-        {/* Step 1: Job Description */}
-        {step === 1 && (
-          <div className="space-y-6">
-            <div className="text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-100 dark:bg-indigo-900/40">
-                <FileText size={24} className="text-indigo-600 dark:text-indigo-400" />
-              </div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-                Paste your Job Description
-              </h1>
-              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                The AI will extract required skills, experience, and responsibilities
-                to score every resume against it.
-              </p>
-            </div>
+        {/* Global Progress Modal */}
+        <AnimatePresence>
+          {progress && (
+            <ProgressOverlay
+              current={progress.current}
+              total={progress.total}
+              filename={progress.filename}
+            />
+          )}
+        </AnimatePresence>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <textarea
-                value={jd}
-                onChange={(e) => setJd(e.target.value)}
-                placeholder="Senior Software Engineer — We are looking for a Python & React engineer with 5+ years of experience..."
-                rows={16}
-                className="w-full resize-none rounded-xl bg-transparent px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 dark:text-white"
-              />
-            </div>
-
-            <div className="flex justify-end">
+        {/* Global Error Banner */}
+        {error && (
+          <div className="mx-auto max-w-4xl px-4 pt-6">
+            <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs font-semibold text-rose-700 dark:text-rose-400 flex items-center justify-between">
+              <span>{error}</span>
               <button
-                onClick={() => setStep(2)}
-                disabled={jd.trim().length < 50}
-                className="flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                type="button"
+                onClick={() => setError(null)}
+                className="text-slate-400 hover:text-rose-600 font-bold"
               >
-                Next: Upload Resumes
-                <ArrowRight size={16} />
+                ✕
               </button>
             </div>
           </div>
         )}
 
-        {/* Step 2: Upload */}
-        {step === 2 && (
-          <div className="space-y-6">
-            <div className="text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-100 dark:bg-violet-900/40">
-                <Upload size={24} className="text-violet-600 dark:text-violet-400" />
-              </div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-                Upload Resumes
-              </h1>
-              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                PDF, DOCX, and TXT supported. Upload as many as you like.
-              </p>
-            </div>
-
-            <DropZone files={files} onChange={setFiles} />
-
-            {error && (
-              <div className="flex items-start gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400">
-                <AlertCircle size={16} className="mt-0.5 shrink-0" />
-                {error}
-              </div>
+        <main className="py-8 px-4 sm:px-6 lg:px-8">
+          <AnimatePresence mode="wait">
+            {step === 1 && (
+              <Step1JobDescription
+                key="step1"
+                jd={jd}
+                setJd={setJd}
+                samples={sampleJDs}
+                onNext={() => setStep(2)}
+              />
             )}
 
-            <div className="flex justify-between">
-              <button
-                onClick={() => setStep(1)}
-                className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+            {step === 2 && (
+              <Step2ResumeUpload
+                key="step2"
+                files={files}
+                setFiles={setFiles}
+                onBack={() => setStep(1)}
+                onStartScreening={handleScreenUploadedFiles}
+                onScreenServerSamples={handleScreenServerSamples}
+                sampleResumes={sampleResumes}
+              />
+            )}
+
+            {step === 3 && result && (
+              <motion.div
+                key="step3"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
               >
-                <ArrowLeft size={16} />
-                Back
-              </button>
-              <button
-                onClick={handleScreen}
-                disabled={files.length === 0 || !!progress}
-                className="flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <Sparkles size={16} />
-                Analyse {files.length > 0 ? `${files.length} resume${files.length > 1 ? 's' : ''}` : ''}
-              </button>
-            </div>
-          </div>
-        )}
-      </main>
+                <ResultsPage result={result} onReset={handleReset} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </main>
+      </div>
+
+      {/* Global Footer */}
+      <footer className="border-t border-slate-200/80 dark:border-slate-800/80 py-6 text-center text-xs text-slate-500">
+        <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <span>ResumeRank • Production-Grade AI Candidate Screening Engine</span>
+          <span className="font-mono text-[11px] opacity-75">
+            sentence-transformers (all-MiniLM-L6-v2) + Jaccard Skills Taxonomy
+          </span>
+        </div>
+      </footer>
     </div>
   );
 }

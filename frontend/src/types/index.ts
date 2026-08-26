@@ -55,3 +55,22 @@ export type SSEEvent = ProgressEvent | ResultEvent;
 
 export type SortField = 'rank' | 'name' | 'final_score' | 'semantic_similarity' | 'skill_overlap' | 'experience_match';
 export type SortDir = 'asc' | 'desc';
+
+export interface SampleJD {
+  id: string;
+  title: string;
+  department: string;
+  experience: string;
+  content: string;
+}
+
+export interface SampleResumeInfo {
+  filename: string;
+  size_kb: number;
+  extension: string;
+}
+
+export interface SamplesResponse {
+  job_descriptions: SampleJD[];
+  sample_resumes: SampleResumeInfo[];
+}
