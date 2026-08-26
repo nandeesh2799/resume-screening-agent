@@ -1,17 +1,12 @@
 """
 Scoring module for the Resume Screening Agent.
-
-Final Score = 0.45 × Semantic Similarity
-            + 0.35 × Skill Overlap
-            + 0.20 × Experience Match
-
-All sub-scores are 0-100.
+Combines Dense Semantic Similarity, Jaccard Skill Overlap, and Experience Matching.
+Supports dynamic weights and dealbreaker/knockout criteria.
 """
 from __future__ import annotations
 
 import logging
 import re
-from functools import lru_cache
 from typing import Optional
 
 import numpy as np
@@ -20,17 +15,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 logger = logging.getLogger(__name__)
 
-# Score weights
+# Default weights
 W_SEMANTIC = 0.45
 W_SKILL = 0.35
 W_EXP = 0.20
 
 EXPECTED_EXP_YEARS = 5.0  # default when JD doesn't specify
-
-
-# ---------------------------------------------------------------------------
-# Sentence-Transformer singleton (lazy-loaded to avoid cold-start penalty)
-# ---------------------------------------------------------------------------
 
 _st_model = None
 
@@ -47,10 +37,6 @@ def _get_st_model():
     return _st_model
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
 def _tfidf_similarity(text_a: str, text_b: str) -> float:
     """TF-IDF cosine similarity between two texts, returns 0-1."""
     try:
@@ -63,11 +49,7 @@ def _tfidf_similarity(text_a: str, text_b: str) -> float:
 
 
 def _semantic_similarity(jd_text: str, resume_text: str) -> float:
-    """
-    Semantic cosine similarity using sentence-transformers.
-    Falls back to TF-IDF if the model isn't available.
-    Returns 0-100.
-    """
+    """Semantic cosine similarity (0-100)."""
     model = _get_st_model()
     if model is not None:
         try:
@@ -75,7 +57,6 @@ def _semantic_similarity(jd_text: str, resume_text: str) -> float:
             sim = float(np.dot(embeddings[0], embeddings[1]) / (
                 np.linalg.norm(embeddings[0]) * np.linalg.norm(embeddings[1]) + 1e-9
             ))
-            # Clamp to [0, 1] then scale to 0-100
             return max(0.0, min(1.0, sim)) * 100
         except Exception as exc:
             logger.warning("Semantic encoding failed: %s", exc)
@@ -83,171 +64,143 @@ def _semantic_similarity(jd_text: str, resume_text: str) -> float:
 
 
 def _extract_jd_skills(jd_text: str) -> list[str]:
-    """Pull skill keywords from the JD using the same vocabulary as the parser."""
-    from backend.core.parser import SKILL_KEYWORDS, _extract_skills
+    """Pull skill keywords from the JD."""
+    from backend.core.parser import _extract_skills
     return _extract_skills(jd_text)
 
 
 def _skill_overlap_score(jd_skills: list[str], candidate_skills: list[str]) -> tuple[float, list[str], list[str]]:
-    """
-    Jaccard-style overlap between JD skills and candidate skills.
-    Returns (score_0_100, matched, missing).
-    """
+    """Jaccard-style overlap between JD skills and candidate skills."""
     if not jd_skills:
-        return 50.0, [], []  # neutral if JD has no detectable skills
+        return 50.0, [], []
 
     jd_set = set(s.lower() for s in jd_skills)
     cand_set = set(s.lower() for s in candidate_skills)
 
-    matched = sorted(jd_set & cand_set)
-    missing = sorted(jd_set - cand_set)
+    matched = sorted(list(jd_set.intersection(cand_set)))
+    missing = sorted(list(jd_set.difference(cand_set)))
 
-    score = (len(matched) / len(jd_set)) * 100 if jd_set else 0.0
-    return score, matched, missing
-
-
-def _experience_match_score(
-    candidate_years: Optional[float],
-    jd_required_years: float,
-) -> float:
-    """
-    Score how well candidate's experience matches the JD requirement.
-    Returns 0-100.
-    """
-    if candidate_years is None:
-        return 40.0  # unknown experience — penalise slightly
-
-    if candidate_years >= jd_required_years:
-        # At or above required: full score, with diminishing bonus
-        bonus = min((candidate_years - jd_required_years) * 2, 10)
-        return min(100.0, 90.0 + bonus)
-    else:
-        # Below required: linear penalty
-        ratio = candidate_years / jd_required_years
-        return ratio * 80.0  # max 80 if just under the bar
+    score = (len(matched) / len(jd_set)) * 100
+    return round(score, 1), matched, missing
 
 
 def _extract_required_experience(jd_text: str) -> float:
-    """Parse the JD for a required years-of-experience figure."""
-    patterns = [
-        re.compile(r"(\d+)\+?\s*years?\s+(?:of\s+)?experience", re.IGNORECASE),
-        re.compile(r"minimum\s+(\d+)\s+years?", re.IGNORECASE),
-        re.compile(r"at\s+least\s+(\d+)\s+years?", re.IGNORECASE),
-    ]
-    for pat in patterns:
-        m = pat.search(jd_text)
-        if m:
-            return float(m.group(1))
+    """Extract required years of experience from JD text."""
+    pattern = re.compile(
+        r"(\d+(?:\.\d+)?)\+?\s*(?:years?|yrs?)(?:\s+of)?(?:\s+experience|\s+required|\s+preferred|\s+in|\s+with)",
+        re.IGNORECASE,
+    )
+    matches = pattern.findall(jd_text)
+    if matches:
+        try:
+            return float(matches[0])
+        except ValueError:
+            pass
     return EXPECTED_EXP_YEARS
 
 
-def _build_explanation(
-    candidate_name: Optional[str],
-    filename: str,
+def _experience_match_score(candidate_years: Optional[float], required_years: float) -> float:
+    """Score candidate experience relative to required threshold (0-100)."""
+    if candidate_years is None:
+        return 40.0
+
+    if required_years <= 0:
+        return 100.0
+
+    ratio = candidate_years / required_years
+    if ratio >= 1.0:
+        return 100.0
+    return round(ratio * 100, 1)
+
+
+def generate_explanation(
+    final_score: float,
     semantic: float,
     skill_score: float,
     exp_score: float,
-    final: float,
-    matched: list[str],
-    missing: list[str],
+    matched_skills: list[str],
+    missing_skills: list[str],
     candidate_years: Optional[float],
     required_years: float,
 ) -> str:
-    name = candidate_name or filename
-    band = "strong" if final >= 70 else ("moderate" if final >= 45 else "weak")
+    """Generate professional recruiter evaluation note."""
+    lines: list[str] = []
 
-    parts: list[str] = [
-        f"{name} is a {band} match with an overall score of {final:.0f}/100.",
-    ]
-
-    # Semantic
-    if semantic >= 70:
-        parts.append("Their background aligns closely with the role description.")
-    elif semantic >= 45:
-        parts.append("There is moderate thematic overlap with the job description.")
+    # Overall fit assessment
+    if final_score >= 75:
+        lines.append(f"Strong overall match ({final_score:.0f}/100) meeting key technical criteria.")
+    elif final_score >= 50:
+        lines.append(f"Moderate match ({final_score:.0f}/100) with relevant background but some technical gaps.")
     else:
-        parts.append("The resume content has limited overlap with the job description.")
+        lines.append(f"Significant gaps identified ({final_score:.0f}/100) relative to core requirements.")
 
-    # Skills
-    if matched:
-        parts.append(f"Matching skills: {', '.join(matched[:8])}.")
-    if missing:
-        parts.append(f"Key skill gaps: {', '.join(missing[:6])}.")
+    # Skill coverage
+    if matched_skills:
+        top_matched = ", ".join(matched_skills[:4])
+        lines.append(f"Demonstrates proficiency in: {top_matched}.")
+    if missing_skills:
+        top_missing = ", ".join(missing_skills[:4])
+        lines.append(f"Missing core competencies: {top_missing}.")
 
     # Experience
     if candidate_years is not None:
         if candidate_years >= required_years:
-            parts.append(
-                f"Experience ({candidate_years:.0f} yrs) meets or exceeds the requirement ({required_years:.0f} yrs)."
-            )
+            lines.append(f"Experience ({candidate_years:.0f} yrs) meets required seniority ({required_years:.0f}+ yrs).")
         else:
-            parts.append(
-                f"Experience ({candidate_years:.0f} yrs) is below the required {required_years:.0f} years."
-            )
-    else:
-        parts.append("Years of experience could not be determined from the resume.")
+            lines.append(f"Experience ({candidate_years:.0f} yrs) is below required target ({required_years:.0f}+ yrs).")
 
-    return " ".join(parts)
+    return " ".join(lines)
 
-
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
 
 def score_candidate(
     jd_text: str,
-    candidate: dict,
+    candidate_dict: dict,
     jd_skills: Optional[list[str]] = None,
     required_years: Optional[float] = None,
+    w_semantic: float = W_SEMANTIC,
+    w_skill: float = W_SKILL,
+    w_exp: float = W_EXP,
 ) -> dict:
-    """
-    Score a single candidate dict against the JD.
-    Returns a dict with keys: scores (dict), explanation, matched_skills, missing_skills.
-    """
+    """Score candidate against job specification."""
     if jd_skills is None:
         jd_skills = _extract_jd_skills(jd_text)
     if required_years is None:
         required_years = _extract_required_experience(jd_text)
 
-    resume_text = candidate.get("raw_text", "")
+    resume_text = candidate_dict.get("raw_text", "")
+    candidate_skills = candidate_dict.get("skills", [])
+    candidate_years = candidate_dict.get("years_of_experience")
 
-    # 1. Semantic similarity
-    semantic = _semantic_similarity(jd_text, resume_text)
+    semantic_sim = _semantic_similarity(jd_text, resume_text)
+    skill_score, matched_skills, missing_skills = _skill_overlap_score(jd_skills, candidate_skills)
+    exp_score = _experience_match_score(candidate_years, required_years)
 
-    # 2. Skill overlap
-    cand_skills = candidate.get("skills", [])
-    skill_score, matched, missing = _skill_overlap_score(jd_skills, cand_skills)
-
-    # 3. Experience match
-    exp_score = _experience_match_score(
-        candidate.get("years_of_experience"), required_years
+    final_score = (
+        w_semantic * semantic_sim
+        + w_skill * skill_score
+        + w_exp * exp_score
     )
+    final_score = round(max(0.0, min(100.0, final_score)), 1)
 
-    # 4. Weighted final
-    final = (W_SEMANTIC * semantic + W_SKILL * skill_score + W_EXP * exp_score)
-    final = round(min(100.0, max(0.0, final)), 1)
-
-    explanation = _build_explanation(
-        candidate.get("name"),
-        candidate.get("filename", ""),
-        semantic,
-        skill_score,
-        exp_score,
-        final,
-        matched,
-        missing,
-        candidate.get("years_of_experience"),
-        required_years,
+    explanation = generate_explanation(
+        final_score=final_score,
+        semantic=semantic_sim,
+        skill_score=skill_score,
+        exp_score=exp_score,
+        matched_skills=matched_skills,
+        missing_skills=missing_skills,
+        candidate_years=candidate_years,
+        required_years=required_years,
     )
 
     return {
         "scores": {
-            "semantic_similarity": round(semantic, 1),
+            "semantic_similarity": round(semantic_sim, 1),
             "skill_overlap": round(skill_score, 1),
             "experience_match": round(exp_score, 1),
-            "final_score": final,
+            "final_score": final_score,
         },
+        "matched_skills": matched_skills,
+        "missing_skills": missing_skills,
         "explanation": explanation,
-        "matched_skills": matched,
-        "missing_skills": missing,
     }

@@ -17,6 +17,8 @@ export interface ExtractedCandidate {
   parse_error: string | null;
 }
 
+export type PipelineStage = 'review' | 'shortlisted' | 'rejected';
+
 export interface ScoredCandidate {
   candidate: ExtractedCandidate;
   scores: ScoreBreakdown;
@@ -24,6 +26,8 @@ export interface ScoredCandidate {
   explanation: string;
   matched_skills: string[];
   missing_skills: string[];
+  pipelineStage?: PipelineStage;
+  recruiterNotes?: string;
 }
 
 export interface FailedFile {
@@ -55,6 +59,12 @@ export type SSEEvent = ProgressEvent | ResultEvent;
 
 export type SortField = 'rank' | 'name' | 'final_score' | 'semantic_similarity' | 'skill_overlap' | 'experience_match';
 export type SortDir = 'asc' | 'desc';
+
+export interface ScoringWeights {
+  semantic: number;
+  skills: number;
+  experience: number;
+}
 
 export interface SampleJD {
   id: string;

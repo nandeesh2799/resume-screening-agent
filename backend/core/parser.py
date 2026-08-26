@@ -1,215 +1,320 @@
 """
-Resume parsing module.
-Handles PDF (via pdfplumber), DOCX (via python-docx), and plain TXT files.
-Extracts: name, email, phone, skills, years of experience, education, raw text.
+Multi-format resume parser supporting PDF, DOCX, and TXT files.
+Extracts structured candidate metadata: Name, Email, Phone, Skills, Education, and Experience.
+Includes skill alias/synonym normalization.
 """
 from __future__ import annotations
 
 import io
 import re
-import logging
 from pathlib import Path
 from typing import Optional
 
-logger = logging.getLogger(__name__)
+# ---------------------------------------------------------------------------
+# Skill Keyword Taxonomy & Synonyms
+# ---------------------------------------------------------------------------
+
+SKILL_ALIASES: dict[str, str] = {
+    "postgres": "postgresql",
+    "psql": "postgresql",
+    "postgresql": "postgresql",
+    "k8s": "kubernetes",
+    "kube": "kubernetes",
+    "kubernetes": "kubernetes",
+    "aws": "aws",
+    "amazon web services": "aws",
+    "gcp": "gcp",
+    "google cloud": "gcp",
+    "google cloud platform": "gcp",
+    "azure": "azure",
+    "microsoft azure": "azure",
+    "react": "react",
+    "reactjs": "react",
+    "react.js": "react",
+    "react native": "react native",
+    "ts": "typescript",
+    "typescript": "typescript",
+    "js": "javascript",
+    "javascript": "javascript",
+    "py": "python",
+    "python": "python",
+    "tf": "tensorflow",
+    "tensorflow": "tensorflow",
+    "ml": "machine learning",
+    "machine learning": "machine learning",
+    "ai": "artificial intelligence",
+    "artificial intelligence": "artificial intelligence",
+    "nlp": "nlp",
+    "natural language processing": "nlp",
+    "ci/cd": "ci/cd",
+    "cicd": "ci/cd",
+    "continuous integration": "ci/cd",
+    "golang": "go",
+    "go": "go",
+    "mongo": "mongodb",
+    "mongodb": "mongodb",
+    "node": "node.js",
+    "nodejs": "node.js",
+    "node.js": "node.js",
+    "fastapi": "fastapi",
+    "django": "django",
+    "flask": "flask",
+    "redis": "redis",
+    "kafka": "kafka",
+    "apache kafka": "kafka",
+    "spark": "spark",
+    "apache spark": "spark",
+    "airflow": "airflow",
+    "apache airflow": "airflow",
+    "docker": "docker",
+    "terraform": "terraform",
+    "ansible": "ansible",
+    "graphql": "graphql",
+    "rest": "rest api",
+    "rest api": "rest api",
+    "microservices": "microservices",
+    "pytorch": "pytorch",
+    "scikit-learn": "scikit-learn",
+    "sklearn": "scikit-learn",
+    "pandas": "pandas",
+    "numpy": "numpy",
+    "git": "git",
+    "github": "git",
+    "sql": "sql",
+    "nosql": "nosql",
+    "linux": "linux",
+    "bash": "bash",
+    "prometheus": "prometheus",
+    "grafana": "grafana",
+    "snowflake": "snowflake",
+    "bigquery": "bigquery",
+    "dbt": "dbt",
+    "llm": "llm",
+    "rag": "rag",
+    "langchain": "langchain",
+    "llamaindex": "llamaindex",
+}
+
+SKILL_KEYWORDS: list[str] = sorted(list(set(SKILL_ALIASES.values())))
+
 
 # ---------------------------------------------------------------------------
-# Skill vocabulary (extend as needed)
+# Regex Patterns
 # ---------------------------------------------------------------------------
-SKILL_KEYWORDS: list[str] = [
-    # Languages
-    "python", "javascript", "typescript", "java", "c++", "c#", "go", "rust",
-    "kotlin", "swift", "ruby", "php", "scala", "r", "matlab", "bash", "shell",
-    # Web
-    "react", "vue", "angular", "nextjs", "nuxt", "svelte", "html", "css",
-    "tailwind", "bootstrap", "graphql", "rest", "fastapi", "django", "flask",
-    "express", "node", "nodejs", "spring", "asp.net",
-    # Data / ML / AI
-    "machine learning", "deep learning", "nlp", "natural language processing",
-    "computer vision", "tensorflow", "pytorch", "keras", "scikit-learn",
-    "pandas", "numpy", "spark", "hadoop", "kafka", "airflow",
-    "transformers", "llm", "gpt", "bert", "langchain", "rag",
-    # Cloud / DevOps
-    "aws", "gcp", "azure", "docker", "kubernetes", "terraform", "ansible",
-    "ci/cd", "github actions", "jenkins", "linux", "git",
-    # Databases
-    "sql", "postgresql", "mysql", "mongodb", "redis", "elasticsearch",
-    "cassandra", "sqlite", "snowflake", "bigquery", "dbt",
-    # Soft / Domain
-    "agile", "scrum", "product management", "data analysis",
-    "communication", "leadership", "team management",
-]
 
-EDUCATION_KEYWORDS = [
-    "bachelor", "master", "phd", "b.sc", "m.sc", "b.tech", "m.tech",
-    "b.e.", "m.e.", "mba", "b.com", "mca", "bca", "diploma",
-    "university", "college", "institute", "school of",
-]
-
-EXPERIENCE_PATTERNS = [
-    re.compile(
-        r"(\d+(?:\.\d+)?)\s*\+?\s*years?\s+(?:of\s+)?(?:experience|exp)",
-        re.IGNORECASE,
-    ),
-    re.compile(
-        r"experience\s*[:–-]?\s*(\d+(?:\.\d+)?)\s*\+?\s*years?",
-        re.IGNORECASE,
-    ),
-]
-
-EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}")
-PHONE_RE = re.compile(
-    r"(?:\+?\d[\d\s\-().]{7,15}\d)"
+EMAIL_RE = re.compile(
+    r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+",
+    re.IGNORECASE,
 )
 
+PHONE_RE = re.compile(
+    r"(?:\+?\d{1,3}[\s-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}",
+)
+
+YEARS_EXP_RE = re.compile(
+    r"(\d+(?:\.\d+)?)\+?\s*(?:years?|yrs?)(?:\s+of)?(?:\s+experience)?",
+    re.IGNORECASE,
+)
+
+DATE_RANGE_RE = re.compile(
+    r"\b(20\d{2}|19\d{2})\s*(?:-|–|to)\s*(20\d{2}|19\d{2}|present|current)\b",
+    re.IGNORECASE,
+)
+
+EDUCATION_KEYWORDS = [
+    "ph.d", "phd", "master of science", "master of arts", "bachelor of science",
+    "bachelor of arts", "bachelor of technology", "bachelor of engineering",
+    "master of technology", "master of engineering", "m.s.", "m.a.", "b.s.", "b.a.",
+    "b.tech", "m.tech", "b.e.", "m.e.", "mba", "master's", "bachelor's", "degree",
+    "computer science", "data science", "information technology", "electrical engineering",
+    "mathematics", "statistics", "software engineering",
+]
+
 
 # ---------------------------------------------------------------------------
-# Low-level extractors
+# Text Extraction Functions
 # ---------------------------------------------------------------------------
 
-def _extract_from_txt(content: str) -> str:
-    """Return raw text from plain-text content."""
-    return content
+def extract_text_from_pdf(file_bytes: bytes) -> str:
+    """Extract raw text from PDF bytes using pdfplumber with pypdf fallback."""
+    text_parts: list[str] = []
 
-
-def _extract_from_pdf(file_bytes: bytes) -> str:
-    """Extract text from PDF bytes using pdfplumber."""
     try:
         import pdfplumber  # type: ignore
-
         with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
-            pages = [page.extract_text() or "" for page in pdf.pages]
-        return "\n".join(pages)
-    except Exception as exc:
-        logger.warning("pdfplumber failed, falling back to pypdf: %s", exc)
-        # Fallback to pypdf
-        from pypdf import PdfReader  # type: ignore
+            for page in pdf.pages:
+                t = page.extract_text()
+                if t:
+                    text_parts.append(t)
+    except Exception:
+        pass
 
-        reader = PdfReader(io.BytesIO(file_bytes))
-        return "\n".join(
-            page.extract_text() or "" for page in reader.pages
-        )
+    if not text_parts:
+        try:
+            import pypdf  # type: ignore
+            reader = pypdf.PdfReader(io.BytesIO(file_bytes))
+            for page in reader.pages:
+                t = page.extract_text()
+                if t:
+                    text_parts.append(t)
+        except Exception:
+            pass
+
+    return "\n".join(text_parts).strip()
 
 
-def _extract_from_docx(file_bytes: bytes) -> str:
+def extract_text_from_docx(file_bytes: bytes) -> str:
     """Extract text from DOCX bytes using python-docx."""
-    from docx import Document  # type: ignore
+    try:
+        import docx  # type: ignore
+        doc = docx.Document(io.BytesIO(file_bytes))
+        paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    if cell.text.strip():
+                        paragraphs.append(cell.text.strip())
+        return "\n".join(paragraphs).strip()
+    except Exception as exc:
+        raise ValueError(f"Failed to extract text from DOCX: {exc}") from exc
 
-    doc = Document(io.BytesIO(file_bytes))
-    paragraphs = [p.text for p in doc.paragraphs]
-    # Also extract tables
-    for table in doc.tables:
-        for row in table.rows:
-            for cell in row.cells:
-                paragraphs.append(cell.text)
-    return "\n".join(paragraphs)
+
+def extract_text_from_txt(file_bytes: bytes) -> str:
+    """Decode plain text bytes with UTF-8 / Latin-1 fallback."""
+    for enc in ("utf-8", "utf-8-sig", "latin-1", "cp1252"):
+        try:
+            return file_bytes.decode(enc).strip()
+        except UnicodeDecodeError:
+            continue
+    return file_bytes.decode("utf-8", errors="replace").strip()
 
 
 # ---------------------------------------------------------------------------
-# NLP helpers
+# Entity Extraction Functions
 # ---------------------------------------------------------------------------
-
-def _extract_name(text: str) -> Optional[str]:
-    """
-    Heuristic: the candidate name is usually on one of the first 5 lines,
-    all-caps or Title Case, and doesn't look like a section heading.
-    """
-    lines = [l.strip() for l in text.splitlines() if l.strip()][:8]
-    for line in lines:
-        # Skip lines that look like headings or contact info
-        if EMAIL_RE.search(line) or PHONE_RE.search(line):
-            continue
-        if any(kw in line.lower() for kw in ["resume", "curriculum", "cv", "objective", "summary"]):
-            continue
-        # Accept 2-4 word title-case or all-caps line
-        words = line.split()
-        if 2 <= len(words) <= 4 and all(
-            w[0].isupper() or w.isupper() for w in words if w.isalpha()
-        ):
-            return line
-    return None
-
 
 def _extract_email(text: str) -> Optional[str]:
-    match = EMAIL_RE.search(text)
-    return match.group(0) if match else None
+    m = EMAIL_RE.search(text)
+    return m.group(0).strip() if m else None
 
 
 def _extract_phone(text: str) -> Optional[str]:
-    match = PHONE_RE.search(text)
-    return match.group(0).strip() if match else None
+    m = PHONE_RE.search(text)
+    return m.group(0).strip() if m else None
 
 
 def _extract_skills(text: str) -> list[str]:
-    lower = text.lower()
-    found: list[str] = []
-    for skill in SKILL_KEYWORDS:
-        # Use word-boundary matching for single-word skills
-        pattern = r"\b" + re.escape(skill) + r"\b"
-        if re.search(pattern, lower):
-            found.append(skill)
-    return list(dict.fromkeys(found))  # preserve order, deduplicate
+    """Scan text for skill keywords and synonyms with word boundaries."""
+    found: set[str] = set()
+    text_lower = text.lower()
+
+    for raw_skill, canonical in SKILL_ALIASES.items():
+        pattern = r"(?<!\w)" + re.escape(raw_skill) + r"(?!\w)"
+        if re.search(pattern, text_lower):
+            found.add(canonical)
+
+    return sorted(list(found))
 
 
 def _extract_years_experience(text: str) -> Optional[float]:
-    for pattern in EXPERIENCE_PATTERNS:
-        match = pattern.search(text)
-        if match:
+    """
+    Extract years of experience.
+    1. Check explicit "X years of experience" statements.
+    2. Fall back to parsing employment date ranges.
+    """
+    matches = YEARS_EXP_RE.findall(text)
+    if matches:
+        try:
+            return max(float(m) for m in matches)
+        except ValueError:
+            pass
+
+    # Date range heuristic
+    date_matches = DATE_RANGE_RE.findall(text)
+    if date_matches:
+        import datetime
+        current_year = datetime.datetime.now().year
+        total_span = 0
+        for start_str, end_str in date_matches:
             try:
-                return float(match.group(1))
+                start = int(start_str)
+                end = current_year if end_str.lower() in ("present", "current") else int(end_str)
+                if 1970 <= start <= current_year and start <= end <= current_year + 1:
+                    total_span += (end - start)
             except ValueError:
-                pass
-    # Fallback: count date ranges like "2018 - 2022"
-    year_ranges = re.findall(
-        r"\b(19|20)\d{2}\b\s*[-–]\s*\b(?:(19|20)\d{2}|present|current)\b",
-        text,
-        re.IGNORECASE,
-    )
-    if year_ranges:
-        # rough estimate: number of distinct roles × 2 years
-        return min(float(len(year_ranges)) * 2.0, 20.0)
+                continue
+        if total_span > 0:
+            return float(min(total_span, 40))
+
     return None
 
 
 def _extract_education(text: str) -> list[str]:
-    lines = text.splitlines()
-    edu: list[str] = []
+    """Extract education degree mentions and institutions."""
+    found: list[str] = []
+    lines = text.split("\n")
     for line in lines:
-        lower = line.lower()
-        if any(kw in lower for kw in EDUCATION_KEYWORDS):
-            stripped = line.strip()
-            if stripped and len(stripped) > 4:
-                edu.append(stripped)
-    return edu[:5]  # cap at 5 entries
+        line_clean = line.strip()
+        if not line_clean:
+            continue
+        line_lower = line_clean.lower()
+        if any(kw in line_lower for kw in EDUCATION_KEYWORDS):
+            if len(line_clean) < 120 and line_clean not in found:
+                found.append(line_clean)
+    return found[:5]
+
+
+def _extract_name(text: str, filename: str = "") -> Optional[str]:
+    """Extract candidate name from header lines or fallback to filename."""
+    lines = [line.strip() for line in text.split("\n") if line.strip()]
+    for line in lines[:5]:
+        if EMAIL_RE.search(line) or PHONE_RE.search(line):
+            continue
+        if any(kw in line.lower() for kw in ("resume", "curriculum vitae", "cv", "page", "profile", "contact", "summary")):
+            continue
+        words = line.split()
+        if 1 <= len(words) <= 4 and all(w[0].isupper() for w in words if w and w[0].isalpha()):
+            return line
+
+    if filename:
+        stem = Path(filename).stem
+        clean_stem = re.sub(r"^[\d_-]+", "", stem)
+        parts = [p.capitalize() for p in re.split(r"[_\s-]+", clean_stem) if p and not p.isdigit()]
+        return " ".join(parts) if parts else None
+    return None
 
 
 # ---------------------------------------------------------------------------
-# Public API
+# Main Entry Point
 # ---------------------------------------------------------------------------
 
 def parse_resume(filename: str, file_bytes: bytes) -> dict:
     """
-    Parse a resume file and return a dict matching ExtractedCandidate fields.
-    Raises ValueError on unrecognised format; caller should catch and flag.
+    Parse a single resume file.
+    Raises ValueError for unsupported formats or empty unreadable files.
     """
     suffix = Path(filename).suffix.lower()
 
-    if suffix == ".pdf":
-        raw_text = _extract_from_pdf(file_bytes)
-    elif suffix in (".docx", ".doc"):
-        raw_text = _extract_from_docx(file_bytes)
-    elif suffix == ".txt":
-        raw_text = file_bytes.decode("utf-8", errors="replace")
-        raw_text = _extract_from_txt(raw_text)
-    else:
-        raise ValueError(f"Unsupported file format: {suffix!r}")
+    if suffix not in (".pdf", ".docx", ".doc", ".txt"):
+        raise ValueError(f"Unsupported file format: {suffix}")
 
-    if not raw_text.strip():
-        raise ValueError("Could not extract any text from the file")
+    if not file_bytes or not file_bytes.strip():
+        raise ValueError("Could not extract readable text from empty file (0 bytes).")
+
+    raw_text = ""
+    if suffix == ".pdf":
+        raw_text = extract_text_from_pdf(file_bytes)
+    elif suffix in (".docx", ".doc"):
+        raw_text = extract_text_from_docx(file_bytes)
+    elif suffix == ".txt":
+        raw_text = extract_text_from_txt(file_bytes)
+
+    if not raw_text or not raw_text.strip():
+        raise ValueError("Could not extract readable text from file.")
 
     return {
         "filename": filename,
-        "name": _extract_name(raw_text),
+        "name": _extract_name(raw_text, filename),
         "email": _extract_email(raw_text),
         "phone": _extract_phone(raw_text),
         "skills": _extract_skills(raw_text),

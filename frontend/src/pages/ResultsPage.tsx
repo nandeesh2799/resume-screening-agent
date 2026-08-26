@@ -1,8 +1,6 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import confetti from 'canvas-confetti';
 import {
-  Trophy,
   Download,
   Search,
   ArrowUpDown,
@@ -10,10 +8,14 @@ import {
   RotateCcw,
   LayoutGrid,
   List,
-  Crown,
+  Star,
+  Clock,
+  X,
+  Sliders,
+  Filter,
   Users,
 } from 'lucide-react';
-import type { ScreeningResult, ScoredCandidate, SortField, SortDir } from '../types';
+import type { ScreeningResult, ScoredCandidate, SortField, SortDir, PipelineStage, ScoringWeights } from '../types';
 import { CandidateCard } from '../components/CandidateCard';
 import { CandidateDetailDrawer } from '../components/CandidateDetailDrawer';
 import { CandidateComparisonModal } from '../components/CandidateComparisonModal';
@@ -25,13 +27,32 @@ interface Props {
   onReset: () => void;
 }
 
-type TierFilter = 'all' | 'strong' | 'moderate' | 'weak';
+type StageTab = 'all' | 'shortlisted' | 'review' | 'rejected';
 type ViewMode = 'cards' | 'table';
 
 export function ResultsPage({ result, onReset }: Props) {
+  // Recruiter pipeline state
+  const [candidates, setCandidates] = useState<ScoredCandidate[]>(() =>
+    result.candidates.map((c) => ({ ...c, pipelineStage: 'review' })),
+  );
+
+  // Scoring weights state
+  const [weights, setWeights] = useState<ScoringWeights>({
+    semantic: 45,
+    skills: 35,
+    experience: 20,
+  });
+  const [showWeightSliders, setShowWeightSliders] = useState(false);
+
+  // Filters state
   const [search, setSearch] = useState('');
-  const [tier, setTier] = useState<TierFilter>('all');
+  const [stageTab, setStageTab] = useState<StageTab>('all');
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+  const [minExpFilter, setMinExpFilter] = useState<number>(0);
+  const [mandatorySkills, setMandatorySkills] = useState<string[]>([]);
+  const [showKnockoutFilters, setShowKnockoutFilters] = useState(false);
+
+  // Sort & View state
   const [sortField, setSortField] = useState<SortField>('rank');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
   const [viewMode, setViewMode] = useState<ViewMode>('cards');
@@ -40,34 +61,51 @@ export function ResultsPage({ result, onReset }: Props) {
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
   const [exporting, setExporting] = useState<'csv' | 'json' | null>(null);
 
-  useEffect(() => {
-    try {
-      confetti({
-        particleCount: 90,
-        spread: 75,
-        origin: { y: 0.6 },
-        colors: ['#6366f1', '#a855f7', '#06b6d4', '#10b981', '#f59e0b'],
-      });
-    } catch {
-      // ignore
-    }
-  }, []);
+  // Dynamic score re-calculation when weight sliders change
+  const dynamicCandidates = useMemo(() => {
+    const totalWeight = (weights.semantic + weights.skills + weights.experience) || 100;
+    const wSem = weights.semantic / totalWeight;
+    const wSk = weights.skills / totalWeight;
+    const wExp = weights.experience / totalWeight;
 
+    const list = candidates.map((c) => {
+      const dynamicFinal = Number(
+        (
+          wSem * c.scores.semantic_similarity +
+          wSk * c.scores.skill_overlap +
+          wExp * c.scores.experience_match
+        ).toFixed(1),
+      );
+      return {
+        ...c,
+        scores: {
+          ...c.scores,
+          final_score: dynamicFinal,
+        },
+      };
+    });
+
+    // Re-rank
+    list.sort((a, b) => b.scores.final_score - a.scores.final_score);
+    return list.map((c, idx) => ({ ...c, rank: idx + 1 }));
+  }, [candidates, weights]);
+
+  // Aggregate statistics
   const stats = useMemo(() => {
-    const total = result.candidates.length;
-    if (total === 0) return { avgScore: 0, topFitCount: 0, skillCounts: {} };
-    const avgScore = result.candidates.reduce((acc, c) => acc + c.scores.final_score, 0) / total;
-    const topFitCount = result.candidates.filter((c) => c.scores.final_score >= 75).length;
+    const total = dynamicCandidates.length;
+    const shortlistedCount = dynamicCandidates.filter((c) => c.pipelineStage === 'shortlisted').length;
+    const reviewCount = dynamicCandidates.filter((c) => c.pipelineStage === 'review').length;
+    const rejectedCount = dynamicCandidates.filter((c) => c.pipelineStage === 'rejected').length;
 
     const skillCounts: Record<string, number> = {};
-    result.candidates.forEach((c) => {
+    dynamicCandidates.forEach((c) => {
       c.matched_skills.forEach((s) => {
         skillCounts[s] = (skillCounts[s] || 0) + 1;
       });
     });
 
-    return { avgScore, topFitCount, skillCounts };
-  }, [result.candidates]);
+    return { total, shortlistedCount, reviewCount, rejectedCount, skillCounts };
+  }, [dynamicCandidates]);
 
   const popularSkills = useMemo(() => {
     return Object.entries(stats.skillCounts)
@@ -75,8 +113,26 @@ export function ResultsPage({ result, onReset }: Props) {
       .slice(0, 10);
   }, [stats.skillCounts]);
 
+  // Candidate pipeline update handlers
+  const handleUpdateStage = (cand: ScoredCandidate, stage: PipelineStage) => {
+    setCandidates((prev) =>
+      prev.map((c) =>
+        c.candidate.filename === cand.candidate.filename ? { ...c, pipelineStage: stage } : c,
+      ),
+    );
+  };
+
+  const handleUpdateNotes = (cand: ScoredCandidate, notes: string) => {
+    setCandidates((prev) =>
+      prev.map((c) =>
+        c.candidate.filename === cand.candidate.filename ? { ...c, recruiterNotes: notes } : c,
+      ),
+    );
+  };
+
+  // Filtered & sorted candidates
   const filteredCandidates = useMemo(() => {
-    return result.candidates
+    return dynamicCandidates
       .filter((c) => {
         const name = (c.candidate.name || c.candidate.filename).toLowerCase();
         const matchesSearch =
@@ -84,18 +140,16 @@ export function ResultsPage({ result, onReset }: Props) {
           name.includes(search.toLowerCase()) ||
           c.matched_skills.some((s) => s.toLowerCase().includes(search.toLowerCase()));
 
-        const matchesTier =
-          tier === 'all'
-            ? true
-            : tier === 'strong'
-              ? c.scores.final_score >= 75
-              : tier === 'moderate'
-                ? c.scores.final_score >= 50 && c.scores.final_score < 75
-                : c.scores.final_score < 50;
+        const matchesStage =
+          stageTab === 'all' ? true : (c.pipelineStage || 'review') === stageTab;
 
         const matchesSkill = !selectedSkill || c.matched_skills.includes(selectedSkill);
 
-        return matchesSearch && matchesTier && matchesSkill;
+        // Mandatory criteria knockout
+        const meetsExp = minExpFilter === 0 || (c.candidate.years_of_experience !== null && c.candidate.years_of_experience >= minExpFilter);
+        const meetsMandatory = mandatorySkills.length === 0 || mandatorySkills.every((s) => c.matched_skills.includes(s));
+
+        return matchesSearch && matchesStage && matchesSkill && meetsExp && meetsMandatory;
       })
       .sort((a, b) => {
         let va: number | string, vb: number | string;
@@ -114,7 +168,7 @@ export function ResultsPage({ result, onReset }: Props) {
         if (va > vb) return sortDir === 'asc' ? 1 : -1;
         return 0;
       });
-  }, [result.candidates, search, tier, selectedSkill, sortField, sortDir]);
+  }, [dynamicCandidates, search, stageTab, selectedSkill, minExpFilter, mandatorySkills, sortField, sortDir]);
 
   const toggleSort = (field: SortField) => {
     if (sortField === field) {
@@ -137,11 +191,21 @@ export function ResultsPage({ result, onReset }: Props) {
     }
   };
 
-  const handleExport = async (type: 'csv' | 'json') => {
+  const handleExport = async (type: 'csv' | 'json', shortlistOnly = false) => {
     setExporting(type);
     try {
-      if (type === 'csv') await exportCsv(result);
-      else await exportJson(result);
+      const candidatesToExport = shortlistOnly
+        ? dynamicCandidates.filter((c) => c.pipelineStage === 'shortlisted')
+        : dynamicCandidates;
+
+      const payload = {
+        ...result,
+        candidates: candidatesToExport,
+        total_processed: candidatesToExport.length,
+      };
+
+      if (type === 'csv') await exportCsv(payload);
+      else await exportJson(payload);
     } catch (e) {
       alert(`Export failed: ${e}`);
     } finally {
@@ -149,23 +213,21 @@ export function ResultsPage({ result, onReset }: Props) {
     }
   };
 
-  const topCandidate = result.candidates.length > 0 ? result.candidates[0] : null;
-
   return (
-    <div className="w-full max-w-[1800px] mx-auto px-2 sm:px-4 space-y-6">
-      {/* Top Banner & Action Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
+    <div className="w-full max-w-[1800px] mx-auto space-y-5">
+      {/* Top Action Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800 pb-4">
         <div>
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/40 shadow-[0_0_15px_-3px_rgba(16,185,129,0.3)]">
-              <Trophy className="h-5 w-5" />
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-              Neural Candidate Shortlist & Ranking
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100">
+              Candidate Shortlist & Pipeline
             </h1>
+            <span className="rounded bg-zinc-800 border border-zinc-700 px-2 py-0.5 text-xs font-mono text-zinc-400">
+              {stats.total} processed
+            </span>
           </div>
-          <p className="mt-1 text-xs text-slate-400">
-            {result.total_processed} candidate resumes scored against your job specification
+          <p className="text-xs text-zinc-400 mt-0.5">
+            Ranked candidates scored against role specification
           </p>
         </div>
 
@@ -174,7 +236,7 @@ export function ResultsPage({ result, onReset }: Props) {
             <button
               type="button"
               onClick={() => setIsCompareModalOpen(true)}
-              className="glow-btn-primary flex items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-bold text-white shadow-lg cursor-pointer"
+              className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-indigo-500 transition-colors"
             >
               <Users className="h-4 w-4" />
               <span>Compare Selected ({compareList.length})</span>
@@ -183,200 +245,280 @@ export function ResultsPage({ result, onReset }: Props) {
 
           <button
             type="button"
-            onClick={() => handleExport('csv')}
-            disabled={exporting !== null}
-            className="flex items-center gap-1.5 rounded-2xl border border-white/[0.1] bg-slate-900/80 px-4 py-2.5 text-xs font-bold text-slate-200 hover:bg-slate-800 shadow-sm transition-all cursor-pointer"
+            onClick={() => setShowWeightSliders(!showWeightSliders)}
+            className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors cursor-pointer ${
+              showWeightSliders
+                ? 'bg-zinc-800 border-indigo-500 text-indigo-300'
+                : 'border-zinc-700 bg-zinc-900 text-zinc-300 hover:bg-zinc-800'
+            }`}
           >
-            <Download className="h-4 w-4 text-slate-400" />
-            <span>{exporting === 'csv' ? 'Exporting...' : 'Export CSV'}</span>
+            <Sliders className="h-3.5 w-3.5" />
+            <span>Tune Weights</span>
           </button>
 
           <button
             type="button"
-            onClick={() => handleExport('json')}
-            disabled={exporting !== null}
-            className="flex items-center gap-1.5 rounded-2xl border border-white/[0.1] bg-slate-900/80 px-4 py-2.5 text-xs font-bold text-slate-200 hover:bg-slate-800 shadow-sm transition-all cursor-pointer"
+            onClick={() => setShowKnockoutFilters(!showKnockoutFilters)}
+            className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors cursor-pointer ${
+              showKnockoutFilters || minExpFilter > 0 || mandatorySkills.length > 0
+                ? 'bg-zinc-800 border-indigo-500 text-indigo-300'
+                : 'border-zinc-700 bg-zinc-900 text-zinc-300 hover:bg-zinc-800'
+            }`}
           >
-            <Download className="h-4 w-4 text-slate-400" />
-            <span>{exporting === 'json' ? 'Exporting...' : 'Export JSON'}</span>
+            <Filter className="h-3.5 w-3.5" />
+            <span>Knockout Criteria {mandatorySkills.length > 0 ? `(${mandatorySkills.length})` : ''}</span>
+          </button>
+
+          <div className="h-4 w-[1px] bg-zinc-800 hidden sm:block"></div>
+
+          <button
+            type="button"
+            onClick={() => handleExport('csv', false)}
+            disabled={exporting !== null}
+            className="flex items-center gap-1.5 rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs font-medium text-zinc-300 hover:bg-zinc-800 cursor-pointer"
+          >
+            <Download className="h-3.5 w-3.5 text-zinc-400" />
+            <span>CSV</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleExport('json', false)}
+            disabled={exporting !== null}
+            className="flex items-center gap-1.5 rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs font-medium text-zinc-300 hover:bg-zinc-800 cursor-pointer"
+          >
+            <Download className="h-3.5 w-3.5 text-zinc-400" />
+            <span>JSON</span>
           </button>
 
           <button
             type="button"
             onClick={onReset}
-            className="flex items-center gap-1.5 rounded-2xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.15] px-4 py-2.5 text-xs font-bold text-white shadow transition-all cursor-pointer"
+            className="flex items-center gap-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 px-3 py-2 text-xs font-semibold text-zinc-200 transition-colors cursor-pointer"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            <span>New Screening</span>
+            <span>New Screen</span>
           </button>
         </div>
       </div>
 
-      {/* Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-panel rounded-3xl p-5 border border-white/[0.08] space-y-1.5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
-            Total Ingested
-          </span>
-          <div className="flex items-baseline justify-between">
-            <span className="text-3xl font-black tracking-tight text-white tabular-nums">
-              {result.total_processed}
-            </span>
-            <span className="text-xs font-bold text-emerald-400">
-              100% Parsed
-            </span>
-          </div>
-        </div>
-
-        <div className="glass-panel rounded-3xl p-5 border border-white/[0.08] space-y-1.5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
-            Batch Average Score
-          </span>
-          <div className="flex items-baseline justify-between">
-            <span className="text-3xl font-black tracking-tight text-indigo-300 tabular-nums">
-              {stats.avgScore.toFixed(1)}
-              <span className="text-sm font-normal text-slate-500">/100</span>
-            </span>
-            <span className="text-xs text-slate-400 font-medium">Batch Fit</span>
-          </div>
-        </div>
-
-        <div className="glass-panel rounded-3xl p-5 border border-white/[0.08] space-y-1.5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
-            Strong Matches (≥75%)
-          </span>
-          <div className="flex items-baseline justify-between">
-            <span className="text-3xl font-black tracking-tight text-emerald-400 tabular-nums">
-              {stats.topFitCount}
-            </span>
-            <span className="text-xs text-slate-400 font-medium">
-              {result.total_processed > 0
-                ? `${Math.round((stats.topFitCount / result.total_processed) * 100)}% of batch`
-                : ''}
-            </span>
-          </div>
-        </div>
-
-        <div className="glass-panel rounded-3xl p-5 border border-white/[0.08] space-y-1.5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
-            Flagged Malformed
-          </span>
-          <div className="flex items-baseline justify-between">
-            <span
-              className={`text-3xl font-black tracking-tight tabular-nums ${
-                result.total_failed > 0 ? 'text-amber-400' : 'text-slate-500'
-              }`}
-            >
-              {result.total_failed}
-            </span>
-            <span className="text-xs text-slate-400 font-medium">
-              {result.total_failed === 0 ? '✓ Zero errors' : 'Requires review'}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Spotlight Winner Card (#1 Candidate) */}
-      {topCandidate && (
+      {/* Dynamic Weight Tuning Sliders Panel */}
+      {showWeightSliders && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="relative overflow-hidden rounded-3xl border-2 border-indigo-500/40 bg-gradient-to-r from-indigo-950/60 via-violet-950/40 to-[#0c101c] p-6 sm:p-7 shadow-[0_0_40px_-15px_rgba(99,102,241,0.4)] backdrop-blur-2xl"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 space-y-3"
         >
-          <div className="flex flex-wrap items-center justify-between gap-5">
-            <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-400 text-slate-950 shadow-[0_0_25px_rgba(245,158,11,0.5)]">
-                <Crown className="h-8 w-8" />
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-mono font-bold uppercase text-zinc-300 flex items-center gap-1.5">
+              <Sliders className="h-3.5 w-3.5 text-indigo-400" />
+              Dynamic Weight Adjustment (Live Re-Ranking)
+            </span>
+            <button
+              type="button"
+              onClick={() => setWeights({ semantic: 45, skills: 35, experience: 20 })}
+              className="text-xs text-zinc-400 hover:text-zinc-200 font-mono"
+            >
+              Reset to 45 / 35 / 20 Defaults
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-1">
+            {/* Semantic Slider */}
+            <div className="space-y-1.5">
+              <div className="flex justify-between text-xs">
+                <span className="text-zinc-300 font-medium">Semantic Relevance</span>
+                <span className="font-mono font-bold text-indigo-400">{weights.semantic}%</span>
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-black uppercase tracking-wider text-amber-400">
-                    #1 Top Match Spotlight
-                  </span>
-                  <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 text-[10px] font-bold text-emerald-300">
-                    Recommended for Interview
-                  </span>
-                </div>
-                <h2 className="text-xl sm:text-2xl font-black text-white mt-0.5">
-                  {topCandidate.candidate.name || topCandidate.candidate.filename}
-                </h2>
-                <p className="text-xs text-slate-300 mt-1 line-clamp-1 max-w-2xl">
-                  {topCandidate.explanation}
-                </p>
-              </div>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={weights.semantic}
+                onChange={(e) => setWeights({ ...weights, semantic: Number(e.target.value) })}
+                className="w-full h-1.5 bg-zinc-800 rounded-lg cursor-pointer"
+              />
             </div>
 
-            <div className="flex items-center gap-3.5">
-              <ScoreBadge score={topCandidate.scores.final_score} size="lg" showLabel />
-              <button
-                type="button"
-                onClick={() => setSelectedCandidate(topCandidate)}
-                className="glow-btn-primary rounded-2xl px-6 py-3 text-xs font-black text-white shadow-xl cursor-pointer"
-              >
-                View Full Profile
-              </button>
+            {/* Skills Slider */}
+            <div className="space-y-1.5">
+              <div className="flex justify-between text-xs">
+                <span className="text-zinc-300 font-medium">Exact Skill Overlap</span>
+                <span className="font-mono font-bold text-violet-400">{weights.skills}%</span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={weights.skills}
+                onChange={(e) => setWeights({ ...weights, skills: Number(e.target.value) })}
+                className="w-full h-1.5 bg-zinc-800 rounded-lg cursor-pointer"
+              />
+            </div>
+
+            {/* Experience Slider */}
+            <div className="space-y-1.5">
+              <div className="flex justify-between text-xs">
+                <span className="text-zinc-300 font-medium">Years of Experience</span>
+                <span className="font-mono font-bold text-sky-400">{weights.experience}%</span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={weights.experience}
+                onChange={(e) => setWeights({ ...weights, experience: Number(e.target.value) })}
+                className="w-full h-1.5 bg-zinc-800 rounded-lg cursor-pointer"
+              />
             </div>
           </div>
         </motion.div>
       )}
 
-      {/* Filter Toolbar */}
-      <div className="glass-panel rounded-3xl p-4 sm:p-5 border border-white/[0.08] space-y-4">
+      {/* Knockout & Dealbreakers Panel */}
+      {showKnockoutFilters && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 space-y-3"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-mono font-bold uppercase text-zinc-300 flex items-center gap-1.5">
+              <Filter className="h-3.5 w-3.5 text-indigo-400" />
+              Mandatory Requirements & Knockout Filters
+            </span>
+            {(minExpFilter > 0 || mandatorySkills.length > 0) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMinExpFilter(0);
+                  setMandatorySkills([]);
+                }}
+                className="text-xs text-rose-400 hover:text-rose-300 font-mono"
+              >
+                Clear Knockout Rules
+              </button>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-1">
+            {/* Min Exp Filter */}
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between">
+                <span className="text-zinc-300 font-medium">Minimum Years Experience Filter</span>
+                <span className="font-mono font-bold text-zinc-100">
+                  {minExpFilter === 0 ? 'Any Experience' : `≥ ${minExpFilter} Years`}
+                </span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={10}
+                step={1}
+                value={minExpFilter}
+                onChange={(e) => setMinExpFilter(Number(e.target.value))}
+                className="w-full h-1.5 bg-zinc-800 rounded-lg cursor-pointer"
+              />
+            </div>
+
+            {/* Mandatory Skills Selection */}
+            <div className="space-y-1.5 text-xs">
+              <span className="text-zinc-300 font-medium">Mandatory Skills (Must-Have):</span>
+              <div className="flex flex-wrap gap-1.5">
+                {popularSkills.slice(0, 6).map(([skill]) => {
+                  const isMandatory = mandatorySkills.includes(skill);
+                  return (
+                    <button
+                      key={skill}
+                      type="button"
+                      onClick={() => {
+                        if (isMandatory) setMandatorySkills(mandatorySkills.filter((s) => s !== skill));
+                        else setMandatorySkills([...mandatorySkills, skill]);
+                      }}
+                      className={`rounded px-2 py-0.5 text-xs font-mono font-medium transition-colors cursor-pointer border ${
+                        isMandatory
+                          ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
+                          : 'bg-zinc-800 border-zinc-700 text-zinc-400 hover:text-zinc-200'
+                      }`}
+                    >
+                      {isMandatory && '✓ '}
+                      {skill}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Recruiter Pipeline Stage Tabs & Controls */}
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900/90 p-3 space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          {/* Search */}
-          <div className="relative flex-1 min-w-[280px]">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          {/* Pipeline Stage Tabs */}
+          <div className="flex items-center gap-1 rounded-lg bg-zinc-950 p-1 border border-zinc-800 text-xs">
+            <button
+              type="button"
+              onClick={() => setStageTab('all')}
+              className={`rounded-md px-3 py-1.5 font-semibold transition-all cursor-pointer ${
+                stageTab === 'all' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              All ({stats.total})
+            </button>
+            <button
+              type="button"
+              onClick={() => setStageTab('shortlisted')}
+              className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 font-semibold transition-all cursor-pointer ${
+                stageTab === 'shortlisted' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'text-zinc-400 hover:text-emerald-400'
+              }`}
+            >
+              <Star className="h-3.5 w-3.5" />
+              <span>Shortlisted ({stats.shortlistedCount})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setStageTab('review')}
+              className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 font-semibold transition-all cursor-pointer ${
+                stageTab === 'review' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              <Clock className="h-3.5 w-3.5" />
+              <span>In Review ({stats.reviewCount})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setStageTab('rejected')}
+              className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 font-semibold transition-all cursor-pointer ${
+                stageTab === 'rejected' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' : 'text-zinc-400 hover:text-rose-400'
+              }`}
+            >
+              <X className="h-3.5 w-3.5" />
+              <span>Rejected ({stats.rejectedCount})</span>
+            </button>
+          </div>
+
+          {/* Search Box */}
+          <div className="relative flex-1 min-w-[240px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
             <input
               type="text"
               placeholder="Search candidate name or skill..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-2xl border border-white/[0.08] bg-slate-900/90 py-2.5 pl-10 pr-4 text-xs text-white outline-none focus:ring-2 focus:ring-indigo-500 font-medium"
+              className="w-full rounded-lg border border-zinc-700 bg-zinc-950 py-1.5 pl-9 pr-3 text-xs text-zinc-200 outline-none focus:border-indigo-500 font-sans"
             />
           </div>
 
-          {/* Tier Tabs */}
-          <div className="flex items-center gap-1 rounded-2xl bg-black/60 p-1 border border-white/[0.06]">
-            {[
-              { id: 'all' as const, label: `All (${result.candidates.length})` },
-              {
-                id: 'strong' as const,
-                label: `Strong (≥75%)`,
-              },
-              {
-                id: 'moderate' as const,
-                label: `Moderate (50-75%)`,
-              },
-              {
-                id: 'weak' as const,
-                label: `Gap (<50%)`,
-              },
-            ].map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => setTier(t.id)}
-                className={[
-                  'rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer',
-                  tier === t.id
-                    ? 'bg-indigo-600 text-white shadow-[0_0_12px_-2px_rgba(99,102,241,0.5)]'
-                    : 'text-slate-400 hover:text-white',
-                ].join(' ')}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-
           {/* View Toggle */}
-          <div className="flex items-center gap-1 rounded-2xl bg-black/60 p-1 border border-white/[0.06]">
+          <div className="flex items-center gap-1 rounded-lg bg-zinc-950 p-1 border border-zinc-800">
             <button
               type="button"
               onClick={() => setViewMode('cards')}
-              className={`p-2 rounded-xl text-xs transition-colors cursor-pointer ${
-                viewMode === 'cards'
-                  ? 'bg-indigo-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
+              className={`p-1.5 rounded-md text-xs transition-colors cursor-pointer ${
+                viewMode === 'cards' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'
               }`}
             >
               <LayoutGrid className="h-4 w-4" />
@@ -384,10 +526,8 @@ export function ResultsPage({ result, onReset }: Props) {
             <button
               type="button"
               onClick={() => setViewMode('table')}
-              className={`p-2 rounded-xl text-xs transition-colors cursor-pointer ${
-                viewMode === 'table'
-                  ? 'bg-indigo-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
+              className={`p-1.5 rounded-md text-xs transition-colors cursor-pointer ${
+                viewMode === 'table' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'
               }`}
             >
               <List className="h-4 w-4" />
@@ -395,18 +535,16 @@ export function ResultsPage({ result, onReset }: Props) {
           </div>
         </div>
 
-        {/* Skill Tag Filters & Sort Buttons */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/[0.06] text-xs">
-          {/* Skill Pills */}
+        {/* Skill Filter Chips & Sort Controls */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-zinc-800 text-xs">
+          {/* Skill Filter Chips */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[10px] font-bold font-mono uppercase text-slate-500 mr-1">
-              Skills Filter:
-            </span>
+            <span className="text-[10px] font-mono uppercase text-zinc-500 mr-1">Skills:</span>
             {selectedSkill && (
               <button
                 type="button"
                 onClick={() => setSelectedSkill(null)}
-                className="rounded-lg bg-indigo-500/20 border border-indigo-500/40 px-2 py-0.5 text-[11px] font-bold text-indigo-300 cursor-pointer"
+                className="rounded bg-indigo-500/20 border border-indigo-500/40 px-2 py-0.5 text-[11px] font-mono font-semibold text-indigo-300 cursor-pointer"
               >
                 Clear ×
               </button>
@@ -418,22 +556,21 @@ export function ResultsPage({ result, onReset }: Props) {
                   key={skill}
                   type="button"
                   onClick={() => setSelectedSkill(isSelected ? null : skill)}
-                  className={[
-                    'rounded-xl px-2.5 py-1 text-[11px] font-bold transition-all border cursor-pointer',
+                  className={`rounded px-2 py-0.5 text-[11px] font-mono font-medium transition-colors border cursor-pointer ${
                     isSelected
-                      ? 'bg-indigo-600 text-white border-indigo-500 shadow-[0_0_10px_#6366f1]'
-                      : 'bg-white/[0.04] border-white/[0.08] text-slate-300 hover:border-indigo-400 hover:text-white',
-                  ].join(' ')}
+                      ? 'bg-indigo-600 text-white border-indigo-500'
+                      : 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:text-zinc-200'
+                  }`}
                 >
-                  {skill} <span className="opacity-60 text-[9px] font-mono">({count})</span>
+                  {skill} <span className="opacity-50 text-[10px]">({count})</span>
                 </button>
               );
             })}
           </div>
 
-          {/* Sort Buttons */}
+          {/* Sort Controls */}
           <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-bold font-mono uppercase text-slate-500">Sort:</span>
+            <span className="text-[10px] font-mono uppercase text-zinc-500">Sort:</span>
             {[
               { field: 'rank' as const, label: 'Rank' },
               { field: 'final_score' as const, label: 'Score' },
@@ -445,12 +582,11 @@ export function ResultsPage({ result, onReset }: Props) {
                 key={s.field}
                 type="button"
                 onClick={() => toggleSort(s.field)}
-                className={[
-                  'inline-flex items-center gap-1 rounded-xl px-2.5 py-1 text-[11px] font-bold transition-all cursor-pointer',
+                className={`inline-flex items-center gap-1 rounded px-2.5 py-1 text-[11px] font-medium transition-colors cursor-pointer border ${
                   sortField === s.field
-                    ? 'bg-indigo-600 text-white shadow-[0_0_10px_rgba(99,102,241,0.5)]'
-                    : 'bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-white hover:bg-white/[0.08]',
-                ].join(' ')}
+                    ? 'bg-zinc-800 border-zinc-600 text-zinc-100'
+                    : 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:text-zinc-200'
+                }`}
               >
                 <span>{s.label}</span>
                 <ArrowUpDown className="h-3 w-3" />
@@ -460,53 +596,55 @@ export function ResultsPage({ result, onReset }: Props) {
         </div>
       </div>
 
-      {/* Flagged Malformed Files */}
+      {/* Flagged Failed Resumes */}
       {result.failed_files.length > 0 && (
-        <div className="rounded-3xl border border-amber-500/30 bg-amber-500/10 p-5 space-y-2 text-xs">
-          <div className="flex items-center gap-2 font-bold text-amber-300">
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5 space-y-2 text-xs">
+          <div className="flex items-center gap-2 font-semibold text-amber-300">
             <AlertTriangle className="h-4 w-4" />
-            <span>{result.failed_files.length} resume(s) could not be parsed cleanly</span>
+            <span>{result.failed_files.length} document(s) could not be parsed</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {result.failed_files.map((f) => (
               <div
                 key={f.filename}
-                className="rounded-2xl bg-black/40 p-3 border border-amber-500/20"
+                className="rounded-lg bg-zinc-950 p-2.5 border border-amber-500/20"
               >
-                <span className="font-mono font-bold text-white">
+                <span className="font-mono font-bold text-zinc-200">
                   {f.filename}
                 </span>
-                <p className="text-slate-400 text-[11px] mt-0.5">{f.reason}</p>
+                <p className="text-zinc-400 text-[11px] mt-0.5">{f.reason}</p>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Main Results View */}
+      {/* Main Candidate List View */}
       {filteredCandidates.length === 0 ? (
-        <div className="glass-panel rounded-3xl p-16 text-center space-y-3">
-          <Search className="mx-auto h-10 w-10 text-slate-500" />
-          <h3 className="text-base font-bold text-white">
-            No candidates matched your search criteria
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-16 text-center space-y-2">
+          <Search className="mx-auto h-8 w-8 text-zinc-600" />
+          <h3 className="text-sm font-semibold text-zinc-200">
+            No candidates match current criteria
           </h3>
-          <p className="text-xs text-slate-400">
-            Try resetting the search query or clearing the active skill filters above.
+          <p className="text-xs text-zinc-500">
+            Try loosening search parameters or clearing knockout filters above.
           </p>
           <button
             type="button"
             onClick={() => {
               setSearch('');
-              setTier('all');
+              setStageTab('all');
               setSelectedSkill(null);
+              setMinExpFilter(0);
+              setMandatorySkills([]);
             }}
-            className="glow-btn-primary rounded-2xl px-5 py-2.5 text-xs font-bold text-white shadow cursor-pointer"
+            className="rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500 cursor-pointer"
           >
-            Clear All Filters
+            Reset Filters
           </button>
         </div>
       ) : viewMode === 'cards' ? (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           <AnimatePresence>
             {filteredCandidates.map((item) => (
               <CandidateCard
@@ -517,60 +655,91 @@ export function ResultsPage({ result, onReset }: Props) {
                   (c) => c.candidate.filename === item.candidate.filename,
                 )}
                 onToggleSelect={(cand) => handleToggleSelectCompare(cand)}
+                onUpdateStage={handleUpdateStage}
+                onUpdateNotes={handleUpdateNotes}
+                minExpFilter={minExpFilter}
+                mandatorySkills={mandatorySkills}
               />
             ))}
           </AnimatePresence>
         </div>
       ) : (
-        /* Full-Width Table View */
-        <div className="glass-panel rounded-3xl overflow-hidden border border-white/[0.08] shadow-2xl">
+        /* Data Table View */
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900/90 border-b border-white/[0.08] text-[11px] font-bold uppercase text-slate-400 font-mono">
+              <thead className="bg-zinc-950 border-b border-zinc-800 text-[11px] font-mono uppercase text-zinc-400">
                 <tr>
-                  <th className="p-4 pl-6">Rank</th>
-                  <th className="p-4">Candidate</th>
-                  <th className="p-4">Final Score</th>
-                  <th className="p-4">Semantic (45%)</th>
-                  <th className="p-4">Skills (35%)</th>
-                  <th className="p-4">Experience (20%)</th>
-                  <th className="p-4 pr-6 text-right">Actions</th>
+                  <th className="p-3 pl-4">Rank</th>
+                  <th className="p-3">Candidate</th>
+                  <th className="p-3">Score</th>
+                  <th className="p-3">Stage</th>
+                  <th className="p-3">Semantic ({weights.semantic}%)</th>
+                  <th className="p-3">Skills ({weights.skills}%)</th>
+                  <th className="p-3">Experience ({weights.experience}%)</th>
+                  <th className="p-3 pr-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.06]">
+              <tbody className="divide-y divide-zinc-800/80">
                 {filteredCandidates.map((item) => {
                   const displayName = item.candidate.name || item.candidate.filename;
+                  const stage = item.pipelineStage || 'review';
                   return (
                     <tr
                       key={item.candidate.filename}
-                      className="hover:bg-white/[0.04] transition-colors"
+                      className="hover:bg-zinc-800/50 transition-colors"
                     >
-                      <td className="p-4 pl-6 font-black text-indigo-300">
+                      <td className="p-3 pl-4 font-mono font-bold text-zinc-300">
                         #{item.rank}
                       </td>
-                      <td className="p-4 font-bold text-white">
-                        <div>{displayName}</div>
-                        <div className="text-[10px] font-mono text-slate-500">
+                      <td className="p-3">
+                        <div className="font-semibold text-zinc-100">{displayName}</div>
+                        <div className="text-[10px] font-mono text-zinc-500">
                           {item.candidate.filename}
                         </div>
                       </td>
-                      <td className="p-4">
+                      <td className="p-3">
                         <ScoreBadge score={item.scores.final_score} />
                       </td>
-                      <td className="p-4 font-bold text-indigo-400">
+                      <td className="p-3">
+                        <span
+                          className={`inline-flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-bold ${
+                            stage === 'shortlisted'
+                              ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                              : stage === 'rejected'
+                                ? 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+                                : 'bg-zinc-800 text-zinc-400'
+                          }`}
+                        >
+                          {stage === 'shortlisted' ? '⭐ Shortlisted' : stage === 'rejected' ? '✕ Rejected' : 'In Review'}
+                        </span>
+                      </td>
+                      <td className="p-3 font-mono font-semibold text-zinc-300">
                         {item.scores.semantic_similarity.toFixed(0)}%
                       </td>
-                      <td className="p-4 font-bold text-violet-400">
+                      <td className="p-3 font-mono font-semibold text-zinc-300">
                         {item.scores.skill_overlap.toFixed(0)}%
                       </td>
-                      <td className="p-4 font-bold text-sky-400">
+                      <td className="p-3 font-mono font-semibold text-zinc-300">
                         {item.scores.experience_match.toFixed(0)}%
                       </td>
-                      <td className="p-4 pr-6 text-right">
+                      <td className="p-3 pr-4 text-right space-x-1">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleUpdateStage(
+                              item,
+                              stage === 'shortlisted' ? 'review' : 'shortlisted',
+                            )
+                          }
+                          className="rounded border border-zinc-700 bg-zinc-800 px-2 py-1 text-[11px] text-zinc-300 hover:bg-zinc-700"
+                        >
+                          {stage === 'shortlisted' ? 'Unstar' : 'Shortlist'}
+                        </button>
                         <button
                           type="button"
                           onClick={() => setSelectedCandidate(item)}
-                          className="rounded-xl bg-indigo-500/15 border border-indigo-500/30 px-3 py-1.5 font-bold text-indigo-300 hover:bg-indigo-600 hover:text-white transition-colors cursor-pointer"
+                          className="rounded bg-indigo-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-indigo-500"
                         >
                           Details
                         </button>
