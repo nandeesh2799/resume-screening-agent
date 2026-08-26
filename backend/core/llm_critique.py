@@ -25,32 +25,49 @@ Your job:
 
 
 def _call_gemini_api(api_key: str, prompt: str) -> Optional[str]:
-    """Call Google Gemini API via REST."""
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
-    payload = {
-        "system_instruction": {
-            "parts": [{"text": RECRUITER_SYSTEM_PROMPT}]
-        },
-        "contents": [
-            {
-                "role": "user",
-                "parts": [{"text": prompt}],
-            }
-        ],
-        "generationConfig": {
-            "temperature": 0.2,
-            "maxOutputTokens": 400,
-        },
-    }
-    with httpx.Client(timeout=10.0) as client:
-        response = client.post(url, json=payload)
-        response.raise_for_status()
-        data = response.json()
-        candidates = data.get("candidates", [])
-        if candidates and "content" in candidates[0]:
-            parts = candidates[0]["content"].get("parts", [])
-            if parts and "text" in parts[0]:
-                return parts[0]["text"].strip()
+    """Call Google Gemini API via REST (supports gemini-2.5-flash with low-latency zero-thinking-budget)."""
+    models_to_try = ["gemini-2.5-flash", "gemini-flash-latest", "gemini-1.5-flash"]
+
+    for model_name in models_to_try:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+        payload = {
+            "system_instruction": {
+                "parts": [{"text": RECRUITER_SYSTEM_PROMPT}]
+            },
+            "contents": [
+                {
+                    "role": "user",
+                    "parts": [{"text": prompt}],
+                }
+            ],
+            "generationConfig": {
+                "thinkingConfig": {"thinkingBudget": 0},
+                "temperature": 0.2,
+                "maxOutputTokens": 500,
+            },
+        }
+        try:
+            with httpx.Client(timeout=15.0) as client:
+                response = client.post(url, json=payload)
+                if response.status_code == 200:
+                    data = response.json()
+                    candidates = data.get("candidates", [])
+                    if candidates and "content" in candidates[0]:
+                        parts = candidates[0]["content"].get("parts", [])
+                        text_chunks = [
+                            p.get("text", "") for p in parts
+                            if not p.get("thought", False) and "text" in p
+                        ]
+                        full_text = "".join(text_chunks).strip()
+                        if full_text:
+                            return full_text
+                elif response.status_code == 404:
+                    continue  # Try next model name
+                else:
+                    logger.warning("Gemini API returned status %d: %s", response.status_code, response.text[:200])
+        except Exception as exc:
+            logger.warning("Gemini request exception for model %s: %s", model_name, exc)
+
     return None
 
 
@@ -70,7 +87,7 @@ def _call_openai_api(api_key: str, prompt: str) -> Optional[str]:
         "temperature": 0.2,
         "max_tokens": 400,
     }
-    with httpx.Client(timeout=10.0) as client:
+    with httpx.Client(timeout=15.0) as client:
         response = client.post(url, json=payload, headers=headers)
         response.raise_for_status()
         data = response.json()
@@ -128,13 +145,13 @@ Resume Excerpt:
 Please provide your 3-5 sentence qualitative executive evaluation according to your instructions."""
 
     try:
-        if gemini_key:
+        if gemini_key and not gemini_key.startswith("your_"):
             logger.info("LLM Critique: Generating critique via Gemini API for %s", candidate_name)
             critique = _call_gemini_api(gemini_key, user_prompt)
             if critique:
                 return critique
 
-        if openai_key:
+        if openai_key and not openai_key.startswith("your_"):
             logger.info("LLM Critique: Generating critique via OpenAI API for %s", candidate_name)
             critique = _call_openai_api(openai_key, user_prompt)
             if critique:
