@@ -10,25 +10,16 @@ from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from fastapi.responses import JSONResponse, StreamingResponse, FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 
+from backend.core import config
 from backend.core.exporter import to_csv, to_json
-from backend.core.parser import parse_resume
-from backend.core.scorer import _extract_jd_skills, _extract_required_experience, score_candidate
-from backend.models.schemas import (
-    ExtractedCandidate,
-    ScoreBreakdown,
-    ScoredCandidate,
-    ScreeningResult,
-)
+from backend.core.scorer import _extract_jd_skills, _extract_required_experience
+from backend.models.schemas import ScoredCandidate, ScreeningResult
+from backend.services.screening_service import ScreeningService
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
-
-MAX_FILE_SIZE_MB = 10
-ALLOWED_EXTENSIONS = {".pdf", ".docx", ".doc", ".txt"}
-SAMPLE_RESUMES_DIR = Path(__file__).parent.parent.parent / "sample_resumes"
-SAMPLE_JD_FILE = Path(__file__).parent.parent.parent / "sample_jd.txt"
 
 SAMPLE_JDS = [
     {
@@ -139,70 +130,20 @@ Nice to Have:
 ]
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-def _process_single_resume(
-    filename: str,
-    file_bytes: bytes,
-    jd_text: str,
-    jd_skills: list[str],
-    required_years: float,
-) -> tuple[ScoredCandidate | None, dict | None]:
-    """
-    Parse and score one resume.
-    Returns (ScoredCandidate, None) on success, or (None, error_dict) on failure.
-    """
-    suffix = Path(filename).suffix.lower()
-    if suffix not in ALLOWED_EXTENSIONS:
-        return None, {"filename": filename, "reason": f"Unsupported format {suffix!r}"}
-
-    try:
-        parsed = parse_resume(filename, file_bytes)
-    except Exception as exc:
-        logger.warning("Parse error for %s: %s", filename, exc)
-        return None, {"filename": filename, "reason": str(exc)}
-
-    try:
-        result = score_candidate(jd_text, parsed, jd_skills=jd_skills, required_years=required_years)
-    except Exception as exc:
-        logger.warning("Scoring error for %s: %s", filename, exc)
-        return None, {"filename": filename, "reason": f"Scoring failed: {exc}"}
-
-    candidate = ExtractedCandidate(**parsed)
-    scored = ScoredCandidate(
-        candidate=candidate,
-        scores=ScoreBreakdown(**result["scores"]),
-        rank=0,  # assigned later
-        explanation=result["explanation"],
-        matched_skills=result["matched_skills"],
-        missing_skills=result["missing_skills"],
-    )
-    return scored, None
-
-
-# ---------------------------------------------------------------------------
-# Endpoints
-# ---------------------------------------------------------------------------
-
 @router.get("/health")
 async def health():
-    return {"status": "ok", "service": "Resume Screening Agent"}
+    return {
+        "status": "ok",
+        "service": config.PROJECT_NAME,
+        "version": config.VERSION,
+        "environment": config.ENVIRONMENT,
+    }
 
 
 @router.get("/samples")
 async def get_samples():
     """Return pre-configured sample JDs and sample resume metadata."""
-    sample_files = []
-    if SAMPLE_RESUMES_DIR.exists():
-        for p in sorted(SAMPLE_RESUMES_DIR.iterdir()):
-            if p.suffix.lower() in ALLOWED_EXTENSIONS:
-                sample_files.append({
-                    "filename": p.name,
-                    "size_kb": round(p.stat().st_size / 1024, 1),
-                    "extension": p.suffix.lower(),
-                })
+    sample_files = ScreeningService.get_sample_files()
     return {
         "job_descriptions": SAMPLE_JDS,
         "sample_resumes": sample_files,
@@ -212,7 +153,7 @@ async def get_samples():
 @router.get("/sample-file/{filename}")
 async def get_sample_file(filename: str):
     """Download or view a specific sample resume file."""
-    file_path = SAMPLE_RESUMES_DIR / filename
+    file_path = config.SAMPLE_RESUMES_DIR / filename
     if not file_path.exists() or not file_path.is_file():
         raise HTTPException(status_code=404, detail="Sample resume not found")
     return FileResponse(file_path, filename=filename)
@@ -234,7 +175,6 @@ async def screen_resumes(
     if not resumes:
         raise HTTPException(status_code=400, detail="At least one resume is required.")
 
-    # Pre-compute JD metadata once
     jd_skills = _extract_jd_skills(job_description)
     required_years = _extract_required_experience(job_description)
 
@@ -250,7 +190,7 @@ async def screen_resumes(
         total = len(file_payloads)
 
         for idx, (filename, file_bytes) in enumerate(file_payloads):
-            # Yield progress event
+            # Emit SSE Progress Event
             progress = {
                 "type": "progress",
                 "current": idx + 1,
@@ -260,11 +200,11 @@ async def screen_resumes(
             yield f"data: {json.dumps(progress)}\n\n"
             await asyncio.sleep(0.01)
 
-            # Run sync I/O in thread to avoid blocking
+            # Delegate sync processing to thread pool
             loop = asyncio.get_event_loop()
             scored, error = await loop.run_in_executor(
                 None,
-                _process_single_resume,
+                ScreeningService.process_single_resume,
                 filename,
                 file_bytes,
                 job_description,
@@ -276,7 +216,7 @@ async def screen_resumes(
             elif scored:
                 scored_list.append(scored)
 
-        # Rank candidates
+        # Rank candidates by final composite score
         scored_list.sort(key=lambda c: c.scores.final_score, reverse=True)
         for rank, cand in enumerate(scored_list, start=1):
             cand.rank = rank
@@ -311,12 +251,12 @@ async def screen_samples(
     """
     if not job_description.strip():
         raise HTTPException(status_code=400, detail="Job description cannot be empty.")
-    if not SAMPLE_RESUMES_DIR.exists():
-        raise HTTPException(status_code=404, detail="Sample resumes folder not found.")
+    if not config.SAMPLE_RESUMES_DIR.exists():
+        raise HTTPException(status_code=404, detail="Sample resumes directory not found.")
 
     sample_files = [
-        p for p in sorted(SAMPLE_RESUMES_DIR.iterdir())
-        if p.suffix.lower() in ALLOWED_EXTENSIONS
+        p for p in sorted(config.SAMPLE_RESUMES_DIR.iterdir())
+        if p.suffix.lower() in config.ALLOWED_EXTENSIONS
     ]
     if not sample_files:
         raise HTTPException(status_code=404, detail="No sample resumes found.")
@@ -343,7 +283,7 @@ async def screen_samples(
             loop = asyncio.get_event_loop()
             scored, error = await loop.run_in_executor(
                 None,
-                _process_single_resume,
+                ScreeningService.process_single_resume,
                 file_path.name,
                 file_bytes,
                 job_description,

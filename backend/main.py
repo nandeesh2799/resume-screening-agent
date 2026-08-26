@@ -1,47 +1,58 @@
 """
-Entry point for the Resume Screening Agent FastAPI server.
-Run with:  uvicorn backend.main:app --reload
+FastAPI application entrypoint for ResumeRank.
 """
 from __future__ import annotations
 
 import logging
-import os
 from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
-from backend.api.routes import router
+from backend.core import config
+from backend.api.routes import router as api_router
 
-# Configure logging
+# Configure Logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
+logger = logging.getLogger("resumerank")
 
 app = FastAPI(
-    title="Resume Screening Agent",
-    description="AI-powered resume screening and ranking.",
-    version="1.0.0",
+    title=config.PROJECT_NAME,
+    version=config.VERSION,
+    description=config.DESCRIPTION,
 )
 
-# Allow Vite dev server during development
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "*"],
+    allow_origins=config.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(router, prefix="/api")
+# Mount API routes
+app.include_router(api_router, prefix="/api")
 
-# Serve built React app in production
-STATIC_DIR = Path(__file__).parent.parent / "frontend" / "dist"
-if STATIC_DIR.exists():
-    app.mount("/", StaticFiles(directory=str(STATIC_DIR), html=True), name="static")
-else:
-    @app.get("/")
-    def root():
-        return {"message": "Backend running. Start the frontend with: cd frontend && npm run dev"}
+# Static frontend serving in production
+FRONTEND_DIST = config.BASE_DIR / "frontend" / "dist"
+if FRONTEND_DIST.exists():
+    app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIST / "assets")), name="assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        file_path = FRONTEND_DIST / full_path
+        if file_path.exists() and file_path.is_file():
+            return FileResponse(file_path)
+        return FileResponse(FRONTEND_DIST / "index.html")
+
+
+if __name__ == "__main__":
+    import uvicorn
+    logger.info("Starting %s on %s:%d", config.PROJECT_NAME, config.HOST, config.PORT)
+    uvicorn.run("backend.main:app", host=config.HOST, port=config.PORT, reload=True)
