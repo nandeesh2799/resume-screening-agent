@@ -9,53 +9,104 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
   body {
-    background-color: #080b11;
     color: #f1f5f9;
     min-height: 100vh;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-image: 
-      radial-gradient(at 15% 15%, rgba(99, 102, 241, 0.12) 0px, transparent 45%),
-      radial-gradient(at 85% 10%, rgba(168, 85, 247, 0.10) 0px, transparent 40%),
-      radial-gradient(at 50% 60%, rgba(6, 182, 212, 0.05) 0px, transparent 50%),
-      radial-gradient(at 80% 90%, rgba(99, 102, 241, 0.08) 0px, transparent 40%),
-      linear-gradient(to bottom, rgba(8, 11, 17, 0.9), rgba(8, 11, 17, 1));
-    background-attachment: fixed;
+    transition: background 0.4s ease-in-out;
   }
+}
+
+/* Theme 1: Cosmic Aurora (Default) */
+body.theme-aurora, body:not([class*="theme-"]) {
+  background-color: #050814;
+  background-image: 
+    radial-gradient(at 15% 10%, rgba(99, 102, 241, 0.18) 0px, transparent 50%),
+    radial-gradient(at 85% 15%, rgba(168, 85, 247, 0.15) 0px, transparent 45%),
+    radial-gradient(at 50% 55%, rgba(6, 182, 212, 0.09) 0px, transparent 55%),
+    radial-gradient(at 80% 90%, rgba(99, 102, 241, 0.12) 0px, transparent 45%),
+    linear-gradient(to bottom, #050814, #030610);
+  background-attachment: fixed;
+}
+
+/* Theme 2: Cyberpunk Neon */
+body.theme-cyberpunk {
+  background-color: #07030e;
+  background-image: 
+    radial-gradient(at 10% 15%, rgba(236, 72, 153, 0.18) 0px, transparent 45%),
+    radial-gradient(at 85% 10%, rgba(168, 85, 247, 0.18) 0px, transparent 45%),
+    radial-gradient(at 45% 60%, rgba(6, 182, 212, 0.10) 0px, transparent 50%),
+    radial-gradient(at 90% 90%, rgba(236, 72, 153, 0.12) 0px, transparent 45%),
+    linear-gradient(to bottom, #07030e, #030107);
+  background-attachment: fixed;
+}
+
+/* Theme 3: Deep Emerald */
+body.theme-emerald {
+  background-color: #02120e;
+  background-image: 
+    radial-gradient(at 15% 10%, rgba(16, 185, 129, 0.18) 0px, transparent 45%),
+    radial-gradient(at 85% 15%, rgba(20, 184, 166, 0.14) 0px, transparent 45%),
+    radial-gradient(at 50% 60%, rgba(6, 182, 212, 0.08) 0px, transparent 50%),
+    radial-gradient(at 80% 90%, rgba(16, 185, 129, 0.12) 0px, transparent 45%),
+    linear-gradient(to bottom, #02120e, #010a08);
+  background-attachment: fixed;
+}
+
+/* Theme 4: Sunset Nebula */
+body.theme-sunset {
+  background-color: #0c040d;
+  background-image: 
+    radial-gradient(at 15% 10%, rgba(249, 115, 22, 0.18) 0px, transparent 45%),
+    radial-gradient(at 85% 15%, rgba(244, 63, 94, 0.16) 0px, transparent 45%),
+    radial-gradient(at 50% 60%, rgba(168, 85, 247, 0.10) 0px, transparent 50%),
+    radial-gradient(at 80% 90%, rgba(249, 115, 22, 0.12) 0px, transparent 45%),
+    linear-gradient(to bottom, #0c040d, #060207);
+  background-attachment: fixed;
+}
+
+/* Theme 5: Stealth Carbon */
+body.theme-stealth {
+  background-color: #000000;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(255, 255, 255, 0.05) 0px, transparent 40%),
+    radial-gradient(at 85% 85%, rgba(255, 255, 255, 0.03) 0px, transparent 40%),
+    linear-gradient(to bottom, #000000, #050507);
+  background-attachment: fixed;
 }
 
 /* Background Subtle Grid Pattern */
 .bg-grid-pattern {
-  background-size: 32px 32px;
+  background-size: 36px 36px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
 /* Glassmorphism & Cyber Surfacing */
 .glass-panel {
-  background: rgba(13, 18, 30, 0.72);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  background: rgba(12, 17, 29, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.09);
 }
 
 .glass-card {
-  background: rgba(17, 24, 39, 0.55);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  background: rgba(16, 23, 38, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
 }
 
 .glass-card-hover {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .glass-card-hover:hover {
-  background: rgba(22, 31, 50, 0.85);
+  background: rgba(22, 32, 53, 0.85);
   border-color: rgba(99, 102, 241, 0.45);
   transform: translateY(-2px);
-  box-shadow: 0 20px 35px -15px rgba(99, 102, 241, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 40px -15px rgba(99, 102, 241, 0.25), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
 }
 
 /* Glowing Neon Gradients */
@@ -73,12 +124,12 @@
 
 .glow-btn-primary {
   background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%);
-  box-shadow: 0 0 25px -4px rgba(99, 102, 241, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 25px -4px rgba(99, 102, 241, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .glow-btn-primary:hover:not(:disabled) {
   background: linear-gradient(135deg, #4f46e5 0%, #6d28d9 100%);
-  box-shadow: 0 0 35px -2px rgba(99, 102, 241, 0.65), inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 35px -2px rgba(99, 102, 241, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
   transform: translateY(-1px) scale(1.01);
 }
 .glow-btn-primary:active:not(:disabled) {
@@ -94,9 +145,9 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.5);
 }
