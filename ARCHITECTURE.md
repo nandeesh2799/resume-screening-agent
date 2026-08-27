@@ -87,9 +87,9 @@ resume-screening-agent/
 │   ├── start_dev.sh               # 1-Command startup script for backend + frontend
 │   ├── run_tests.sh               # Complete verification runner
 │   └── generate_sample_outputs.py # PDF/DOCX resume generator + output exporter
-├── sample_resumes/                # 14 Multi-format test resumes (.pdf, .docx, .txt)
+├── sample_resumes/                # 15 Multi-format test resumes (14 valid + 1 invalid scan)
 ├── sample_jd.txt                  # FinTech Full Stack Senior Engineer benchmark
-├── outputs/                       # Exported results in CSV & JSON
+├── sample_output/                 # Exported results in CSV & JSON
 ├── Makefile                       # Developer automation workflow tasks
 ├── pytest.ini                     # Pytest runner configuration
 ├── Dockerfile                     # Multi-stage production container build

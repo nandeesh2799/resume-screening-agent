@@ -17,7 +17,7 @@ Below is a conceptual layout of the workstation dashboard in action, featuring l
 │ │ Senior Full Stack Engineer (Fin) │ │  • Jaccard Skill Overlap Weight (35%)│
 │ └──────────────────────────────────┘ │  • Experience Match Weight (20%)     │
 ├──────────────────────────────────────┴──────────────────────────────────────┤
-│ 3. SCREENING RUN RESULTS (14 Resumes Processed)       [Download CSV] [JSON] │
+│ 3. SCREENING RUN RESULTS (15 Resumes Processed)       [Download CSV] [JSON] │
 │ ┌───┬───────────────────┬──────────────┬───────────────┬───────────────────┐│
 │ │ Rk│ Candidate Name    │ Match Score  │ Exp (Req: 5y) │ Top Skills Match  ││
 │ ├───┼───────────────────┼──────────────┼───────────────┼───────────────────┤│
@@ -83,7 +83,15 @@ cd resume-screening-agent
 ```bash
 # Create and activate Python virtual environment
 python3 -m venv .venv
+
+# Activate on macOS/Linux:
 source .venv/bin/activate
+
+# Activate on Windows (Command Prompt):
+.venv\Scripts\activate.bat
+
+# Activate on Windows (PowerShell):
+.venv\Scripts\Activate.ps1
 
 # Install required dependencies
 pip install -r requirements.txt
