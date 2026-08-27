@@ -12,5 +12,5 @@ services:
       - ENVIRONMENT=production
       - MAX_FILE_SIZE_MB=10
     volumes:
-      - ./outputs:/app/outputs
+      - ./sample_output:/app/sample_output
     restart: unless-stopped

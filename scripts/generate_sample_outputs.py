@@ -65,12 +65,12 @@ def generate_outputs():
         "failed_files": failed,
     }
 
-    out = Path("outputs")
+    out = Path("sample_output")
     out.mkdir(exist_ok=True)
-    (out / "screening_results.csv").write_text(to_csv(scored), encoding="utf-8")
-    (out / "screening_results.json").write_text(to_json(result), encoding="utf-8")
+    (out / "ranked_results.csv").write_text(to_csv(scored), encoding="utf-8")
+    (out / "ranked_results.json").write_text(to_json(result), encoding="utf-8")
 
-    print(f"\nSaved outputs/ ({len(scored)} valid candidates, {len(failed)} flagged files)")
+    print(f"\nSaved sample_output/ ({len(scored)} valid candidates, {len(failed)} flagged files)")
     if scored:
         top = scored[0]
         print(f"🥇 Top Ranked: {top['candidate'].get('name') or top['candidate']['filename']} ({top['scores']['final_score']:.1f}/100)")

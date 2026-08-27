@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 BACKEND_DIR = BASE_DIR / "backend"
 SAMPLE_RESUMES_DIR = BASE_DIR / "sample_resumes"
 SAMPLE_JD_FILE = BASE_DIR / "sample_jd.txt"
-OUTPUTS_DIR = BASE_DIR / "outputs"
+OUTPUTS_DIR = BASE_DIR / "sample_output"
 
 # Application Metadata
 PROJECT_NAME: str = "ResumeRank AI"
