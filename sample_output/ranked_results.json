@@ -1,7 +1,7 @@
 {
   "job_description_preview": "Senior Full Stack Engineer — FinTech Startup (Remote)\n\nAbout the Role:\nWe are looking for a Senior Full Stack Engineer to join our core product team.\nYou will architect and build scalable APIs and dynamic web interfaces for our\npayment intelligence platform serving 1M+ small business merchants.\n\nRequirements:\n- 5+ years of professional software development experience\n- Strong proficiency in Python (FastAPI or Django) for backend development\n- Strong proficiency in React with TypeScript for front",
   "total_processed": 14,
-  "total_failed": 1,
+  "total_failed": 0,
   "candidates": [
     {
       "candidate": {
@@ -133,7 +133,7 @@
     },
     {
       "candidate": {
-        "filename": "Resume_Raj_Patel_FullStack.pdf",
+        "filename": "Resume_Raj_Patel_FullStack.docx",
         "name": "Raj Patel",
         "email": "raj.patel@devconnect.com",
         "phone": null,
@@ -160,17 +160,17 @@
         "education": [
           "Bachelor of Science in Computer Science — Imperial College London, 2019"
         ],
-        "raw_text": "Raj Patel\nLead Full Stack Software Engineer\nraj.patel@devconnect.com | +44 7700 900456 | London, UK | linkedin.com/in/raj-patel-dev\nPROFESSIONAL SUMMARY\nFull Stack Engineer with 5+ years experience building cloud-native SaaS platforms. Specialized in React TypeScript frontends,\nFastAPI and Node.js microservices, PostgreSQL relational storage, and AWS containerization.\nTECHNICAL SKILLS\nLanguages: Python, TypeScript, JavaScript, SQL, HTML5/CSS3\nFrameworks: React, FastAPI, Django, Express.js, GraphQL\nCloud & Data: AWS (S3, RDS, EC2), PostgreSQL, Redis, Docker, Kubernetes, Git, CI/CD\nPROFESSIONAL EXPERIENCE\nFull Stack Engineer — Stratum Intelligence\n2021 – Present (3 years)\n(cid:127) Developed customer-facing dashboard in React and TypeScript with real-time WebSocket telemetry.\n(cid:127) Created Python FastAPI backend microservices connected to PostgreSQL databases and Redis cache layer.\n(cid:127) Automated end-to-end container builds and deployments to AWS using Docker and GitHub Actions.\nSoftware Developer — Vanguard Web Labs\n2019 – 2021 (2 years)\n(cid:127) Implemented responsive UI components using React, Redux, and Tailwind CSS.\n(cid:127) Built RESTful API endpoints in Django and integrated third-party payment gateways.\nEDUCATION\nBachelor of Science in Computer Science — Imperial College London, 2019",
+        "raw_text": "Raj Patel\nLead Full Stack Software Engineer\nraj.patel@devconnect.com | +44 7700 900456 | London, UK | linkedin.com/in/raj-patel-dev\nPROFESSIONAL SUMMARY\nFull Stack Engineer with 5+ years experience building cloud-native SaaS platforms. Specialized in React TypeScript frontends, FastAPI and Node.js microservices, PostgreSQL relational storage, and AWS containerization.\nTECHNICAL SKILLS\nLanguages: Python, TypeScript, JavaScript, SQL, HTML5/CSS3\nFrameworks: React, FastAPI, Django, Express.js, GraphQL\nCloud & Data: AWS (S3, RDS, EC2), PostgreSQL, Redis, Docker, Kubernetes, Git, CI/CD\nPROFESSIONAL EXPERIENCE\nFull Stack Engineer — Stratum Intelligence\n2021 – Present (3 years)\nDeveloped customer-facing dashboard in React and TypeScript with real-time WebSocket telemetry.\nCreated Python FastAPI backend microservices connected to PostgreSQL databases and Redis cache layer.\nAutomated end-to-end container builds and deployments to AWS using Docker and GitHub Actions.\nSoftware Developer — Vanguard Web Labs\n2019 – 2021 (2 years)\nImplemented responsive UI components using React, Redux, and Tailwind CSS.\nBuilt RESTful API endpoints in Django and integrated third-party payment gateways.\nEDUCATION\nBachelor of Science in Computer Science — Imperial College London, 2019",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 67.0,
+        "semantic_similarity": 68.0,
         "skill_overlap": 77.8,
         "experience_match": 100.0,
-        "final_score": 77.4
+        "final_score": 77.8
       },
       "rank": 3,
-      "explanation": "Strong overall match (77/100) meeting key technical criteria. Demonstrates proficiency in: aws, ci/cd, django, docker. Missing core competencies: gcp, kafka, machine learning, rest api. Experience (5 yrs) meets required seniority (5+ yrs).",
+      "explanation": "Strong overall match (78/100) meeting key technical criteria. Demonstrates proficiency in: aws, ci/cd, django, docker. Missing core competencies: gcp, kafka, machine learning, rest api. Experience (5 yrs) meets required seniority (5+ yrs).",
       "matched_skills": [
         "aws",
         "ci/cd",
@@ -506,7 +506,7 @@
     },
     {
       "candidate": {
-        "filename": "Resume_Aisha_Ibrahim_DataEngineer.pdf",
+        "filename": "Resume_Aisha_Ibrahim_DataEngineer.docx",
         "name": "Aisha Ibrahim",
         "email": "aisha.ibrahim@data-pipeline.io",
         "phone": "+1 (312) 555-4321",
@@ -531,17 +531,17 @@
         "education": [
           "Master of Science in Data Science — University of Illinois Urbana-Champaign, 2019"
         ],
-        "raw_text": "Aisha Ibrahim\nSenior Data & Streaming Platform Engineer\naisha.ibrahim@data-pipeline.io | +1 (312) 555-4321 | Chicago, IL\nPROFESSIONAL SUMMARY\nSenior Data Engineer with 5+ years of experience building real-time streaming architectures, distributed ETL pipelines, and modern\ndata lakes. Specialized in Python, SQL, Apache Spark, Kafka, Airflow, Snowflake, and AWS.\nTECHNICAL SKILLS\nData & Streaming: Python, SQL, Apache Spark, Apache Kafka, Apache Airflow, dbt, Snowflake, BigQuery\nCloud & DevOps: AWS (S3, Glue, EMR), GCP, Docker, Git, CI/CD, PostgreSQL\nPROFESSIONAL EXPERIENCE\nSenior Data Engineer — Apex Data Intelligence\n2021 – Present (3 years)\n(cid:127) Constructed real-time event streaming pipeline processing 10TB+ daily data using Kafka and Spark Streaming.\n(cid:127) Orchestrated 80+ daily batch DAG workflows in Apache Airflow with automated data quality checks in dbt.\n(cid:127) Migrated legacy warehouse to Snowflake on AWS, reducing analytics query times by 60%.\nData Engineer — Omni Analytics\n2019 – 2021 (2 years)\n(cid:127) Created Python ETL scripts extracting data from relational PostgreSQL databases and REST APIs.\n(cid:127) Maintained data lake storage partitions on AWS S3.\nEDUCATION\nMaster of Science in Data Science — University of Illinois Urbana-Champaign, 2019",
+        "raw_text": "Aisha Ibrahim\nSenior Data & Streaming Platform Engineer\naisha.ibrahim@data-pipeline.io | +1 (312) 555-4321 | Chicago, IL\nPROFESSIONAL SUMMARY\nSenior Data Engineer with 5+ years of experience building real-time streaming architectures, distributed ETL pipelines, and modern data lakes. Specialized in Python, SQL, Apache Spark, Kafka, Airflow, Snowflake, and AWS.\nTECHNICAL SKILLS\nData & Streaming: Python, SQL, Apache Spark, Apache Kafka, Apache Airflow, dbt, Snowflake, BigQuery\nCloud & DevOps: AWS (S3, Glue, EMR), GCP, Docker, Git, CI/CD, PostgreSQL\nPROFESSIONAL EXPERIENCE\nSenior Data Engineer — Apex Data Intelligence\n2021 – Present (3 years)\nConstructed real-time event streaming pipeline processing 10TB+ daily data using Kafka and Spark Streaming.\nOrchestrated 80+ daily batch DAG workflows in Apache Airflow with automated data quality checks in dbt.\nMigrated legacy warehouse to Snowflake on AWS, reducing analytics query times by 60%.\nData Engineer — Omni Analytics\n2019 – 2021 (2 years)\nCreated Python ETL scripts extracting data from relational PostgreSQL databases and REST APIs.\nMaintained data lake storage partitions on AWS S3.\nEDUCATION\nMaster of Science in Data Science — University of Illinois Urbana-Champaign, 2019",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 50.9,
+        "semantic_similarity": 48.7,
         "skill_overlap": 50.0,
         "experience_match": 100.0,
-        "final_score": 60.4
+        "final_score": 59.4
       },
       "rank": 9,
-      "explanation": "Moderate match (60/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, ci/cd, docker, gcp. Missing core competencies: django, fastapi, graphql, kubernetes. Experience (5 yrs) meets required seniority (5+ yrs).",
+      "explanation": "Moderate match (59/100) with relevant background but some technical gaps. Demonstrates proficiency in: aws, ci/cd, docker, gcp. Missing core competencies: django, fastapi, graphql, kubernetes. Experience (5 yrs) meets required seniority (5+ yrs).",
       "matched_skills": [
         "aws",
         "ci/cd",
@@ -724,7 +724,7 @@
     },
     {
       "candidate": {
-        "filename": "Resume_Michael_Tran_JuniorDev.pdf",
+        "filename": "Resume_Michael_Tran_JuniorDev.txt",
         "name": "Michael Tran",
         "email": "michael.tran@devmail.org",
         "phone": "+1 (408) 555-1122",
@@ -742,14 +742,14 @@
         "education": [
           "Bachelor of Science in Computer Science — San Jose State University, 2023"
         ],
-        "raw_text": "Michael Tran\nJunior Full Stack Developer\nmichael.tran@devmail.org | +1 (408) 555-1122 | San Jose, CA\nPROFESSIONAL SUMMARY\nEnthusiastic Junior Developer with 1+ years of experience building modern web applications. Proficient in JavaScript, React,\nPython basics, HTML/CSS, and Git. Fast learner looking to grow in a collaborative agile engineering team.\nTECHNICAL SKILLS\nLanguages & Frameworks: JavaScript, TypeScript basics, React, HTML5, CSS3, Python basics, Node.js basics\nTools: Git, GitHub, VS Code, REST APIs, PostgreSQL basics\nPROFESSIONAL EXPERIENCE\nJunior Web Developer — Silicon Valley App Studio\n2023 – Present (1 year)\n(cid:127) Built interactive landing pages and customer portals using React, HTML5, and CSS3.\n(cid:127) Assisted senior engineers in writing Python backend scripts and debugging REST APIs.\n(cid:127) Participated in daily scrum standups, code reviews, and unit test creation in Jest.\nEDUCATION\nBachelor of Science in Computer Science — San Jose State University, 2023",
+        "raw_text": "Michael Tran\nJunior Full Stack Developer\nmichael.tran@devmail.org | +1 (408) 555-1122 | San Jose, CA\n------------------------------------------------------------\nPROFESSIONAL SUMMARY\nEnthusiastic Junior Developer with 1+ years of experience building modern web applications. Proficient in JavaScript, React, Python basics, HTML/CSS, and Git. Fast learner looking to grow in a collaborative agile engineering team.\n\nTECHNICAL SKILLS\nLanguages & Frameworks: JavaScript, TypeScript basics, React, HTML5, CSS3, Python basics, Node.js basics\nTools: Git, GitHub, VS Code, REST APIs, PostgreSQL basics\n\nPROFESSIONAL EXPERIENCE\nJunior Web Developer — Silicon Valley App Studio\n2023 – Present (1 year)\n- Built interactive landing pages and customer portals using React, HTML5, and CSS3.\n- Assisted senior engineers in writing Python backend scripts and debugging REST APIs.\n- Participated in daily scrum standups, code reviews, and unit test creation in Jest.\n\nEDUCATION\nBachelor of Science in Computer Science — San Jose State University, 2023",
         "parse_error": null
       },
       "scores": {
-        "semantic_similarity": 66.9,
+        "semantic_similarity": 67.7,
         "skill_overlap": 33.3,
         "experience_match": 20.0,
-        "final_score": 45.8
+        "final_score": 46.1
       },
       "rank": 13,
       "explanation": "Significant gaps identified (46/100) relative to core requirements. Demonstrates proficiency in: git, postgresql, python, react. Missing core competencies: aws, ci/cd, django, docker. Experience (1 yrs) is below required target (5+ yrs).",
@@ -819,10 +819,5 @@
       ]
     }
   ],
-  "failed_files": [
-    {
-      "filename": "Corrupted_Scan_Test_Doc.pdf",
-      "reason": "Could not extract readable text from file."
-    }
-  ]
+  "failed_files": []
 }

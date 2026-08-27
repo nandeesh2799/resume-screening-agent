@@ -1,5 +1,5 @@
 """
-Generates 15 realistic, ATS-friendly PDF candidate resumes for ResumeRank.
+Generates 14 realistic, ATS-friendly PDF candidate resumes for ResumeRank.
 Uses ReportLab with strict single-column ATS typography, Times-Roman serif font family,
 and verified metadata for automated ATS parsers (pdfplumber, pypdf).
 """
@@ -88,7 +88,7 @@ CANDIDATES = [
         "education": "Bachelor of Engineering in Computer Science — University of Lagos, 2019"
     },
     {
-        "filename": "Resume_Raj_Patel_FullStack.pdf",
+        "filename": "Resume_Raj_Patel_FullStack.docx",
         "name": "Raj Patel",
         "title": "Lead Full Stack Software Engineer",
         "contact": "raj.patel@devconnect.com | +44 7700 900456 | London, UK | linkedin.com/in/raj-patel-dev",
@@ -188,7 +188,7 @@ CANDIDATES = [
         "education": "Bachelor of Science in Computer Engineering — University of Washington, 2018"
     },
     {
-        "filename": "Resume_Aisha_Ibrahim_DataEngineer.pdf",
+        "filename": "Resume_Aisha_Ibrahim_DataEngineer.docx",
         "name": "Aisha Ibrahim",
         "title": "Senior Data & Streaming Platform Engineer",
         "contact": "aisha.ibrahim@data-pipeline.io | +1 (312) 555-4321 | Chicago, IL",
@@ -320,7 +320,7 @@ CANDIDATES = [
         "education": "Bachelor of Science in Cybersecurity & Information Systems — University of Texas at Austin, 2020"
     },
     {
-        "filename": "Resume_Michael_Tran_JuniorDev.pdf",
+        "filename": "Resume_Michael_Tran_JuniorDev.txt",
         "name": "Michael Tran",
         "title": "Junior Full Stack Developer",
         "contact": "michael.tran@devmail.org | +1 (408) 555-1122 | San Jose, CA",
@@ -474,10 +474,6 @@ CANDIDATES = [
             }
         ],
         "education": "Bachelor of Science in Computer Science — University of Texas at Austin, 2018"
-    },
-    {
-        "filename": "Corrupted_Scan_Test_Doc.pdf",
-        "is_corrupt": True
     }
 ]
 
@@ -612,8 +608,142 @@ def build_ats_pdf(candidate_data: dict, output_path: Path):
     doc.build(story)
 
 
+import docx
+from docx.shared import Pt, Inches, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+
+def build_ats_docx(candidate_data: dict, output_path: Path):
+    """Build clean ATS-friendly Microsoft Word (.docx) resume using python-docx."""
+    doc = docx.Document()
+    
+    # Page Margins
+    for section in doc.sections:
+        section.top_margin = Inches(0.5)
+        section.bottom_margin = Inches(0.5)
+        section.left_margin = Inches(0.5)
+        section.right_margin = Inches(0.5)
+        
+    # Header: Name, Title, Contact
+    p_name = doc.add_paragraph()
+    r_name = p_name.add_run(candidate_data["name"])
+    r_name.font.name = 'Times New Roman'
+    r_name.font.size = Pt(18)
+    r_name.bold = True
+    r_name.font.color.rgb = RGBColor(0x11, 0x18, 0x27)
+    p_name.paragraph_format.space_after = Pt(2)
+    
+    p_title = doc.add_paragraph()
+    r_title = p_title.add_run(candidate_data["title"])
+    r_title.font.name = 'Times New Roman'
+    r_title.font.size = Pt(11)
+    r_title.bold = True
+    r_title.font.color.rgb = RGBColor(0x4B, 0x55, 0x63)
+    p_title.paragraph_format.space_after = Pt(2)
+    
+    p_contact = doc.add_paragraph()
+    r_contact = p_contact.add_run(candidate_data["contact"])
+    r_contact.font.name = 'Times New Roman'
+    r_contact.font.size = Pt(9.5)
+    r_contact.font.color.rgb = RGBColor(0x4B, 0x55, 0x63)
+    p_contact.paragraph_format.space_after = Pt(8)
+    
+    # Helper for Headings
+    def add_section_heading(title: str):
+        p = doc.add_paragraph()
+        r = p.add_run(title.upper())
+        r.font.name = 'Times New Roman'
+        r.font.size = Pt(11)
+        r.bold = True
+        r.font.color.rgb = RGBColor(0x11, 0x18, 0x27)
+        p.paragraph_format.space_before = Pt(8)
+        p.paragraph_format.space_after = Pt(3)
+        
+    # 2. Professional Summary
+    add_section_heading("Professional Summary")
+    p_sum = doc.add_paragraph()
+    r_sum = p_sum.add_run(candidate_data["summary"])
+    r_sum.font.name = 'Times New Roman'
+    r_sum.font.size = Pt(9.5)
+    p_sum.paragraph_format.space_after = Pt(6)
+    
+    # 3. Technical Skills
+    add_section_heading("Technical Skills")
+    for category, skills_list in candidate_data["skills"].items():
+        p_sk = doc.add_paragraph()
+        r_cat = p_sk.add_run(f"{category}: ")
+        r_cat.bold = True
+        r_cat.font.name = 'Times New Roman'
+        r_cat.font.size = Pt(9.5)
+        r_list = p_sk.add_run(skills_list)
+        r_list.font.name = 'Times New Roman'
+        r_list.font.size = Pt(9.5)
+        p_sk.paragraph_format.space_after = Pt(2)
+        
+    # 4. Professional Experience
+    add_section_heading("Professional Experience")
+    for job in candidate_data["experience"]:
+        p_job = doc.add_paragraph()
+        r_job = p_job.add_run(f"{job['role']} — {job['company']}")
+        r_job.bold = True
+        r_job.font.name = 'Times New Roman'
+        r_job.font.size = Pt(10)
+        p_job.paragraph_format.space_before = Pt(4)
+        p_job.paragraph_format.space_after = Pt(1)
+        
+        p_dates = doc.add_paragraph()
+        r_dates = p_dates.add_run(job["dates"])
+        r_dates.italic = True
+        r_dates.font.name = 'Times New Roman'
+        r_dates.font.size = Pt(9)
+        p_dates.paragraph_format.space_after = Pt(2)
+        
+        for bullet in job["bullets"]:
+            p_bullet = doc.add_paragraph(style='List Bullet')
+            r_b = p_bullet.add_run(bullet)
+            r_b.font.name = 'Times New Roman'
+            r_b.font.size = Pt(9.5)
+            p_bullet.paragraph_format.space_after = Pt(1)
+            
+    # 5. Education
+    add_section_heading("Education")
+    p_edu = doc.add_paragraph()
+    r_edu = p_edu.add_run(candidate_data["education"])
+    r_edu.font.name = 'Times New Roman'
+    r_edu.font.size = Pt(9.5)
+    
+    doc.save(str(output_path))
+
+
+def build_ats_txt(candidate_data: dict, output_path: Path):
+    """Build clean plain text (.txt) candidate resume."""
+    lines = [
+        candidate_data["name"],
+        candidate_data["title"],
+        candidate_data["contact"],
+        "-" * 60,
+        "PROFESSIONAL SUMMARY",
+        candidate_data["summary"],
+        "",
+        "TECHNICAL SKILLS",
+    ]
+    for category, skills_list in candidate_data["skills"].items():
+        lines.append(f"{category}: {skills_list}")
+    lines.append("")
+    lines.append("PROFESSIONAL EXPERIENCE")
+    for job in candidate_data["experience"]:
+        lines.append(f"{job['role']} — {job['company']}")
+        lines.append(job["dates"])
+        for bullet in job["bullets"]:
+            lines.append(f"- {bullet}")
+        lines.append("")
+    lines.append("EDUCATION")
+    lines.append(candidate_data["education"])
+    
+    output_path.write_text("\n".join(lines), encoding="utf-8")
+
+
 def main():
-    print(f"Generating ATS-friendly PDF resume dataset (Times-Roman serif) in: {RESUME_OUTPUT_DIR}")
+    print(f"Generating multi-format ATS-friendly resume dataset (PDF, DOCX, TXT) in: {RESUME_OUTPUT_DIR}")
 
     # Remove all existing files in sample_resumes/
     if RESUME_OUTPUT_DIR.exists():
@@ -625,11 +755,17 @@ def main():
 
     for cand in CANDIDATES:
         out_file = RESUME_OUTPUT_DIR / cand["filename"]
-        build_ats_pdf(cand, out_file)
+        suffix = out_file.suffix.lower()
+        if suffix == ".pdf":
+            build_ats_pdf(cand, out_file)
+        elif suffix == ".docx":
+            build_ats_docx(cand, out_file)
+        elif suffix == ".txt":
+            build_ats_txt(cand, out_file)
         size_kb = out_file.stat().st_size / 1024
         print(f"  ✓ Generated: {cand['filename']:<42} ({size_kb:.1f} KB)")
 
-    print(f"\n✨ Successfully generated {len(CANDIDATES)} Serif PDF ATS-friendly resumes!")
+    print(f"\n✨ Successfully generated {len(CANDIDATES)} multi-format ATS-friendly resumes!")
 
 
 if __name__ == "__main__":

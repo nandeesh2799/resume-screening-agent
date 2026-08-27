@@ -1,0 +1,20 @@
+Michael Tran
+Junior Full Stack Developer
+michael.tran@devmail.org | +1 (408) 555-1122 | San Jose, CA
+------------------------------------------------------------
+PROFESSIONAL SUMMARY
+Enthusiastic Junior Developer with 1+ years of experience building modern web applications. Proficient in JavaScript, React, Python basics, HTML/CSS, and Git. Fast learner looking to grow in a collaborative agile engineering team.
+
+TECHNICAL SKILLS
+Languages & Frameworks: JavaScript, TypeScript basics, React, HTML5, CSS3, Python basics, Node.js basics
+Tools: Git, GitHub, VS Code, REST APIs, PostgreSQL basics
+
+PROFESSIONAL EXPERIENCE
+Junior Web Developer — Silicon Valley App Studio
+2023 – Present (1 year)
+- Built interactive landing pages and customer portals using React, HTML5, and CSS3.
+- Assisted senior engineers in writing Python backend scripts and debugging REST APIs.
+- Participated in daily scrum standups, code reviews, and unit test creation in Jest.
+
+EDUCATION
+Bachelor of Science in Computer Science — San Jose State University, 2023

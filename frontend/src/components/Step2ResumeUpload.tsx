@@ -175,7 +175,7 @@ export function Step2ResumeUpload({
                   Instant Test Dataset
                 </h4>
                 <p className="text-[11px] text-slate-400">
-                  {sampleResumes.length || 15} benchmark resumes (14 valid + 1 invalid scan)
+                  {sampleResumes.length || 14} diverse synthetic resumes (Senior ML, Backend, DevOps, etc.)
                 </p>
               </div>
             </div>
@@ -185,7 +185,7 @@ export function Step2ResumeUpload({
               className="w-full glow-btn-primary flex items-center justify-center gap-2 rounded-2xl py-3 text-xs font-black text-white shadow-lg cursor-pointer"
             >
               <Sparkles className="h-4 w-4 text-amber-300" />
-              <span>Screen 15 Benchmark Resumes Now</span>
+              <span>Screen 14 Benchmark Resumes Now</span>
             </button>
           </div>
 
@@ -284,7 +284,7 @@ export function Step2ResumeUpload({
                   <FileText className="mx-auto h-10 w-10 text-slate-600" />
                   <p className="text-xs text-slate-400">No resumes staged in queue yet.</p>
                   <p className="text-[11px] text-slate-500">
-                    Drag files onto the left panel or click "Screen 15 Benchmark Resumes" to test instantly.
+                    Drag files onto the left panel or click "Screen 14 Benchmark Resumes" to test instantly.
                   </p>
                 </div>
               ) : (

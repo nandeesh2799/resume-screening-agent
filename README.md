@@ -17,7 +17,7 @@ Below is a conceptual layout of the workstation dashboard in action, featuring l
 │ │ Senior Full Stack Engineer (Fin) │ │  • Jaccard Skill Overlap Weight (35%)│
 │ └──────────────────────────────────┘ │  • Experience Match Weight (20%)     │
 ├──────────────────────────────────────┴──────────────────────────────────────┤
-│ 3. SCREENING RUN RESULTS (15 Resumes Processed)       [Download CSV] [JSON] │
+│ 3. SCREENING RUN RESULTS (14 Resumes Processed)       [Download CSV] [JSON] │
 │ ┌───┬───────────────────┬──────────────┬───────────────┬───────────────────┐│
 │ │ Rk│ Candidate Name    │ Match Score  │ Exp (Req: 5y) │ Top Skills Match  ││
 │ ├───┼───────────────────┼──────────────┼───────────────┼───────────────────┤│
@@ -135,18 +135,20 @@ python3 scripts/generate_sample_outputs.py
 ```
 This script populates:
 *   **Sample JD File:** [sample_jd.txt](./sample_jd.txt) (FinTech Full Stack Engineer role)
-*   **Sample Resumes Folder:** [sample_resumes/](./sample_resumes/) (15 diverse PDF profiles)
+*   **Sample Resumes Folder:** [sample_resumes/](./sample_resumes/) (14 multi-format profiles: 11 PDF, 2 DOCX, 1 TXT)
 *   **Precomputed Outputs:** [sample_output/ranked_results.csv](./sample_output/ranked_results.csv) and [sample_output/ranked_results.json](./sample_output/ranked_results.json)
 
 ## 9. Scoring Method Summary
-The hybrid ranking score is computed as:
-$$\text{Final Score} = 0.45 \times S_{\text{semantic}} + 0.35 \times S_{\text{skills}} + 0.20 \times S_{\text{experience}}$$
+The hybrid ranking score is computed as a weighted composite:
+```
+Final Score = (0.45 × Semantic Similarity) + (0.35 × Skill Overlap) + (0.20 × Experience Match)
+```
 Where:
-*   $S_{\text{semantic}}$ is the cosine similarity of the document and JD sentence-transformers embeddings.
-*   $S_{\text{skills}}$ is the weighted Jaccard overlap coefficient of matched key terms.
-*   $S_{\text{experience}}$ is the ratio of candidate's experience years to the required years.
+*   **Semantic Similarity (45%):** Dense vector cosine similarity between candidate resume text and JD embeddings (`all-MiniLM-L6-v2`).
+*   **Skill Overlap (35%):** Weighted Jaccard overlap coefficient of matched required skills against the role taxonomy.
+*   **Experience Match (20%):** Ratio of candidate's verified experience years relative to the role's required minimum.
 
-For details, refer to [SCORING_METHOD.md](./SCORING_METHOD.md).
+For detailed formulas and edge-case behavior, refer to [SCORING_METHOD.md](./SCORING_METHOD.md).
 
 ## 10. Tradeoffs & Limitations
 *   **Entity Extraction:** Relies on robust regex and dictionaries instead of full-fledged NER models (like spaCy) to keep CPU requirements minimal.
