@@ -1,5 +1,13 @@
 # ResumeRank AI — AI Resume Screening Agent
 
+[![CI Pipeline](https://github.com/nandeesh2799/resume-screening-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/nandeesh2799/resume-screening-agent/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React-19.2-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript&logoColor=white)
+![Sentence-Transformers](https://img.shields.io/badge/NLP-Sentence--Transformers-FF6F00?logo=huggingface&logoColor=white)
+![Tests](https://img.shields.io/badge/Tests-32%20Passing-brightgreen?logo=pytest)
+
 An end-to-end recruiter workspace that takes a Job Description and a batch of resumes (PDF / DOCX / TXT), evaluates every candidate using a hybrid neural scoring engine (dense vector embeddings + skill overlap + experience matching), and presents a ranked recruiter workstation dashboard with qualitative AI critiques.
 
 ## 1. Project Description

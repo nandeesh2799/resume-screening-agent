@@ -32,8 +32,8 @@ export default function App() {
       .then((data) => {
         setSampleJDs(data.job_descriptions || []);
         setSampleResumes(data.sample_resumes || []);
-        if (data.job_descriptions && data.job_descriptions.length > 0 && !jd) {
-          setJd(data.job_descriptions[0].content);
+        if (data.job_descriptions && data.job_descriptions.length > 0) {
+          setJd((prev) => (prev ? prev : data.job_descriptions[0].content));
         }
       })
       .catch((err) => {
