@@ -169,3 +169,15 @@ For the full catalog of design constraints, see [TRADEOFFS.md](./TRADEOFFS.md).
 *   **Backend:** Python 3.12, FastAPI, Uvicorn, PyTorch, Sentence-Transformers, pdfplumber, python-docx
 *   **Frontend:** React 18, TypeScript, Tailwind CSS v4, Vite, Framer Motion
 *   **Testing:** Pytest, HTTPX Mock
+
+
+---
+
+## 👨‍💻 Author & Engineering Showcase
+
+**Nandeesh N K**  
+Full-Stack Developer & AI Systems Engineer — Bengaluru, India  
+- 🌐 **Interactive Portfolio:** [NandeeshOS (Live Demo)](https://nandeesh2799-portfolio.vercel.app)
+- 💼 **LinkedIn:** [linkedin.com/in/nandeesh-n-k-729773270](https://linkedin.com/in/nandeesh-n-k-729773270)
+- 🐙 **GitHub Profile:** [github.com/nandeesh2799](https://github.com/nandeesh2799)
+- 📫 **Direct Email:** [nandeeshnk506@gmail.com](mailto:nandeeshnk506@gmail.com)
